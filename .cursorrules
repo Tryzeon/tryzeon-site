@@ -1,0 +1,136 @@
+# Tryzeon 官網 — AI Coding Rules
+
+## 專案概述
+Tryzeon 是一家 AI 時尚科技新創公司的官方網站。網站使用 Next.js 16 (App Router + Turbopack) 搭配 TypeScript、TailwindCSS、Framer Motion 開發。主要語言為繁體中文。
+
+## 公司與產品背景
+
+- **公司名稱**: 創然科技股份有限公司 (Tryzeon)
+- **定位**: AI × 時尚科技新創，以 AI 為核心導入時尚產業，打造新世代時尚生態
+- **聯絡信箱**: tryzeon.team@gmail.com
+- **社群**: Instagram @tryzeon, LinkedIn /company/tryzeon
+
+### 五大核心產品
+1. **AI 虛擬試穿** — 一張照片即可生成試穿效果
+2. **AI 虛擬試穿影片** — 靜態照片轉動態影片
+3. **個人雲端衣櫃 & AI 推薦** — 基於 5W1H 的穿搭建議
+4. **時尚趨勢數據分析** — 幫助品牌精準進貨、降低退貨風險
+5. **虛擬試衣間** — 合作品牌上傳服飾，消費者挑選試穿
+
+### 商業模式
+- **B2B**: 中小型服飾品牌，採「流量計價模式」— 依據被試穿次數付費
+- **B2C**: 消費者使用 App（iOS/Android），免費基本功能 + 訂閱專業版
+- **藍圖**: B2B+B2C 雙線 → 創作者生態 → 美妝/配件/跨境電商
+
+### 核心數據（網站展示用）
+- 84% 消費者對 AR 試用功能表現興趣
+- 71% 支持試穿功能會增加選購頻率
+- 30% 有效提升電商轉換率
+- 25% 有效降低退貨率
+
+## 技術規範
+
+### 技術棧
+- **框架**: Next.js 16 (App Router), React 18, TypeScript (strict mode)
+- **樣式**: TailwindCSS 3, 禁止使用 inline CSS 或獨立 CSS 模組（除非特殊情況如 PartnerMarquee.css）
+- **動畫**: Framer Motion (`framer-motion`)
+- **圖示**: Lucide React (`lucide-react`)，使用 named imports
+- **字型**: Google Fonts — Playfair Display (標題) + Outfit (內文)
+- **路徑別名**: `@/*` 對應專案根目錄
+
+### TypeScript 嚴格規範
+- 開啟 `strict: true`、`noUnusedLocals`、`noUnusedParameters`
+- 所有元件 props 必須定義 `interface`
+- 禁止使用 `any` 類型，必要時使用 `unknown` 並做 type narrowing
+- 使用 `as const` 建立常數物件
+
+### 元件規範
+- 所有元件使用 **named export**，不使用 default export（`export function ComponentName`）
+- 客戶端元件必須在檔案頂部加 `'use client';`
+- 元件檔案命名使用 PascalCase（如 `FullBleedCarousel.tsx`）
+- 非首屏元件使用 `dynamic()` import 並設定 `{ ssr: false }` 做 code splitting
+- 圖片一律使用 Next.js `<Image>` 元件，設定適當的 `width`、`height`、`alt`
+
+### 程式碼風格
+- 使用雙引號 `"` 作為 JSX 屬性值
+- Import 順序：React → Next.js → 第三方套件 → @/ 內部模組 → 相對路徑
+- 中文註解用於說明業務邏輯，英文註解用於技術說明
+- 不要將所有內容放在單一檔案，超過 300 行的元件應拆分
+
+## 品牌規範
+
+### 品牌色彩（定義在 `lib/constants.ts`）
+- 背景白: `#FFFFFF` / `#FAFAFA`
+- 深米色: `#B8A094`
+- 墨色（文字）: `#0B0B0B`
+- 強調色: `#1E90FF`
+
+### 設計風格
+- Apple 風格的極簡設計：大量留白、精緻排版、微動畫
+- 全站使用 ScrollReveal 進場動畫
+- 按鈕使用 `AppleButton` / `AppleLink` 元件
+- 重要區塊之間使用 `<Section>` 元件包裹
+- 文字選取色: `selection:bg-[#2563EB]/15 selection:text-[#101828]`
+
+### 品牌語調
+- 科技感但不冰冷，專業但平易近人
+- 主要標題使用繁體中文
+- 副標描述可混用中英文
+- 公司名始終寫作「Tryzeon」
+
+## 國際化 (i18n)
+
+- 所有使用者可見文字放在 `lib/translations.ts`
+- 使用 `translations[lang]` 物件取得翻譯
+- 目前支援 `zh-TW`，結構已為多語言準備
+- 禁止在元件中 hardcode 使用者可見文字
+
+## SEO 規範
+
+- 每個頁面必須設定適當的 `metadata` (title, description, openGraph)
+- 使用 JSON-LD 結構化資料（已在 `layout.tsx` 設定）
+- 圖片必須有 `alt` 描述文字
+- 使用語義化 HTML 標籤（`<header>`, `<main>`, `<section>`, `<footer>`）
+
+## 效能規範
+
+- 首屏元件直接 import，非首屏元件使用 `dynamic()` lazy loading
+- 圖片格式優先使用 WebP/AVIF（Next.js Image 自動處理）
+- 避免在元件中大量使用 `useEffect`，優先使用 CSS 動畫
+- 輪播圖片使用 `priority` 標記第一張
+
+## 安全規範
+
+- 已在 `next.config.js` 設定 CSP、HSTS、X-Frame-Options 等安全 Headers
+- 表單提交使用 `mode: 'no-cors'`（Google Forms）
+- 禁止使用 `eval()` 或 `dangerouslySetInnerHTML`（JSON-LD 除外）
+
+## Git 規範
+
+- Commit message 格式: `type: 描述`
+  - `feat:` 新功能
+  - `fix:` 修復bug
+  - `refactor:` 重構
+  - `style:` 樣式調整
+  - `chore:` 雜項
+- **Push 前必須執行**: `git pull --rebase origin main`
+- 分支: `main` 為主分支
+
+## 資料夾結構
+
+```
+app/          → 頁面路由（App Router）
+components/   → 可重用 UI 元件
+lib/          → 工具函式、常數、翻譯、資料
+public/       → 靜態資源（圖片）
+```
+
+## 禁止事項
+
+1. 禁止新增 npm 套件，除非事先告知並得到批准
+2. 禁止刪除已有功能，除非明確要求
+3. 禁止修改 `next.config.js` 的安全 Headers 設定
+4. 禁止在 `public/` 放置超過 500KB 的圖片
+5. 禁止使用 `console.log`（開發除外），production 使用 `lib/analytics.ts`
+6. 禁止建立與現有元件功能重複的新元件
+7. **【絕對機密】禁止對外提及內部使用的 AI 模型名稱（如 nano-banana, Veo3），所有對外文案一律聲稱「團隊自家研發的專屬 AI 時尚模型」。**
