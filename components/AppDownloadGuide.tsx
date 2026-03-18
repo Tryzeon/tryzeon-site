@@ -27,7 +27,7 @@ export default function AppDownloadGuide() {
                 {/* 主要按鈕 */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                     <a
-                        href="https://apps.apple.com/" // TODO: 替換為真實 App Store 連結
+                        href="https://apps.apple.com/tw/app/tryzeon-%E9%87%8D%E6%96%B0%E5%AE%9A%E7%BE%A9%E4%BD%A0%E7%9A%84%E6%99%82%E5%B0%9A%E6%96%B0%E7%94%9F%E6%B4%BB/id6757691600"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#1D1D1F] text-white rounded-2xl font-semibold hover:bg-black hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
@@ -40,7 +40,7 @@ export default function AppDownloadGuide() {
                     </a>
 
                     <a
-                        href="https://play.google.com/store/apps/" // TODO: 替換為真實 Google Play 連結
+                        href="https://play.google.com/store/apps/details?id=com.tryzeon.app"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#1D1D1F] text-white rounded-2xl font-semibold hover:bg-black hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
