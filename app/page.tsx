@@ -20,7 +20,6 @@ const ParallaxText = dynamic(() => import("@/components/ScrollLinkedAnimations")
 const ScrollZoomCard = dynamic(() => import("@/components/ScrollLinkedAnimations").then(mod => ({ default: mod.ScrollZoomCard })), { ssr: false });
 const Scroll3D = dynamic(() => import("@/components/ScrollLinkedAnimations").then(mod => ({ default: mod.Scroll3D })), { ssr: false });
 const ScrollCounter = dynamic(() => import("@/components/ScrollLinkedAnimations").then(mod => ({ default: mod.ScrollCounter })), { ssr: false });
-const BentoGrid = dynamic(() => import("@/components/BentoGrid").then(mod => ({ default: mod.BentoGrid })), { ssr: false });
 const BentoCard = dynamic(() => import("@/components/BentoGrid").then(mod => ({ default: mod.BentoCard })), { ssr: false });
 const PartnerMarquee = dynamic(() => import("@/components/PartnerMarquee").then(mod => ({ default: mod.PartnerMarquee })), { ssr: false });
 const FAQ = dynamic(() => import("@/components/FAQ").then(mod => ({ default: mod.FAQ })), { ssr: false });
@@ -50,14 +49,15 @@ export default function TryzeonLanding() {
           <div className="absolute inset-0 dot-grid-dark" />
         </div>
 
-        <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
+        <div className="max-w-7xl mx-auto px-6 text-left relative z-10">
           <ParallaxText>
-            <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-[6.5rem] font-extrabold text-white leading-[0.95] tracking-[-0.04em] mb-8 md:mb-12">
-              The Future of <br />
-              <span className="text-gradient-blue">Digital Style</span>
+            <h2 className="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] font-extrabold text-white leading-[0.85] tracking-tighter mb-8 md:mb-16 flex flex-col uppercase">
+              <span className="z-10 relative">Digital</span>
+              <span className="text-outline-dark md:ml-24 xl:ml-48">Fashion</span>
+              <span className="text-gradient-blue md:ml-12 xl:ml-24">Evolution</span>
             </h2>
           </ParallaxText>
-          <ScrollReveal direction="up" delay={0.2}>
+          <ScrollReveal direction="up" delay={0.2} className="md:w-1/2 md:ml-auto">
             <p className="text-lg md:text-2xl text-[#98A2B3] font-medium leading-relaxed max-w-3xl mx-auto mb-10 md:mb-16 text-balance">
               從試穿開始，重新定義你的時尚新生活。<br />整合線上與線下，打造時尚產業的 AI 基礎建設。
             </p>
@@ -122,62 +122,67 @@ export default function TryzeonLanding() {
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-[#101828] tracking-tight">為誰而設計</h2>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-            {/* B2B */}
-            <ScrollZoomCard>
-              <div className="group relative bg-white rounded-3xl p-8 md:p-12 h-full flex flex-col justify-between overflow-hidden border border-[#E4E7EC] hover:border-[#2563EB]/20 shadow-neo hover:shadow-neo-lg transition-all duration-500">
-                {/* Blue gradient accent on hover */}
-                <div className="absolute top-0 right-0 w-40 h-40 bg-[radial-gradient(circle,rgba(37,99,235,0.08),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative z-10 max-w-md">
-                  <span className="text-[#98A2B3] text-xs md:text-sm font-mono font-medium uppercase tracking-widest mb-4 block">01 / Brand Solutions</span>
-                  <h3 className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[#101828] mb-6 md:mb-8 leading-tight">低成本提升視覺<br />吸引力與轉換率</h3>
-                  <AppleButton
-                    variant="primary"
-                    size="md"
-                    onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLScu_hKsOTUVcuB0R3sKnRh9cAbn7zchO7W8izdgG1N9-WC9AQ/viewform?usp=header', '_blank')}
-                  >
-                    品牌合作申請
-                  </AppleButton>
+          <div className="flex flex-col gap-16 md:gap-32 mt-20">
+            {/* B2B - Staggered Left */}
+            <div className="md:w-10/12 xl:w-8/12">
+              <ScrollZoomCard>
+                <div className="group relative bg-[#0A0A0B] rounded-[2.5rem] p-8 md:p-16 h-full flex flex-col justify-between overflow-hidden border border-white/10 hover:border-[#2563EB]/40 shadow-neo-xl transition-all duration-700">
+                  {/* Blue gradient accent on hover */}
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-[radial-gradient(circle,rgba(37,99,235,0.15),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                  <div className="relative z-10 max-w-lg">
+                    <span className="text-[#98A2B3] text-xs md:text-sm font-mono font-medium uppercase tracking-widest mb-6 block border-b border-white/10 pb-4">01 // Brand Ecosystem</span>
+                    <h3 className="text-3xl md:text-6xl font-extrabold text-white mb-6 md:mb-10 leading-tight tracking-tight">低成本提升視覺<br /><span className="text-outline-dark">吸引力與轉換率</span></h3>
+                    <AppleButton
+                      variant="primary"
+                      size="lg"
+                      className="!bg-[#2563EB] hover:!bg-[#1D4ED8]"
+                      onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLScu_hKsOTUVcuB0R3sKnRh9cAbn7zchO7W8izdgG1N9-WC9AQ/viewform?usp=header', '_blank')}
+                    >
+                      品牌合作申請
+                    </AppleButton>
+                  </div>
+                  <div className="mt-12 md:mt-16 relative aspect-[21/9] rounded-2xl overflow-hidden shadow-2xl transition-transform duration-700 group-hover:scale-105 group-hover:-rotate-1">
+                    <Image
+                      src="/images/audience/b2b-fashion-store.jpg"
+                      alt="Fashion Boutique Store"
+                      fill
+                      className="object-cover mix-blend-luminosity opacity-80 group-hover:mix-blend-normal group-hover:opacity-100 transition-all duration-700"
+                      sizes="(max-width: 768px) 100vw, 80vw"
+                    />
+                  </div>
                 </div>
-                <div className="mt-8 md:mt-10 relative aspect-[16/9] rounded-2xl overflow-hidden shadow-neo-md transition-transform duration-500 group-hover:scale-[1.02]">
-                  <Image
-                    src="/images/audience/b2b-fashion-store.jpg"
-                    alt="Fashion Boutique Store"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </div>
-              </div>
-            </ScrollZoomCard>
+              </ScrollZoomCard>
+            </div>
 
-            {/* B2C */}
-            <ScrollZoomCard>
-              <div className="group relative bg-white rounded-3xl p-8 md:p-12 h-full flex flex-col justify-between overflow-hidden border border-[#E4E7EC] hover:border-[#06B6D4]/20 shadow-neo hover:shadow-neo-lg transition-all duration-500">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-[radial-gradient(circle,rgba(6,182,212,0.08),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative z-10 max-w-md">
-                  <span className="text-[#98A2B3] text-xs md:text-sm font-mono font-medium uppercase tracking-widest mb-4 block">02 / Personal Experience</span>
-                  <h3 className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[#101828] mb-6 md:mb-8 leading-tight">告別試穿煩惱<br />遇見最美的自己</h3>
-                  <AppleButton
-                    variant="secondary"
-                    size="md"
-                    className="!bg-[#101828] !text-white hover:!bg-[#1D2939]"
-                    onClick={() => window.location.href = '/join'}
-                  >
-                    加入試用行列
-                  </AppleButton>
+            {/* B2C - Staggered Right */}
+            <div className="md:w-10/12 xl:w-8/12 md:self-end">
+              <ScrollZoomCard>
+                <div className="group relative bg-white rounded-[2.5rem] p-8 md:p-16 h-full flex flex-col justify-between overflow-hidden border border-[#E4E7EC] hover:border-[#06B6D4]/40 shadow-neo hover:shadow-neo-xl transition-all duration-700">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-[radial-gradient(circle,rgba(6,182,212,0.15),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                  <div className="relative z-10 max-w-lg">
+                    <span className="text-[#98A2B3] text-xs md:text-sm font-mono font-medium uppercase tracking-widest mb-6 block border-b border-black/10 pb-4">02 // Personal Utility</span>
+                    <h3 className="text-3xl md:text-6xl font-extrabold text-[#101828] mb-6 md:mb-10 leading-tight tracking-tight">告別試穿煩惱<br /><span className="text-outline">遇見最美的自己</span></h3>
+                    <AppleButton
+                      variant="secondary"
+                      size="lg"
+                      className="!bg-[#101828] !text-white hover:!bg-[#1D2939]"
+                      onClick={() => window.location.href = '/join'}
+                    >
+                      加入試用行列
+                    </AppleButton>
+                  </div>
+                  <div className="mt-12 md:mt-16 relative aspect-[21/9] rounded-2xl overflow-hidden shadow-2xl transition-transform duration-700 group-hover:scale-105 group-hover:rotate-1">
+                    <Image
+                      src="/images/audience/b2c-user-phone.jpg"
+                      alt="Mobile Fashion App"
+                      fill
+                      className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                      sizes="(max-width: 768px) 100vw, 80vw"
+                    />
+                  </div>
                 </div>
-                <div className="mt-8 md:mt-10 relative aspect-[16/9] rounded-2xl overflow-hidden shadow-neo-md transition-transform duration-500 group-hover:scale-[1.02]">
-                  <Image
-                    src="/images/audience/b2c-user-phone.jpg"
-                    alt="Mobile Fashion App"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </div>
-              </div>
-            </ScrollZoomCard>
+              </ScrollZoomCard>
+            </div>
           </div>
         </div>
       </Section>
@@ -188,40 +193,54 @@ export default function TryzeonLanding() {
       <Section id="features" className="py-24 md:py-48 bg-[#F2F4F7] relative">
         <div className="absolute inset-0 dot-grid pointer-events-none" />
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <ScrollReveal direction="up" className="text-center mb-16 md:mb-24">
-            <span className="inline-block text-xs md:text-sm font-mono font-semibold uppercase tracking-[0.3em] text-[#2563EB] mb-4 md:mb-6 bg-[#2563EB]/8 px-4 py-1.5 rounded-full">Core Technology</span>
-            <h2 className="text-4xl md:text-7xl font-extrabold text-[#101828] tracking-tight">五大核心功能</h2>
+          <ScrollReveal direction="up" className="text-left mb-16 md:mb-32 md:w-3/4">
+            <span className="inline-block text-xs md:text-sm font-mono font-semibold uppercase tracking-[0.3em] text-[#2563EB] mb-4 md:mb-6 bg-[#2563EB]/8 px-4 py-1.5 rounded-full">Core Infrastructure</span>
+            <h2 className="text-5xl md:text-8xl font-extrabold text-[#101828] tracking-tighter mix-blend-multiply">
+              五大核心技術<br />
+              <span className="text-outline">引領數位革命</span>
+            </h2>
           </ScrollReveal>
 
-          {/* First row: 3 cards */}
-          <BentoGrid>
-            <BentoCard
-              title={t.features.aiTryOn.title}
-              description={t.features.aiTryOn.desc}
-              icon={<Sparkles />}
-            />
-            <BentoCard
-              title={t.features.videoGeneration.title}
-              description={t.features.videoGeneration.desc}
-              icon={<Video />}
-            />
-            <BentoCard
-              title={t.features.aiRecommendation.title}
-              description={t.features.aiRecommendation.desc}
-              icon={<Shirt />}
-            />
-          </BentoGrid>
-
-          {/* Second row: 2 centered cards */}
-          <div className="flex justify-center gap-6 mt-6">
-            <div className="w-full md:w-[calc(33.333%-8px)] max-w-md">
-              <BentoCard
-                title={t.features.dataAnalytics.title}
-                description={t.features.dataAnalytics.desc}
-                icon={<TrendingUp />}
-              />
+          {/* Staggered Avant-Garde Layout for Features */}
+          <div className="flex flex-col gap-8 md:gap-16">
+            {/* Row 1: 60 / 40 Split */}
+            <div className="flex flex-col md:flex-row gap-8">
+              <div className="w-full md:w-7/12">
+                <BentoCard
+                  title={t.features.aiTryOn.title}
+                  description={t.features.aiTryOn.desc}
+                  icon={<Sparkles />}
+                />
+              </div>
+              <div className="w-full md:w-5/12">
+                <BentoCard
+                  title={t.features.videoGeneration.title}
+                  description={t.features.videoGeneration.desc}
+                  icon={<Video />}
+                />
+              </div>
             </div>
-            <div className="w-full md:w-[calc(33.333%-8px)] max-w-md">
+
+            {/* Row 2: 40 / 60 Split, Reversed */}
+            <div className="flex flex-col md:flex-row gap-8">
+              <div className="w-full md:w-5/12">
+                <BentoCard
+                  title={t.features.aiRecommendation.title}
+                  description={t.features.aiRecommendation.desc}
+                  icon={<Shirt />}
+                />
+              </div>
+              <div className="w-full md:w-7/12">
+                <BentoCard
+                  title={t.features.dataAnalytics.title}
+                  description={t.features.dataAnalytics.desc}
+                  icon={<TrendingUp />}
+                />
+              </div>
+            </div>
+
+            {/* Row 3: Full Width Highlight */}
+            <div className="w-full">
               <BentoCard
                 title={t.features.tryOnRoom.title}
                 description={t.features.tryOnRoom.desc}

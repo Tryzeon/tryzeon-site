@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-export const alt = 'Tryzeon - AI 虛擬試穿｜時尚科技新創';
+export const alt = 'Tryzeon - 重新定義你的時尚新生活';
 export const size = {
     width: 1200,
     height: 630,

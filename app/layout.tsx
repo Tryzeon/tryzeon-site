@@ -3,6 +3,7 @@ import { Playfair_Display, Outfit } from "next/font/google";
 import { NavigationProgress } from "@/components/NavigationProgress";
 import { WebVitals } from "@/components/WebVitals";
 import { SkipToContent } from "@/components/Accessibility";
+import { CustomCursor } from "@/components/CustomCursor";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -20,7 +21,7 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL('https://tryzeon.com'),
   title: {
-    default: "Tryzeon - AI 虛擬試穿｜時尚科技新創",
+    default: "Tryzeon - 重新定義你的時尚新生活",
     template: "%s | Tryzeon"
   },
   description: "一張照片即刻生成虛擬試穿影片。Tryzeon 運用 AI 技術提供虛擬試穿、動態影片生成、智慧穿搭推薦，重新定義時尚購物體驗。適用於服飾品牌與電商平台。",
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
     locale: "zh_TW",
     alternateLocale: ["en_US"],
     url: "https://tryzeon.com",
-    title: "Tryzeon - AI 虛擬試穿｜時尚科技新創",
+    title: "Tryzeon - 重新定義你的時尚新生活",
     description: "一張照片即刻生成虛擬試穿影片，重新定義時尚購物體驗。",
     siteName: "Tryzeon",
     images: [
@@ -78,7 +79,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@tryzeon",
     creator: "@tryzeon",
-    title: "Tryzeon - AI 虛擬試穿｜時尚科技新創",
+    title: "Tryzeon - 重新定義你的時尚新生活",
     description: "一張照片即刻生成虛擬試穿影片，重新定義時尚購物體驗。",
     images: {
       url: '/twitter-image',
@@ -221,6 +222,8 @@ export default function RootLayout({
         <SkipToContent />
         <NavigationProgress />
         <WebVitals />
+        <CustomCursor />
+        <div className="noise-overlay" />
         <main id="main-content">
           {children}
         </main>
