@@ -4,8 +4,14 @@ import { useEffect, useState } from 'react';
 import { motion, useSpring } from 'framer-motion';
 
 export function CustomCursor() {
+    const [isDesktop, setIsDesktop] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
     const [cursorVariant, setCursorVariant] = useState<'default' | 'hover'>('default');
+
+    // Detect desktop on mount
+    useEffect(() => {
+        setIsDesktop(window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 1024);
+    }, []);
 
     // Use springs for ultra-smooth buttery inertia
     const springX = useSpring(-100, { stiffness: 500, damping: 28, mass: 0.5 });
@@ -60,6 +66,8 @@ export function CustomCursor() {
             mixBlendMode: 'difference' as const
         }
     };
+
+    if (!isDesktop) return null;
 
     return (
         <>

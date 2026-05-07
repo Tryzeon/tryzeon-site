@@ -1,97 +1,55 @@
 /** @type {import('next').NextConfig} */
+
+const isProd = process.env.NODE_ENV === 'production';
+
+const ContentSecurityPolicy = [
+  "default-src 'self'",
+  // Next.js dev needs eval for HMR/turbopack; framer-motion runtime evaluates style strings
+  `script-src 'self' 'unsafe-inline' ${isProd ? '' : "'unsafe-eval'"}`.trim(),
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com data:",
+  "img-src 'self' data: blob: https://images.unsplash.com",
+  "media-src 'self'",
+  "connect-src 'self' https://docs.google.com https://www.google.com",
+  "form-action 'self' https://docs.google.com",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "upgrade-insecure-requests",
+].join('; ');
+
+const securityHeaders = [
+  { key: 'Content-Security-Policy', value: ContentSecurityPolicy },
+  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+  { key: 'X-Frame-Options', value: 'DENY' },
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()' },
+  { key: 'X-DNS-Prefetch-Control', value: 'on' },
+];
+
 const nextConfig = {
   reactStrictMode: true,
-
-  // 效能優化
-  compress: true,
   poweredByHeader: false,
-
-  // 實驗性功能
-  experimental: {
-    optimizeCss: false,
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
-  },
-
-  // 輸出配置
-  output: 'standalone',
+  compress: true,
 
   images: {
+    formats: ['image/avif', 'image/webp'],
+    qualities: [75, 90],
+    minimumCacheTTL: 60 * 60 * 24 * 30,
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
     ],
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
   async headers() {
     return [
       {
-        // 靜態資源長期快取
-        source: '/_next/static/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
         source: '/:path*',
-        headers: [
-          // 安全 Headers
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains; preload',
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
-          },
-          {
-            key: 'Cross-Origin-Opener-Policy',
-            value: 'same-origin',
-          },
-          {
-            key: 'Cross-Origin-Resource-Policy',
-            value: 'same-origin',
-          },
-          {
-            key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "img-src 'self' blob: data: https: http:",
-              "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' https: wss:",
-              "media-src 'self' https: blob:",
-              "frame-ancestors 'none'",
-              "base-uri 'self'",
-              "form-action 'self' https://docs.google.com",
-              "upgrade-insecure-requests",
-            ].join('; '),
-          },
-        ],
+        headers: securityHeaders,
       },
     ];
   },

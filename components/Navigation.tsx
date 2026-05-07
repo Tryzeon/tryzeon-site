@@ -12,7 +12,6 @@ interface NavigationProps {
 
 export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
   const [showLangMenu, setShowLangMenu] = useState(false);
-  const [showProductMenu, setShowProductMenu] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -20,16 +19,24 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
   const shouldShowWhiteBackground = isScrolled || isMobileMenuOpen;
 
   useEffect(() => {
+    let rafId = 0;
+    let ticking = false;
+
     const handleScroll = () => {
-      // 當 hero 區塊頂部滾出視窗時，切換為白色背景
-      // 使用視窗高度作為閾值（當滾動距離超過視窗高度時，hero 區塊頂部已經離開視窗）
-      const scrollPosition = window.scrollY;
-      const viewportHeight = window.innerHeight;
-      setIsScrolled(scrollPosition > viewportHeight);
+      if (ticking) return;
+      ticking = true;
+      rafId = requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > window.innerHeight);
+        ticking = false;
+      });
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const t = translations[currentLang as keyof typeof translations] || translations['zh-TW'];
@@ -38,7 +45,7 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
     e.preventDefault();
     const href = e.currentTarget.getAttribute('href');
     if (href) {
-      if (href.startsWith('http') || href.startsWith('/products')) {
+      if (href.startsWith('http')) {
         window.location.href = href;
         return;
       }
@@ -55,18 +62,10 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
   };
 
   const navigationItems = [
-    { href: '/products', label: t.nav.product },
-    { href: '/join', label: '加入我們' },
+    { href: '#features', label: t.nav.product },
     { href: '#about', label: t.nav.about },
     { href: '#faq', label: t.nav.faq },
     { href: '#contact', label: t.nav.contact }
-  ];
-
-  const productMenuItems = [
-    { href: '/products', label: '完整產品介紹', desc: '深入了解所有功能' },
-    { href: '/experience', label: '立即體驗 AI', desc: '一鍵生成穿搭效果' },
-    { href: '/join', label: '加入創作者生態', desc: '展現時尚影響力' },
-    { href: '#features', label: 'B2B 解決方案', desc: '企業級虛擬試穿服務' },
   ];
 
   return (
@@ -94,51 +93,7 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-10">
-            {/* Product Dropdown */}
-            <div
-              className="relative group"
-              onMouseEnter={() => setShowProductMenu(true)}
-              onMouseLeave={() => setShowProductMenu(false)}
-            >
-              <button
-                className={`flex items-center space-x-1.5 text-[13px] font-medium tracking-wide transition-colors duration-300 ${shouldShowWhiteBackground
-                  ? 'text-[#1D1D1F]/80 hover:text-[#0066CC]'
-                  : 'text-white/90 hover:text-white drop-shadow-sm'
-                  }`}
-              >
-                <span>{t.nav.product}</span>
-                <ChevronDown className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity" />
-              </button>
-
-              <AnimatePresence>
-                {showProductMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 4, scale: 0.98 }}
-                    transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-72 rounded-2xl shadow-2xl border border-white/20 py-2 overflow-hidden bg-white/95"
-                  >
-                    <div className="px-2 py-1 space-y-1">
-                      {productMenuItems.map((item, index) => (
-                        <a
-                          key={index}
-                          href={item.href}
-                          onClick={scrollToSection}
-                          className="block px-4 py-3 rounded-xl hover:bg-[#F5F5F7] transition-colors group/item"
-                        >
-                          <div className="font-semibold text-[#1D1D1F] text-sm group-hover/item:text-[#0066CC] transition-colors">{item.label}</div>
-                          <div className="text-[11px] text-[#86868B] mt-0.5">{item.desc}</div>
-                        </a>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Other Nav Items */}
-            {navigationItems.slice(1).map((item) => (
+            {navigationItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -196,7 +151,8 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
 
             {/* CTA Button */}
             <a
-              href="/experience"
+              href="#contact"
+              onClick={scrollToSection}
               className={`px-5 py-2 text-[12px] font-bold rounded-full transition-all duration-300 ${shouldShowWhiteBackground
                 ? 'bg-[#1D1D1F] text-white hover:bg-[#000000] hover:scale-105 shadow-md'
                 : 'bg-white/10 border border-white/20 text-white hover:bg-white/20'

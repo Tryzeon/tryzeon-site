@@ -1,8 +1,10 @@
+'use client';
+
 import { useState, useEffect, useRef } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { OptimizedLink } from './OptimizedLink';
+import Link from 'next/link';
 import { type Slide } from "@/lib/constants";
 
 function SlideImage({ src, alt, isActive, priority, index }: { src: string; alt: string; isActive: boolean; priority?: boolean; index: number }) {
@@ -217,7 +219,7 @@ export function FullBleedCarousel({ slides, auto = false, interval = DEFAULT_INT
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.6 }}
                   >
-                    <OptimizedLink
+                    <Link
                       href={currentSlide.cta.href}
                       className="inline-flex items-center px-8 py-4 bg-white text-[#1D1D1F] rounded-full font-display font-bold text-base shadow-2xl btn-apple"
                       onClick={() => {
@@ -229,7 +231,7 @@ export function FullBleedCarousel({ slides, auto = false, interval = DEFAULT_INT
                     >
                       {currentSlide.cta.label}
                       <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
-                    </OptimizedLink>
+                    </Link>
                   </motion.div>
                 </div>
               )}

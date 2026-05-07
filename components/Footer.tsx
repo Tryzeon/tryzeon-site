@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Instagram, Mail, Linkedin, MapPin, Check, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -24,17 +24,23 @@ interface FooterProps {
   };
 }
 
+const GOOGLE_FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLScu_hKsOTUVcuB0R3sKnRh9cAbn7zchO7W8izdgG1N9-WC9AQ/formResponse';
+// Google Form email field entry ID — update this if the form changes
+const EMAIL_ENTRY = 'entry.1045781291';
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export function Footer({ t }: FooterProps) {
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const GOOGLE_FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLScu_hKsOTUVcuB0R3sKnRh9cAbn7zchO7W8izdgG1N9-WC9AQ/formResponse';
-  // Google Form email field entry ID — update this if the form changes
-  const EMAIL_ENTRY = 'entry.1045781291';
-
-  const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  useEffect(() => {
+    return () => {
+      if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +51,7 @@ export function Footer({ t }: FooterProps) {
       setStatus('error');
       return;
     }
-    if (!validateEmail(email)) {
+    if (!EMAIL_REGEX.test(email)) {
       setErrorMsg('請輸入有效的 Email 格式');
       setStatus('error');
       return;
@@ -64,37 +70,38 @@ export function Footer({ t }: FooterProps) {
         body: formData.toString(),
       });
 
-      // no-cors always resolves — treat as success
       setStatus('success');
       setEmail('');
-      setTimeout(() => setStatus('idle'), 4000);
+      if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
+      resetTimerRef.current = setTimeout(() => setStatus('idle'), 4000);
     } catch {
       setErrorMsg('送出失敗，請稍後再試');
       setStatus('error');
-      setTimeout(() => setStatus('idle'), 3000);
+      if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
+      resetTimerRef.current = setTimeout(() => setStatus('idle'), 3000);
     }
   };
 
   const footerLinks = {
     products: [
-      { label: t.footer.aiVirtualTryOn, href: '/products' },
+      { label: t.footer.aiVirtualTryOn, href: '/products/virtual-try-on' },
       { label: t.footer.videoGeneration, href: '/products' },
       { label: t.footer.aiRecommendation, href: '/products' },
-      { label: t.footer.dataAnalytics, href: '/products' }
+      { label: t.footer.dataAnalytics, href: '/products' },
     ],
     company: [
       { label: '關於我們', href: '/#about' },
-      { label: '創作者生態', href: '/join' },
-      { label: '立即體驗', href: '/experience' }
+      { label: '品牌合作', href: '/business' },
     ],
     resources: [
       { label: '常見問題', href: '/#faq' },
+      { label: '下載 App', href: '/store' },
     ],
     contact: [
-      { label: t.footer.businessCooperation, href: '#contact' },
-      { label: t.footer.technicalSupport, href: '#contact' },
-      { label: t.footer.mediaContact, href: '#contact' }
-    ]
+      { label: t.footer.businessCooperation, href: '/business' },
+      { label: t.footer.technicalSupport, href: 'mailto:tryzeon.team@gmail.com' },
+      { label: t.footer.mediaContact, href: 'mailto:tryzeon.team@gmail.com' },
+    ],
   };
 
   return (
@@ -265,6 +272,10 @@ export function Footer({ t }: FooterProps) {
               <span className="text-[#86868B]/30">|</span>
               <Link href="/terms" className="text-xs text-[#86868B] hover:text-white transition-colors">
                 {t.footer.termsOfService}
+              </Link>
+              <span className="text-[#86868B]/30">|</span>
+              <Link href="/delete-account" className="text-xs text-[#86868B] hover:text-white transition-colors">
+                刪除帳號
               </Link>
               <span className="text-[#86868B]/30">|</span>
               <span className="text-xs text-[#86868B]">

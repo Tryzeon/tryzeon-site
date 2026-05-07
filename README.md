@@ -1,10 +1,10 @@
 # Tryzeon 官方網站
 
-> AI × 時尚科技新創官方網站
+> 重新定義你的時尚新生活 — AI × Fashion Tech
 
 ## 🚀 技術棧
 
-- **框架**: Next.js 15.0.3 (App Router)
+- **框架**: Next.js 16.x (App Router + Turbopack)
 - **語言**: TypeScript 5.9.3
 - **樣式**: Tailwind CSS 3.4.18
 - **動畫**: Framer Motion 10.18.0
@@ -88,10 +88,10 @@ npx tsc --noEmit
 
 ### 品牌色彩
 
-- **淺米色背景**: `#F8F5F1`
-- **深米棕**: `#B8A094`
-- **墨黑**: `#0B0B0B`
-- **強調色**: `#1E90FF`
+- **白色背景**: `#FAFAFA`
+- **主色藍**: `#2563EB`
+- **墨黑**: `#101828`
+- **深黑**: `#0A0A0B`
 
 ### 設計風格
 
@@ -116,7 +116,7 @@ npx tsc --noEmit
 - ✅ 了解更多 - 使用者體驗說明
 - ✅ 查看示範 - 動態影片生成展示
 - ✅ 商業合作 - B2B 店家價值
-- ✅ 加入我們 - 創作者生態
+- ✅ 加入我們 - 社群互動
 - ✅ 探索更多 - 全球視野
 
 ### 性能優化
@@ -149,7 +149,7 @@ npx tsc --noEmit
 
 ## 📄 授權
 
-Copyright © 2024 Tryzeon. All rights reserved.
+Copyright © 2024-2026 Tryzeon. All rights reserved.
 
 ## 🔧 環境變數
 

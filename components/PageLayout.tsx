@@ -1,42 +1,49 @@
 'use client';
 
-import { ReactNode } from 'react';
-import { Navigation } from '@/components/Navigation';
-import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { brand } from '@/lib/constants';
+import { ArrowLeft } from 'lucide-react';
+import { Navigation } from '@/components/Navigation';
+import { Footer } from '@/components/Footer';
+import { translations } from '@/lib/translations';
 
 interface PageLayoutProps {
-  children: ReactNode;
   currentLang: string;
   setCurrentLang: (lang: string) => void;
   showBackButton?: boolean;
+  children: React.ReactNode;
 }
 
-export function PageLayout({ 
-  children, 
-  currentLang, 
+export function PageLayout({
+  currentLang,
   setCurrentLang,
-  showBackButton = true 
+  showBackButton = false,
+  children,
 }: PageLayoutProps) {
+  const t = translations[currentLang as keyof typeof translations] || translations['zh-TW'];
+
   return (
-    <div className="min-h-screen" style={{ backgroundColor: brand.lightBg }}>
+    <div className="min-h-screen bg-[#FAFAFA] selection:bg-[#2563EB]/15 selection:text-[#101828]">
       <Navigation currentLang={currentLang} setCurrentLang={setCurrentLang} />
-      
-      <main className="pt-24 pb-20">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+      <div className="relative">
+        <div className="absolute top-0 inset-x-0 h-80 bg-gradient-to-b from-[#F2F4F7] to-transparent pointer-events-none" />
+
+        <div className="max-w-5xl mx-auto px-6 pt-32 md:pt-40 pb-24 relative z-10">
           {showBackButton && (
-            <Link 
+            <Link
               href="/"
-              className="inline-flex items-center space-x-2 text-gray-600 hover:text-gray-900 mb-8 transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-medium text-[#667085] hover:text-[#101828] transition-colors mb-12 group"
             >
-              <ArrowLeft className="w-5 h-5" />
-              <span>返回首頁</span>
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              {currentLang === 'en' ? 'Back to home' : '回到首頁'}
             </Link>
           )}
+
           {children}
         </div>
-      </main>
+      </div>
+
+      <Footer t={t} />
     </div>
   );
 }

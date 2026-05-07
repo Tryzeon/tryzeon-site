@@ -1,16 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Outfit } from "next/font/google";
+import { Outfit } from "next/font/google";
 import { NavigationProgress } from "@/components/NavigationProgress";
 import { WebVitals } from "@/components/WebVitals";
 import { SkipToContent } from "@/components/Accessibility";
 import { CustomCursor } from "@/components/CustomCursor";
 import "./globals.css";
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  display: "swap",
-});
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -69,7 +63,7 @@ export const metadata: Metadata = {
         url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'Tryzeon - AI 虛擬試穿技術',
+        alt: 'Tryzeon - 重新定義你的時尚新生活',
         type: 'image/png',
       },
     ],
@@ -83,11 +77,8 @@ export const metadata: Metadata = {
     description: "一張照片即刻生成虛擬試穿影片，重新定義時尚購物體驗。",
     images: {
       url: '/twitter-image',
-      alt: 'Tryzeon - AI 虛擬試穿技術',
+      alt: 'Tryzeon - 重新定義你的時尚新生活',
     },
-  },
-  verification: {
-    google: "your-google-verification-code",
   },
   other: {
     'apple-mobile-web-app-capable': 'yes',
@@ -109,113 +100,44 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const organizationJsonLd = {
+  const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
-    '@id': 'https://tryzeon.com/#organization',
-    name: 'Tryzeon',
-    alternateName: 'Tryzeon AI Fashion',
-    description: '運用 AI 技術提供虛擬試穿解決方案，重新定義時尚購物體驗。',
-    url: 'https://tryzeon.com',
-    logo: {
-      '@type': 'ImageObject',
-      url: 'https://tryzeon.com/logo.png',
-      width: 512,
-      height: 512,
-    },
-    image: 'https://tryzeon.com/og-image.jpg',
-    contactPoint: {
-      '@type': 'ContactPoint',
-      email: 'tryzeon.team@gmail.com',
-      contactType: 'Customer Service',
-      areaServed: 'TW',
-      availableLanguage: ['zh-TW', 'en'],
-    },
-    sameAs: [
-      'https://www.instagram.com/tryzeon',
-      'https://www.linkedin.com/company/tryzeon',
-    ],
-    foundingDate: '2024',
-    address: {
-      '@type': 'PostalAddress',
-      addressCountry: 'TW',
-      addressLocality: 'Taipei',
-    },
-  };
-
-  const websiteJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    '@id': 'https://tryzeon.com/#website',
-    name: 'Tryzeon',
-    url: 'https://tryzeon.com',
-    description: 'AI 虛擬試穿技術｜時尚科技新創',
-    publisher: {
-      '@id': 'https://tryzeon.com/#organization',
-    },
-    inLanguage: ['zh-TW', 'en'],
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://tryzeon.com/search?q={search_term_string}',
-      'query-input': 'required name=search_term_string',
-    },
-  };
-
-  const softwareJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Tryzeon AI Virtual Try-On',
-    applicationCategory: 'BusinessApplication',
-    operatingSystem: 'Web',
-    description: 'AI 驅動的虛擬試穿解決方案，適用於服飾品牌與電商平台。',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'TWD',
-      description: '免費諮詢與試用',
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      ratingCount: '150',
-    },
-    featureList: [
-      'AI 虛擬試穿',
-      '動態影片生成',
-      '智慧穿搭推薦',
-      '數據分析儀表板',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': 'https://tryzeon.com/#organization',
+        name: 'Tryzeon',
+        url: 'https://tryzeon.com',
+        logo: 'https://tryzeon.com/icon',
+        description: '運用 AI 技術提供虛擬試穿解決方案，重新定義時尚購物體驗。',
+        contactPoint: { '@type': 'ContactPoint', email: 'tryzeon.team@gmail.com', contactType: 'Customer Service' },
+        sameAs: ['https://www.instagram.com/tryzeon', 'https://www.linkedin.com/company/tryzeon'],
+        foundingDate: '2024',
+        address: { '@type': 'PostalAddress', addressCountry: 'TW', addressLocality: 'Taipei' },
+      },
+      {
+        '@type': 'WebSite',
+        '@id': 'https://tryzeon.com/#website',
+        name: 'Tryzeon',
+        url: 'https://tryzeon.com',
+        publisher: { '@id': 'https://tryzeon.com/#organization' },
+        inLanguage: ['zh-TW', 'en'],
+      },
     ],
   };
 
   return (
-    <html lang="zh-TW" className={`${playfair.variable} ${outfit.variable}`}>
+    <html lang="zh-TW" className={outfit.variable}>
       <head>
-        {/* Preload critical pages */}
-        <link rel="prefetch" href="/experience" as="document" />
-        <link rel="prefetch" href="/products" as="document" />
-        <link rel="prefetch" href="/join" as="document" />
-
         {/* Preload critical images */}
-        <link rel="preload" href="/images/slides/slide-hero.jpg" as="image" type="image/jpeg" />
-        <link rel="preload" href="/brand-hero.jpg" as="image" type="image/jpeg" />
-
-        {/* Preload WebP images for modern browsers */}
-        <link rel="preload" href="/images/slides/slide-hero.webp" as="image" type="image/webp" />
+        <link rel="preload" href="/images/slides/slide-1-brand-introduction.jpg" as="image" type="image/jpeg" />
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        {/* JSON-LD Structured Data for SEO */}
+        {/* Consolidated JSON-LD Structured Data */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="font-sans antialiased">

@@ -45,8 +45,8 @@ export const translations = {
       },
       creators: {
         kicker: 'Community',
-        title: '創作者生態 · Creator Ecosystem',
-        desc: '連結時尚創作者與品牌，打造全新的內容生態圈。',
+        title: '社群互動 · Community',
+        desc: '連結時尚愛好者與品牌，打造全新的內容生態圈。',
         cta: '加入我們',
       },
       global: {
@@ -106,7 +106,7 @@ export const translations = {
       privacyPolicy: '隱私權政策',
       termsOfService: '服務條款',
       cookiePolicy: 'Cookie 政策',
-      copyright: '© 2025 創然科技股份有限公司 Tryzeon. All rights reserved.',
+      copyright: '© 創然科技股份有限公司 Tryzeon. All rights reserved.',
     },
   },
   'en': {
@@ -155,8 +155,8 @@ export const translations = {
       },
       creators: {
         kicker: 'Community',
-        title: 'Creator Ecosystem',
-        desc: 'Connecting fashion creators with brands, building a new content ecosystem.',
+        title: 'Community',
+        desc: 'Connecting fashion enthusiasts with brands, building a new content ecosystem.',
         cta: 'Join Us',
       },
       global: {
@@ -191,6 +191,7 @@ export const translations = {
     about: {
       title: 'About Tryzeon',
       desc: 'Tryzeon is an AI × Fashion Tech startup dedicated to making fashion shopping smarter and more personalized through AI virtual try-on technology. We are not just a tech company, but a platform connecting consumers, brands, and creators.',
+      mission: 'AI Virtual Try-On, Fashion Ecosystem',
     },
     partners: {
       title: 'Our Partners',
@@ -215,7 +216,7 @@ export const translations = {
       privacyPolicy: 'Privacy Policy',
       termsOfService: 'Terms of Service',
       cookiePolicy: 'Cookie Policy',
-      copyright: '© 2025 Tryzeon. All rights reserved.',
+      copyright: '© Tryzeon. All rights reserved.',
     },
   },
 };

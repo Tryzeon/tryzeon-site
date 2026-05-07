@@ -1,11 +1,10 @@
 import Link from 'next/link';
-import { Home, ArrowRight, Sparkles, Users, Mail } from 'lucide-react';
+import { Home, ArrowRight, Sparkles, HelpCircle, Mail } from 'lucide-react';
 
 export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F5F5F7] px-6 py-20">
       <div className="max-w-2xl w-full text-center">
-        {/* 404 大標題 */}
         <div className="mb-8">
           <h1 className="text-[120px] md:text-[180px] font-bold text-[#1D1D1F]/10 leading-none tracking-tighter select-none">
             404
@@ -19,7 +18,6 @@ export default function NotFound() {
           抱歉，您訪問的頁面不存在或已被移除。<br />讓我們帶您回到正確的方向。
         </p>
 
-        {/* 主要按鈕 */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <Link
             href="/"
@@ -29,36 +27,35 @@ export default function NotFound() {
             返回首頁
           </Link>
           <Link
-            href="/experience"
+            href="/#features"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#1D1D1F] rounded-full font-semibold hover:bg-[#F5F5F7] transition-all duration-300 shadow-lg hover:shadow-xl border border-black/5"
           >
-            體驗 AI 試穿
+            探索產品功能
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
 
-        {/* 快速導航卡片 */}
         <div className="grid sm:grid-cols-3 gap-4">
           <Link
-            href="/products"
+            href="/#features"
             className="group p-6 bg-white rounded-2xl text-left hover:shadow-lg transition-all duration-300 border border-black/5"
           >
             <div className="w-10 h-10 bg-[#0066CC]/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-[#0066CC]/20 transition-colors">
               <Sparkles className="w-5 h-5 text-[#0066CC]" />
             </div>
-            <h3 className="font-semibold text-[#1D1D1F] mb-1">產品介紹</h3>
-            <p className="text-sm text-[#86868B]">探索 AI 試穿功能</p>
+            <h3 className="font-semibold text-[#1D1D1F] mb-1">產品功能</h3>
+            <p className="text-sm text-[#86868B]">五大核心 AI 技術</p>
           </Link>
 
           <Link
-            href="/join"
+            href="/#faq"
             className="group p-6 bg-white rounded-2xl text-left hover:shadow-lg transition-all duration-300 border border-black/5"
           >
             <div className="w-10 h-10 bg-[#0066CC]/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-[#0066CC]/20 transition-colors">
-              <Users className="w-5 h-5 text-[#0066CC]" />
+              <HelpCircle className="w-5 h-5 text-[#0066CC]" />
             </div>
-            <h3 className="font-semibold text-[#1D1D1F] mb-1">加入我們</h3>
-            <p className="text-sm text-[#86868B]">成為時尚創作者</p>
+            <h3 className="font-semibold text-[#1D1D1F] mb-1">常見問題</h3>
+            <p className="text-sm text-[#86868B]">查看使用說明</p>
           </Link>
 
           <a
