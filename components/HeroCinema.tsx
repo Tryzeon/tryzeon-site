@@ -6,6 +6,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export function HeroCinema() {
+  return (
+    <>
+      <HeroMobile />
+      <HeroDesktop />
+    </>
+  );
+}
+
+function HeroDesktop() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -31,7 +40,7 @@ export function HeroCinema() {
   return (
     <section
       ref={ref}
-      className="relative bg-[#0A0A0B]"
+      className="relative bg-[#0A0A0B] hidden lg:block"
       style={{ height: '300vh' }}
       aria-label="Tryzeon hero cinema"
     >
@@ -178,6 +187,76 @@ export function HeroCinema() {
               </motion.span>
             </motion.span>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HeroMobile() {
+  return (
+    <section
+      className="relative lg:hidden bg-[#0A0A0B] min-h-[100svh] overflow-hidden"
+      aria-label="Tryzeon hero"
+    >
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/slides/slide-6-global-vision-runway-4k.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          quality={85}
+          className="object-cover"
+        />
+      </div>
+
+      <div className="absolute inset-0 bg-[#0A0A0B]/65 pointer-events-none z-[1]" aria-hidden />
+      <div
+        className="absolute inset-0 bg-gradient-to-b from-[#0A0A0B]/40 via-transparent to-[#0A0A0B] pointer-events-none z-[2]"
+        aria-hidden
+      />
+      <div className="absolute inset-0 pointer-events-none z-[3]" aria-hidden>
+        <div className="absolute -top-[10%] left-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(37,99,235,0.22)_0%,transparent_60%)] blur-3xl" />
+        <div className="absolute bottom-[-10%] right-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(124,58,237,0.18)_0%,transparent_60%)] blur-3xl" />
+      </div>
+
+      <div className="relative z-10 min-h-[100svh] flex flex-col justify-between text-white px-6 pt-32 pb-10">
+        <div>
+          <div className="flex items-center gap-3 mb-8">
+            <span className="block w-8 h-px bg-white/40" />
+            <span className="text-[10px] font-mono font-semibold tracking-[0.4em] uppercase text-white/70">
+              AI × Fashion
+            </span>
+          </div>
+          <h1
+            className="!text-white font-extrabold tracking-[-0.05em] leading-[0.9] mb-6"
+            style={{ fontSize: 'clamp(3rem, 14vw, 5rem)', textShadow: '0 8px 60px rgba(0,0,0,0.5)' }}
+          >
+            重新定義<br />你的時尚。
+          </h1>
+          <p className="text-base text-white/75 font-medium leading-relaxed max-w-md">
+            一張照片，穿上任何衣服。<br />
+            <span className="bg-gradient-to-r from-[#60A5FA] via-[#06B6D4] to-[#60A5FA] bg-clip-text text-transparent font-semibold">
+              Tryzeon AI 把實體服飾變成你能立刻試穿的數位可能。
+            </span>
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-3 mt-10">
+          <Link
+            href="/products/virtual-try-on"
+            className="group inline-flex items-center justify-center px-8 py-4 bg-white text-[#0A0A0B] rounded-full font-semibold text-base hover:bg-white/95 transition-all duration-300 shadow-2xl shadow-white/10 active:scale-[0.98]"
+          >
+            立即體驗
+            <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </Link>
+          <Link
+            href="/business"
+            className="group inline-flex items-center justify-center px-8 py-4 bg-white/[0.06] backdrop-blur-xl text-white rounded-full font-semibold text-base hover:bg-white/12 transition-all duration-300 border border-white/15 active:scale-[0.98]"
+          >
+            品牌合作方案
+          </Link>
         </div>
       </div>
     </section>

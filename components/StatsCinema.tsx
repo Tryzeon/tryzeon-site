@@ -120,6 +120,15 @@ function ProgressBar({ progress, total, index }: ProgressBarProps) {
 }
 
 export function StatsCinema() {
+  return (
+    <>
+      <StatsMobile />
+      <StatsDesktop />
+    </>
+  );
+}
+
+function StatsDesktop() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -130,7 +139,7 @@ export function StatsCinema() {
     <section
       ref={ref}
       id="stats"
-      className="relative bg-[#0A0A0B] text-white"
+      className="relative bg-[#0A0A0B] text-white hidden lg:block"
       style={{ height: `${stats.length * 100}vh` }}
       aria-label="Tryzeon market validation"
     >
@@ -185,6 +194,63 @@ export function StatsCinema() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function StatsMobile() {
+  return (
+    <section
+      id="stats"
+      className="relative lg:hidden bg-[#0A0A0B] text-white py-20 overflow-hidden"
+      aria-label="Tryzeon market validation"
+    >
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div className="absolute top-[-10%] left-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(37,99,235,0.18)_0%,transparent_60%)] blur-3xl" />
+        <div className="absolute bottom-[-10%] right-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(124,58,237,0.16)_0%,transparent_60%)] blur-3xl" />
+        <div className="absolute inset-0 dot-grid-dark opacity-25" />
+      </div>
+
+      <div className="relative z-10 px-6 max-w-md mx-auto">
+        <div className="mb-12">
+          <span className="inline-flex items-center gap-3 text-[10px] font-mono font-semibold tracking-[0.4em] uppercase text-white/45 mb-4">
+            <span className="block w-6 h-px bg-white/35" />
+            Market Signal
+          </span>
+          <h2 className="text-3xl font-extrabold tracking-[-0.03em] !text-white">
+            改變正在發生。
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-2 gap-5">
+          {stats.map((stat, i) => (
+            <div
+              key={stat.label}
+              className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-5"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <span
+                  className="block w-3 h-px"
+                  style={{ backgroundColor: stat.accent, opacity: 0.7 }}
+                />
+                <span
+                  className="text-[9px] font-mono font-semibold tracking-[0.3em] uppercase"
+                  style={{ color: stat.accent }}
+                >
+                  {String(i + 1).padStart(2, '0')} · {stat.label}
+                </span>
+              </div>
+              <div
+                className="font-extrabold tracking-[-0.05em] leading-[0.9] mb-3 !text-white"
+                style={{ fontSize: 'clamp(2.25rem, 12vw, 3.5rem)' }}
+              >
+                {stat.value}
+              </div>
+              <p className="text-xs text-white/55 leading-relaxed">{stat.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

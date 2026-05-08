@@ -182,6 +182,15 @@ function FeatureScene({ feature, progress, segmentStart, segmentEnd }: FeatureSc
 }
 
 export function FeaturesCinema() {
+  return (
+    <>
+      <FeaturesMobile />
+      <FeaturesDesktop />
+    </>
+  );
+}
+
+function FeaturesDesktop() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -192,7 +201,7 @@ export function FeaturesCinema() {
     <section
       ref={ref}
       id="features"
-      className="relative bg-[#0A0A0B] text-white"
+      className="relative bg-[#0A0A0B] text-white hidden lg:block"
       style={{ height: `${FEATURES.length * 90}vh` }}
       aria-label="Tryzeon core features"
     >
@@ -245,6 +254,111 @@ export function FeaturesCinema() {
               />
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeaturesMobile() {
+  return (
+    <section
+      id="features"
+      className="relative lg:hidden bg-[#0A0A0B] text-white py-20 overflow-hidden"
+      aria-label="Tryzeon core features"
+    >
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div className="absolute top-[5%] left-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(96,165,250,0.16)_0%,transparent_60%)] blur-3xl" />
+        <div className="absolute bottom-[10%] right-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(124,58,237,0.14)_0%,transparent_60%)] blur-3xl" />
+        <div className="absolute inset-0 dot-grid-dark opacity-25" />
+      </div>
+
+      <div className="relative z-10 px-6 max-w-md mx-auto">
+        <div className="mb-12 text-center">
+          <span className="inline-flex items-center gap-3 text-[10px] font-mono font-semibold tracking-[0.4em] uppercase text-white/45 mb-4">
+            <span className="block w-6 h-px bg-white/30" />
+            Core Infrastructure
+            <span className="block w-6 h-px bg-white/30" />
+          </span>
+          <h2 className="text-3xl font-extrabold tracking-[-0.04em] !text-white leading-[1.0]">
+            五大核心技術
+          </h2>
+        </div>
+
+        <div className="flex flex-col gap-5">
+          {FEATURES.map((feature) => {
+            const Icon = feature.icon;
+            return (
+              <div
+                key={feature.title}
+                className="relative rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6 overflow-hidden"
+              >
+                <div
+                  className="absolute -top-6 -right-6 w-32 h-32 rounded-full opacity-30 blur-2xl"
+                  style={{ backgroundColor: feature.accent }}
+                  aria-hidden
+                />
+
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-5">
+                    <span
+                      className="block w-5 h-px"
+                      style={{ backgroundColor: feature.accent, opacity: 0.7 }}
+                    />
+                    <span
+                      className="text-[9px] font-mono font-semibold tracking-[0.3em] uppercase"
+                      style={{ color: feature.accent }}
+                    >
+                      {String(feature.index).padStart(2, '0')} · {feature.kicker}
+                    </span>
+                  </div>
+
+                  <div className="flex items-start gap-4 mb-4">
+                    <div
+                      className="shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center"
+                      style={{ backgroundColor: `${feature.accent}1f` }}
+                    >
+                      <Icon
+                        className="w-6 h-6"
+                        style={{ color: feature.accent }}
+                        strokeWidth={1.5}
+                      />
+                    </div>
+                    <h3
+                      className="!text-white font-extrabold tracking-[-0.03em] leading-[1.05] flex-1"
+                      style={{ fontSize: 'clamp(1.35rem, 5.5vw, 1.75rem)' }}
+                    >
+                      {feature.title}
+                    </h3>
+                  </div>
+
+                  <p className="text-sm text-white/60 leading-relaxed mb-5">
+                    {feature.desc}
+                  </p>
+
+                  {feature.metric && (
+                    <div className="flex items-baseline gap-3 pt-4 border-t border-white/5">
+                      <div
+                        className="font-extrabold tracking-tighter leading-none"
+                        style={{
+                          fontSize: 'clamp(1.5rem, 6vw, 2rem)',
+                          background: `linear-gradient(135deg, ${feature.accent}, white)`,
+                          WebkitBackgroundClip: 'text',
+                          backgroundClip: 'text',
+                          color: 'transparent',
+                        }}
+                      >
+                        {feature.metric.value}
+                      </div>
+                      <div className="text-[9px] font-mono uppercase tracking-[0.25em] text-white/45">
+                        {feature.metric.label}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
