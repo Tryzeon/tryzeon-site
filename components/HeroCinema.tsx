@@ -1,9 +1,14 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export function HeroCinema() {
   return (
@@ -15,39 +20,85 @@ export function HeroCinema() {
 }
 
 function HeroDesktop() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end end'],
-  });
+  const sectionRef = useRef<HTMLElement>(null);
+  const pinRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const meshRef = useRef<HTMLDivElement>(null);
+  const stage1Ref = useRef<HTMLDivElement>(null);
+  const stage2Ref = useRef<HTMLDivElement>(null);
+  const stage3Ref = useRef<HTMLDivElement>(null);
+  const arrowRef = useRef<HTMLSpanElement>(null);
+  const scrollHintRef = useRef<HTMLSpanElement>(null);
 
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1.0, 1.2]);
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const overlayDark = useTransform(scrollYProgress, [0, 0.5, 1], [0.45, 0.6, 0.85]);
+    const ctx = gsap.context(() => {
+      if (arrowRef.current && !reduceMotion) {
+        gsap.to(arrowRef.current, {
+          y: 4,
+          duration: 0.9,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+        });
+      }
 
-  const stage1Opacity = useTransform(scrollYProgress, [0, 0.18, 0.28], [1, 1, 0]);
-  const stage1Y = useTransform(scrollYProgress, [0, 0.28], [0, -60]);
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          pin: pinRef.current,
+          pinSpacing: false,
+          scrub: 1,
+        },
+      });
 
-  const stage2Opacity = useTransform(scrollYProgress, [0.22, 0.32, 0.55, 0.65], [0, 1, 1, 0]);
-  const stage2Y = useTransform(scrollYProgress, [0.22, 0.32, 0.65], [60, 0, -60]);
+      tl.to(bgRef.current, { scale: 1.2, yPercent: 12, ease: 'none', duration: 1 }, 0);
 
-  const stage3Opacity = useTransform(scrollYProgress, [0.6, 0.72, 1], [0, 1, 1]);
-  const stage3Y = useTransform(scrollYProgress, [0.6, 0.72], [60, 0]);
+      tl.to(overlayRef.current, { opacity: 0.6, ease: 'none', duration: 0.5 }, 0)
+        .to(overlayRef.current, { opacity: 0.85, ease: 'none', duration: 0.5 }, 0.5);
 
-  const meshFade = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.7, 0.4]);
+      tl.to(meshRef.current, { opacity: 0.7, ease: 'none', duration: 0.5 }, 0)
+        .to(meshRef.current, { opacity: 0.4, ease: 'none', duration: 0.5 }, 0.5);
+
+      tl.to(stage1Ref.current, { opacity: 0, y: -60, ease: 'power2.in', duration: 0.10 }, 0.18);
+
+      tl.fromTo(
+        stage2Ref.current,
+        { opacity: 0, y: 60 },
+        { opacity: 1, y: 0, ease: 'power2.out', duration: 0.10 },
+        0.22,
+      ).to(stage2Ref.current, { opacity: 0, y: -60, ease: 'power2.in', duration: 0.10 }, 0.55);
+
+      tl.fromTo(
+        stage3Ref.current,
+        { opacity: 0, y: 60 },
+        { opacity: 1, y: 0, ease: 'power2.out', duration: 0.12 },
+        0.60,
+      );
+
+      tl.to(scrollHintRef.current, { opacity: 0, ease: 'none', duration: 0.15 }, 0.85);
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
-      ref={ref}
+      ref={sectionRef}
       className="relative bg-[#0A0A0B] hidden lg:block"
       style={{ height: '300vh' }}
       aria-label="Tryzeon hero cinema"
     >
-      <div className="sticky top-0 h-screen overflow-hidden bg-[#0A0A0B]">
-        <motion.div
-          style={{ scale: bgScale, y: bgY }}
+      <div ref={pinRef} className="h-screen w-full overflow-hidden bg-[#0A0A0B] relative">
+        <div
+          ref={bgRef}
           className="absolute inset-0 will-change-transform z-0"
+          style={{ transform: 'scale(1) translate3d(0,0,0)' }}
         >
           <Image
             src="/images/slides/slide-6-global-vision-runway-4k.jpg"
@@ -58,11 +109,12 @@ function HeroDesktop() {
             quality={90}
             className="object-cover"
           />
-        </motion.div>
+        </div>
 
-        <motion.div
-          style={{ opacity: overlayDark }}
+        <div
+          ref={overlayRef}
           className="absolute inset-0 bg-[#0A0A0B] pointer-events-none z-[1]"
+          style={{ opacity: 0.45 }}
           aria-hidden
         />
 
@@ -75,18 +127,20 @@ function HeroDesktop() {
           aria-hidden
         />
 
-        <motion.div
-          style={{ opacity: meshFade }}
+        <div
+          ref={meshRef}
           className="absolute inset-0 pointer-events-none z-[3]"
+          style={{ opacity: 1 }}
           aria-hidden
         >
           <div className="absolute -top-[10%] left-[-10%] w-[60vw] h-[60vh] bg-[radial-gradient(circle,rgba(37,99,235,0.18)_0%,transparent_60%)] blur-3xl animate-mesh-float" />
           <div className="absolute bottom-[-10%] right-[-10%] w-[55vw] h-[55vh] bg-[radial-gradient(circle,rgba(124,58,237,0.14)_0%,transparent_60%)] blur-3xl animate-mesh-float [animation-delay:7s]" />
-        </motion.div>
+        </div>
 
-        <motion.div
-          style={{ opacity: stage1Opacity, y: stage1Y }}
+        <div
+          ref={stage1Ref}
           className="absolute inset-0 z-10 flex flex-col justify-center items-start text-white px-6 md:px-12 lg:px-20 will-change-transform"
+          style={{ opacity: 1 }}
         >
           <div className="w-full max-w-[1500px] mx-auto">
             <div className="flex items-center gap-3 mb-10 md:mb-14">
@@ -108,11 +162,12 @@ function HeroDesktop() {
               滾動繼續 → 看見時尚購物的下一個型態
             </p>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          style={{ opacity: stage2Opacity, y: stage2Y }}
+        <div
+          ref={stage2Ref}
           className="absolute inset-0 z-10 flex flex-col justify-center items-start text-white px-6 md:px-12 lg:px-20 will-change-transform"
+          style={{ opacity: 0, transform: 'translate3d(0,60px,0)' }}
         >
           <div className="w-full max-w-[1500px] mx-auto">
             <h2
@@ -132,11 +187,12 @@ function HeroDesktop() {
               變成你能立刻試穿的數位可能。
             </p>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          style={{ opacity: stage3Opacity, y: stage3Y }}
+        <div
+          ref={stage3Ref}
           className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center text-white px-6 will-change-transform"
+          style={{ opacity: 0, transform: 'translate3d(0,60px,0)' }}
         >
           <div className="w-full max-w-4xl mx-auto">
             <span className="inline-flex items-center gap-3 text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#60A5FA] mb-8 md:mb-10">
@@ -166,7 +222,7 @@ function HeroDesktop() {
               </Link>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         <div
           className="absolute bottom-0 inset-x-0 px-6 md:px-12 lg:px-20 pb-6 md:pb-8 z-30 max-w-[1600px] mx-auto pointer-events-none"
@@ -174,18 +230,10 @@ function HeroDesktop() {
         >
           <div className="flex items-end justify-between text-[10px] md:text-[11px] font-mono uppercase tracking-[0.25em] text-white/40">
             <span>TRYZEON / 2026</span>
-            <motion.span
-              style={{ opacity: useTransform(scrollYProgress, [0, 0.85, 1], [1, 1, 0]) }}
-              className="hidden md:flex items-center gap-2"
-            >
+            <span ref={scrollHintRef} className="hidden md:flex items-center gap-2" style={{ opacity: 1 }}>
               Scroll
-              <motion.span
-                animate={{ y: [0, 4, 0] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                ↓
-              </motion.span>
-            </motion.span>
+              <span ref={arrowRef} className="inline-block">↓</span>
+            </span>
           </div>
         </div>
       </div>
