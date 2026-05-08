@@ -3,15 +3,15 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, HeartHandshake, Store, Video, Shirt, TrendingUp, Mail } from "lucide-react";
+import { HeartHandshake, Mail } from "lucide-react";
 import { HeroCinema } from "@/components/HeroCinema";
 import { StatsCinema } from "@/components/StatsCinema";
+import { FeaturesCinema } from "@/components/FeaturesCinema";
 import { Navigation } from "@/components/Navigation";
 import { Section } from "@/components/Section";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { ParallaxText, ScrollZoomCard } from "@/components/ScrollLinkedAnimations";
-import { BentoCard } from "@/components/BentoGrid";
 import { FAQ } from "@/components/FAQ";
 import { translations } from "@/lib/translations";
 import { faqData } from "@/lib/faq-data";
@@ -135,99 +135,7 @@ export default function HomePageClient() {
         </div>
       </Section>
 
-      {/* ============================================
-          FEATURES — Bento Grid with Glassmorphism
-          ============================================ */}
-      <Section id="features" className="py-24 md:py-48 bg-[#F2F4F7] relative">
-        <div className="absolute inset-0 dot-grid pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <ScrollReveal direction="up" className="text-left mb-16 md:mb-32 md:w-3/4">
-            <span className="inline-block text-xs md:text-sm font-mono font-semibold uppercase tracking-[0.3em] text-[#2563EB] mb-4 md:mb-6 bg-[#2563EB]/8 px-4 py-1.5 rounded-full">Core Infrastructure</span>
-            <h2 className="text-5xl md:text-8xl font-extrabold text-[#101828] tracking-tighter mix-blend-multiply">
-              五大核心技術<br />
-              <span className="bg-gradient-to-r from-[#2563EB] to-[#60A5FA] bg-clip-text text-transparent">引領數位革命</span>
-            </h2>
-          </ScrollReveal>
-
-          {/* Staggered Avant-Garde Layout for Features */}
-          <div className="flex flex-col gap-8 md:gap-16">
-            {/* Row 1: 60 / 40 Split */}
-            <div className="flex flex-col md:flex-row gap-8">
-              <div className="w-full md:w-7/12">
-                <BentoCard
-                  title={t.features.aiTryOn.title}
-                  description={t.features.aiTryOn.desc}
-                  icon={<Sparkles />}
-                />
-              </div>
-              <div className="w-full md:w-5/12">
-                <BentoCard
-                  title={t.features.videoGeneration.title}
-                  description={t.features.videoGeneration.desc}
-                  icon={<Video />}
-                />
-              </div>
-            </div>
-
-            {/* Row 2: 40 / 60 Split, Reversed */}
-            <div className="flex flex-col md:flex-row gap-8">
-              <div className="w-full md:w-5/12">
-                <BentoCard
-                  title={t.features.aiRecommendation.title}
-                  description={t.features.aiRecommendation.desc}
-                  icon={<Shirt />}
-                />
-              </div>
-              <div className="w-full md:w-7/12">
-                <BentoCard
-                  title={t.features.dataAnalytics.title}
-                  description={t.features.dataAnalytics.desc}
-                  icon={<TrendingUp />}
-                />
-              </div>
-            </div>
-
-            {/* Row 3: Full Width Highlight */}
-            <div className="w-full">
-              <BentoCard
-                title={t.features.tryOnRoom.title}
-                description={t.features.tryOnRoom.desc}
-                icon={<Store />}
-              />
-            </div>
-          </div>
-
-          {/* AI Try-On Demo Video Section */}
-          <ScrollReveal direction="up" delay={0.2}>
-            <div className="mt-24 md:mt-32 max-w-5xl mx-auto">
-              <div className="text-center mb-8 md:mb-12">
-                <span className="inline-block text-xs md:text-sm font-mono font-semibold uppercase tracking-[0.2em] text-[#2563EB] mb-3 md:mb-4 bg-[#2563EB]/8 px-4 py-1.5 rounded-full">Live Demo</span>
-                <h3 className="text-3xl md:text-4xl font-bold text-[#101828] tracking-tight">AI 虛擬試穿效果展示</h3>
-              </div>
-
-              <div className="relative group">
-                <div className="relative aspect-video rounded-2xl md:rounded-3xl overflow-hidden bg-[#0A0A0B] shadow-neo-xl border border-white/10">
-                  <Image
-                    src="/images/slides/slide-3-dynamic-video.jpg"
-                    alt="AI 虛擬試穿效果展示"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 1024px"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
-                </div>
-
-                <div className="absolute -inset-4 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.08),transparent_70%)] rounded-3xl" />
-
-                <p className="text-center text-[#667085] text-sm mt-6 font-medium">
-                  上傳一張照片，即可生成虛擬試穿效果
-                </p>
-              </div>
-            </div>
-          </ScrollReveal>
-
-        </div>
-      </Section>
+      <FeaturesCinema />
 
       {/* ============================================
           ABOUT — Centered Vision with Blue Accent
