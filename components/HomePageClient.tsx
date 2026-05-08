@@ -4,17 +4,17 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Sparkles, HeartHandshake, Store, Video, Shirt, TrendingUp, Mail } from "lucide-react";
-import { FullBleedCarousel } from "@/components/FullBleedCarousel";
+import { HeroCinema } from "@/components/HeroCinema";
+import { StatsCinema } from "@/components/StatsCinema";
 import { Navigation } from "@/components/Navigation";
 import { Section } from "@/components/Section";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { ParallaxText, ScrollZoomCard, Scroll3D, ScrollCounter } from "@/components/ScrollLinkedAnimations";
+import { ParallaxText, ScrollZoomCard } from "@/components/ScrollLinkedAnimations";
 import { BentoCard } from "@/components/BentoGrid";
 import { FAQ } from "@/components/FAQ";
 import { translations } from "@/lib/translations";
 import { faqData } from "@/lib/faq-data";
-import { heroSlides } from "@/lib/hero-slides";
 import { trackCTA } from "@/lib/analytics";
 import { AppleButton, AppleLink } from "@/components/MicroInteractions";
 
@@ -23,11 +23,11 @@ export default function HomePageClient() {
   const t = translations[currentLang as keyof typeof translations] || translations['zh-TW'];
 
   return (
-    <div className="min-h-screen w-full bg-[#FAFAFA] relative overflow-hidden selection:bg-[#2563EB]/15 selection:text-[#101828]">
+    <div className="min-h-screen w-full bg-[#FAFAFA] relative selection:bg-[#2563EB]/15 selection:text-[#101828]">
       <Navigation currentLang={currentLang} setCurrentLang={setCurrentLang} />
 
       <header className="relative">
-        <FullBleedCarousel slides={heroSlides} auto={true} interval={6000} />
+        <HeroCinema />
       </header>
 
       {/* ============================================
@@ -67,39 +67,7 @@ export default function HomePageClient() {
         </div>
       </Section>
 
-      {/* ============================================
-          MARKET STATS — Glass Cards on Light Mesh
-          ============================================ */}
-      <Section id="stats" className="py-24 md:py-48 gradient-mesh-bg relative">
-        <div className="absolute inset-0 dot-grid pointer-events-none" />
-        <div className="max-w-6xl mx-auto px-6 relative z-10">
-          <ScrollReveal direction="up">
-            <div className="text-center mb-16 md:mb-24">
-              <span className="inline-block text-xs md:text-sm font-mono font-semibold uppercase tracking-[0.3em] text-[#2563EB] mb-4 md:mb-6 bg-[#2563EB]/8 px-4 py-1.5 rounded-full">Market Validation</span>
-              <h2 className="text-3xl md:text-6xl font-extrabold text-[#101828] tracking-tight">數據證實價值</h2>
-            </div>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
-            {[
-              { val: 84, suffix: "%", label: "AR Interest", desc: "消費者對 AR 試用功能表現出強烈興趣" },
-              { val: 71, suffix: "%", label: "Frequency", desc: "支持試穿功能會顯著增加選購頻率" },
-              { val: 30, suffix: "%", label: "Conversion", desc: "有效提升電商轉換率與銷售效果" },
-              { val: 25, suffix: "%", label: "Return Rate", desc: "有效降低退貨率，優化營運成本" }
-            ].map((stat, i) => (
-              <Scroll3D key={i}>
-                <div className="glass-card rounded-[2rem] p-8 md:p-10 h-full text-center shadow-neo-xl border border-white/40">
-                  <div className="text-5xl md:text-7xl font-extrabold text-[#101828] mb-4 md:mb-5 tracking-tighter font-data">
-                    <ScrollCounter target={stat.val} suffix={stat.suffix} />
-                  </div>
-                  <div className="text-xs md:text-sm font-mono font-bold uppercase tracking-[0.15em] text-[#2563EB] mb-3 md:mb-4">{stat.label}</div>
-                  <p className="text-[#667085] text-sm md:text-base leading-relaxed font-medium">{stat.desc}</p>
-                </div>
-              </Scroll3D>
-            ))}
-          </div>
-        </div>
-      </Section>
+      <StatsCinema />
 
       {/* ============================================
           TARGET AUDIENCE — Asymmetric Feature Cards

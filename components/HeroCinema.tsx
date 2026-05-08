@@ -1,0 +1,185 @@
+'use client';
+
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+export function HeroCinema() {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start start', 'end end'],
+  });
+
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1.0, 1.2]);
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
+
+  const overlayDark = useTransform(scrollYProgress, [0, 0.5, 1], [0.45, 0.6, 0.85]);
+
+  const stage1Opacity = useTransform(scrollYProgress, [0, 0.18, 0.28], [1, 1, 0]);
+  const stage1Y = useTransform(scrollYProgress, [0, 0.28], [0, -60]);
+
+  const stage2Opacity = useTransform(scrollYProgress, [0.22, 0.32, 0.55, 0.65], [0, 1, 1, 0]);
+  const stage2Y = useTransform(scrollYProgress, [0.22, 0.32, 0.65], [60, 0, -60]);
+
+  const stage3Opacity = useTransform(scrollYProgress, [0.6, 0.72, 1], [0, 1, 1]);
+  const stage3Y = useTransform(scrollYProgress, [0.6, 0.72], [60, 0]);
+
+  const meshFade = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.7, 0.4]);
+
+  return (
+    <section
+      ref={ref}
+      className="relative bg-[#0A0A0B]"
+      style={{ height: '300vh' }}
+      aria-label="Tryzeon hero cinema"
+    >
+      <div className="sticky top-0 h-screen overflow-hidden bg-[#0A0A0B]">
+        <motion.div
+          style={{ scale: bgScale, y: bgY }}
+          className="absolute inset-0 will-change-transform z-0"
+        >
+          <Image
+            src="/images/slides/slide-6-global-vision-runway-4k.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            quality={90}
+            className="object-cover"
+          />
+        </motion.div>
+
+        <motion.div
+          style={{ opacity: overlayDark }}
+          className="absolute inset-0 bg-[#0A0A0B] pointer-events-none z-[1]"
+          aria-hidden
+        />
+
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-[#0A0A0B]/30 via-transparent to-[#0A0A0B] pointer-events-none z-[2]"
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-[#0A0A0B]/50 via-transparent to-[#0A0A0B]/20 pointer-events-none z-[2]"
+          aria-hidden
+        />
+
+        <motion.div
+          style={{ opacity: meshFade }}
+          className="absolute inset-0 pointer-events-none z-[3]"
+          aria-hidden
+        >
+          <div className="absolute -top-[10%] left-[-10%] w-[60vw] h-[60vh] bg-[radial-gradient(circle,rgba(37,99,235,0.18)_0%,transparent_60%)] blur-3xl animate-mesh-float" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[55vw] h-[55vh] bg-[radial-gradient(circle,rgba(124,58,237,0.14)_0%,transparent_60%)] blur-3xl animate-mesh-float [animation-delay:7s]" />
+        </motion.div>
+
+        <motion.div
+          style={{ opacity: stage1Opacity, y: stage1Y }}
+          className="absolute inset-0 z-10 flex flex-col justify-center items-start text-white px-6 md:px-12 lg:px-20 will-change-transform"
+        >
+          <div className="w-full max-w-[1500px] mx-auto">
+            <div className="flex items-center gap-3 mb-10 md:mb-14">
+              <span className="block w-8 h-px bg-white/40" />
+              <span className="text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-white/70">
+                AI × Fashion
+              </span>
+            </div>
+            <h1
+              className="!text-white font-extrabold tracking-[-0.05em] leading-[0.9] mb-8 md:mb-10"
+              style={{
+                fontSize: 'clamp(3rem, 11vw, 10rem)',
+                textShadow: '0 8px 60px rgba(0,0,0,0.5)',
+              }}
+            >
+              重新定義
+            </h1>
+            <p className="text-base md:text-xl text-white/70 font-medium leading-relaxed max-w-xl">
+              滾動繼續 → 看見時尚購物的下一個型態
+            </p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          style={{ opacity: stage2Opacity, y: stage2Y }}
+          className="absolute inset-0 z-10 flex flex-col justify-center items-start text-white px-6 md:px-12 lg:px-20 will-change-transform"
+        >
+          <div className="w-full max-w-[1500px] mx-auto">
+            <h2
+              className="!text-white font-extrabold tracking-[-0.05em] leading-[0.92]"
+              style={{
+                fontSize: 'clamp(2.5rem, 9vw, 8rem)',
+                textShadow: '0 8px 60px rgba(0,0,0,0.5)',
+              }}
+            >
+              一張照片，<br />
+              <span className="bg-gradient-to-r from-[#60A5FA] via-[#06B6D4] to-[#60A5FA] bg-clip-text text-transparent">
+                穿上任何衣服。
+              </span>
+            </h2>
+            <p className="mt-8 md:mt-10 text-base md:text-xl text-white/65 font-medium leading-relaxed max-w-2xl">
+              Tryzeon AI 把每一件實體服飾，<br className="hidden md:block" />
+              變成你能立刻試穿的數位可能。
+            </p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          style={{ opacity: stage3Opacity, y: stage3Y }}
+          className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center text-white px-6 will-change-transform"
+        >
+          <div className="w-full max-w-4xl mx-auto">
+            <span className="inline-flex items-center gap-3 text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#60A5FA] mb-8 md:mb-10">
+              <span className="block w-6 h-px bg-[#60A5FA]/60" />
+              Now Available
+              <span className="block w-6 h-px bg-[#60A5FA]/60" />
+            </span>
+            <h2
+              className="!text-white font-extrabold tracking-[-0.04em] leading-[0.95] mb-12 md:mb-14"
+              style={{ fontSize: 'clamp(2.5rem, 8vw, 7rem)' }}
+            >
+              開始你的<br />AI 試穿。
+            </h2>
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
+              <Link
+                href="/products/virtual-try-on"
+                className="group inline-flex items-center justify-center px-9 py-4 bg-white text-[#0A0A0B] rounded-full font-semibold text-base hover:bg-white/95 transition-all duration-300 shadow-2xl shadow-white/10 hover:scale-[1.03] active:scale-[0.98]"
+              >
+                立即體驗
+                <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </Link>
+              <Link
+                href="/business"
+                className="group inline-flex items-center justify-center px-9 py-4 bg-white/[0.06] backdrop-blur-xl text-white rounded-full font-semibold text-base hover:bg-white/12 transition-all duration-300 border border-white/15 hover:border-white/30 hover:scale-[1.03] active:scale-[0.98]"
+              >
+                品牌合作方案
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+
+        <div
+          className="absolute bottom-0 inset-x-0 px-6 md:px-12 lg:px-20 pb-6 md:pb-8 z-30 max-w-[1600px] mx-auto pointer-events-none"
+          aria-hidden
+        >
+          <div className="flex items-end justify-between text-[10px] md:text-[11px] font-mono uppercase tracking-[0.25em] text-white/40">
+            <span>TRYZEON / 2026</span>
+            <motion.span
+              style={{ opacity: useTransform(scrollYProgress, [0, 0.85, 1], [1, 1, 0]) }}
+              className="hidden md:flex items-center gap-2"
+            >
+              Scroll
+              <motion.span
+                animate={{ y: [0, 4, 0] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                ↓
+              </motion.span>
+            </motion.span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
