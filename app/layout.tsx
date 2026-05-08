@@ -4,6 +4,7 @@ import { NavigationProgress } from "@/components/NavigationProgress";
 import { WebVitals } from "@/components/WebVitals";
 import { SkipToContent } from "@/components/Accessibility";
 import { CustomCursor } from "@/components/CustomCursor";
+import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -141,14 +142,16 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
-        <SkipToContent />
-        <NavigationProgress />
-        <WebVitals />
-        <CustomCursor />
-        <div className="noise-overlay" />
-        <main id="main-content">
-          {children}
-        </main>
+        <SmoothScrollProvider>
+          <SkipToContent />
+          <NavigationProgress />
+          <WebVitals />
+          <CustomCursor />
+          <div className="noise-overlay" />
+          <main id="main-content">
+            {children}
+          </main>
+        </SmoothScrollProvider>
       </body>
     </html>
   );
