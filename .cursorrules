@@ -14,7 +14,7 @@ Tryzeon 是一家 AI 時尚科技新創公司的官方網站。網站使用 Next
 1. **AI 虛擬試穿** — 一張照片即可生成試穿效果
 2. **AI 虛擬試穿影片** — 靜態照片轉動態影片
 3. **個人雲端衣櫃 & AI 推薦** — 基於 5W1H 的穿搭建議
-4. **時尚趨勢數據分析** — 幫助品牌精準進貨、降低退貨風險
+4. **時尚趨勢數據分析** — 幫助品牌精準進貨、優化選品決策
 5. **虛擬試衣間** — 合作品牌上傳服飾，消費者挑選試穿
 
 ### 商業模式
@@ -26,7 +26,8 @@ Tryzeon 是一家 AI 時尚科技新創公司的官方網站。網站使用 Next
 - 84% 消費者對 AR 試用功能表現興趣
 - 71% 支持試穿功能會增加選購頻率
 - 30% 有效提升電商轉換率
-- 25% 有效降低退貨率
+
+> 註：未經實證的數據（例如「降低退貨率 X%」這類 conversion claim）一律禁止寫入網站文案、行銷材料或 commit message，避免誤導使用者與品牌風險。如需新增數據，必須附上來源連結或內部白皮書編號。
 
 ## 技術規範
 
@@ -48,7 +49,10 @@ Tryzeon 是一家 AI 時尚科技新創公司的官方網站。網站使用 Next
 - 所有元件使用 **named export**，不使用 default export（`export function ComponentName`）
 - 客戶端元件必須在檔案頂部加 `'use client';`
 - 元件檔案命名使用 PascalCase（如 `FullBleedCarousel.tsx`）
-- 非首屏元件使用 `dynamic()` import 並設定 `{ ssr: false }` 做 code splitting
+- **Code splitting 規則（區分 SEO 影響）**：
+  - **含 SEO 關鍵內容的元件**（產品標題、核心數據、功能描述、FAQ 等需要被 search bot 抓取的文案）→ 必須靜態 import，確保 SSR HTML 包含完整內容
+  - **純互動元件**（重型 modal、3D viewer、影片播放器、登入彈窗、編輯器、地圖等不影響 SEO 的元件）→ 使用 `dynamic()` 並設定 `{ ssr: false }` 做 code splitting
+  - 不確定時優先選靜態 import，避免拆 chunk 反而傷 SEO
 - 圖片一律使用 Next.js `<Image>` 元件，設定適當的 `width`、`height`、`alt`
 
 ### 程式碼風格
@@ -94,10 +98,11 @@ Tryzeon 是一家 AI 時尚科技新創公司的官方網站。網站使用 Next
 
 ## 效能規範
 
-- 首屏元件直接 import，非首屏元件使用 `dynamic()` lazy loading
+- Code splitting 依【元件規範】的 SEO 影響判定，不是「首屏 vs 非首屏」二分法
 - 圖片格式優先使用 WebP/AVIF（Next.js Image 自動處理）
 - 避免在元件中大量使用 `useEffect`，優先使用 CSS 動畫
 - 輪播圖片使用 `priority` 標記第一張
+- 行動版降階：sticky scroll cinema、複雜 parallax 等高耗能效果請以 `lg:` (≥1024px) 才啟用，行動裝置降階成靜態 stack（避免 5+ viewport 滑動 + 省電池）
 
 ## 安全規範
 

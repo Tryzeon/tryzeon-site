@@ -29,12 +29,6 @@ const stats: StatItem[] = [
     desc: '導入虛擬試穿後，電商轉換率穩定提升，把瀏覽轉化為實際購買。',
     accent: '#FBBF24',
   },
-  {
-    value: '−25%',
-    label: 'Returns',
-    desc: '試穿後購買，尺寸與風格更精準，大幅降低退貨率與品牌成本。',
-    accent: '#F472B6',
-  },
 ];
 
 interface StatSceneProps {
@@ -224,31 +218,38 @@ function StatsMobile() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="flex flex-col gap-5">
           {stats.map((stat, i) => (
             <div
               key={stat.label}
-              className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-5"
+              className="relative rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-7 overflow-hidden"
             >
-              <div className="flex items-center gap-2 mb-3">
-                <span
-                  className="block w-3 h-px"
-                  style={{ backgroundColor: stat.accent, opacity: 0.7 }}
-                />
-                <span
-                  className="text-[9px] font-mono font-semibold tracking-[0.3em] uppercase"
-                  style={{ color: stat.accent }}
-                >
-                  {String(i + 1).padStart(2, '0')} · {stat.label}
-                </span>
-              </div>
               <div
-                className="font-extrabold tracking-[-0.05em] leading-[0.9] mb-3 !text-white"
-                style={{ fontSize: 'clamp(2.25rem, 12vw, 3.5rem)' }}
-              >
-                {stat.value}
+                className="absolute -top-6 -right-6 w-32 h-32 rounded-full opacity-25 blur-2xl"
+                style={{ backgroundColor: stat.accent }}
+                aria-hidden
+              />
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-5">
+                  <span
+                    className="block w-5 h-px"
+                    style={{ backgroundColor: stat.accent, opacity: 0.7 }}
+                  />
+                  <span
+                    className="text-[9px] font-mono font-semibold tracking-[0.3em] uppercase"
+                    style={{ color: stat.accent }}
+                  >
+                    {String(i + 1).padStart(2, '0')} · {stat.label}
+                  </span>
+                </div>
+                <div
+                  className="font-extrabold tracking-[-0.05em] leading-[0.85] mb-4 !text-white"
+                  style={{ fontSize: 'clamp(3rem, 16vw, 4.5rem)' }}
+                >
+                  {stat.value}
+                </div>
+                <p className="text-sm text-white/60 leading-relaxed">{stat.desc}</p>
               </div>
-              <p className="text-xs text-white/55 leading-relaxed">{stat.desc}</p>
             </div>
           ))}
         </div>
