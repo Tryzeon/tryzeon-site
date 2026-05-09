@@ -1,12 +1,8 @@
 'use client';
 
-import { motion, HTMLMotionProps } from 'framer-motion';
-import { ReactNode, forwardRef } from 'react';
+import { ButtonHTMLAttributes, ReactNode, forwardRef } from 'react';
 
-const appleSpring = { type: 'spring', stiffness: 400, damping: 30 } as const;
-const appleEaseStandard = [0.25, 0.1, 0.25, 1.0] as const;
-
-interface AppleButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
+interface AppleButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   children: ReactNode;
   variant?: 'primary' | 'secondary' | 'ghost' | 'link';
   size?: 'sm' | 'md' | 'lg';
@@ -14,7 +10,8 @@ interface AppleButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
 
 export const AppleButton = forwardRef<HTMLButtonElement, AppleButtonProps>(
   ({ children, variant = 'primary', size = 'md', className = '', ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2';
+    const baseStyles =
+      'inline-flex items-center justify-center font-medium transition-all duration-200 ease-[cubic-bezier(0.25,0.1,0.25,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:scale-[1.02] active:scale-[0.98]';
 
     const variantStyles = {
       primary: 'bg-[#0066CC] text-white hover:bg-[#0055AA] focus-visible:ring-[#0066CC]',
@@ -30,18 +27,15 @@ export const AppleButton = forwardRef<HTMLButtonElement, AppleButtonProps>(
     };
 
     return (
-      <motion.button
+      <button
         ref={ref}
         className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        transition={appleSpring}
         {...props}
       >
         {children}
-      </motion.button>
+      </button>
     );
-  }
+  },
 );
 AppleButton.displayName = 'AppleButton';
 
@@ -63,33 +57,22 @@ export function AppleLink({
   onClick,
 }: AppleLinkProps) {
   return (
-    <motion.a
+    <a
       href={href}
       onClick={onClick}
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}
-      className={`inline-flex items-center gap-1 text-[#0066CC] font-medium cursor-pointer group ${className}`}
-      whileHover="hover"
-      initial="initial"
+      className={`group inline-flex items-center gap-1 text-[#0066CC] font-medium cursor-pointer ${className}`}
     >
       <span className="relative">
         {children}
-        <motion.span
-          className="absolute bottom-0 left-0 h-[1px] bg-[#0066CC] origin-left"
-          initial={{ scaleX: 0 }}
-          variants={{ initial: { scaleX: 0 }, hover: { scaleX: 1 } }}
-          transition={{ duration: 0.3, ease: appleEaseStandard }}
-        />
+        <span className="absolute bottom-0 left-0 h-[1px] w-full bg-[#0066CC] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]" />
       </span>
       {showArrow && (
-        <motion.span
-          className="inline-block"
-          variants={{ initial: { x: 0 }, hover: { x: 4 } }}
-          transition={{ duration: 0.2, ease: appleEaseStandard }}
-        >
+        <span className="inline-block transition-transform duration-200 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:translate-x-1">
           →
-        </motion.span>
+        </span>
       )}
-    </motion.a>
+    </a>
   );
 }

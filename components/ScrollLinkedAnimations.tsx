@@ -1,10 +1,28 @@
 'use client';
 
-import { useRef, ReactNode, useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useEffect, useRef, useState, ReactNode } from 'react';
 
-const easeDecelerate = [0, 0, 0.2, 1] as const;
-const easeEmphasized = [0.4, 0, 0.2, 1] as const;
+function useInViewOnce(rootMargin: string) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin },
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [rootMargin]);
+
+  return [ref, isVisible] as const;
+}
 
 interface ParallaxTextProps {
   children: ReactNode;
@@ -12,23 +30,22 @@ interface ParallaxTextProps {
 }
 
 export function ParallaxText({ children, className = '' }: ParallaxTextProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
+  const [ref, isVisible] = useInViewOnce('-80px 0px -80px 0px');
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, scale: 0.95, y: 30 }}
-      animate={isInView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.95, y: 30 }}
-      transition={{
-        duration: 0.9,
-        ease: easeDecelerate,
-        scale: { duration: 1.0, ease: easeEmphasized },
-      }}
       className={className}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'none' : 'translate3d(0, 30px, 0) scale(0.95)',
+        transition:
+          'opacity 0.9s cubic-bezier(0, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1)',
+        willChange: isVisible ? 'auto' : 'opacity, transform',
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -38,23 +55,22 @@ interface ScrollZoomCardProps {
 }
 
 export function ScrollZoomCard({ children, className = '' }: ScrollZoomCardProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-40px' });
+  const [ref, isVisible] = useInViewOnce('-40px 0px -40px 0px');
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, scale: 0.94, y: 35 }}
-      animate={isInView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.94, y: 35 }}
-      transition={{
-        duration: 0.8,
-        ease: easeDecelerate,
-        scale: { duration: 0.9, ease: easeEmphasized },
-      }}
       className={className}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'none' : 'translate3d(0, 35px, 0) scale(0.94)',
+        transition:
+          'opacity 0.8s cubic-bezier(0, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)',
+        willChange: isVisible ? 'auto' : 'opacity, transform',
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -64,24 +80,23 @@ interface Scroll3DProps {
 }
 
 export function Scroll3D({ children, className = '' }: Scroll3DProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-40px' });
+  const [ref, isVisible] = useInViewOnce('-40px 0px -40px 0px');
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, y: 25, rotateX: 8 }}
-      animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 25, rotateX: 8 }}
-      transition={{
-        duration: 0.8,
-        ease: easeDecelerate,
-        rotateX: { duration: 0.9, ease: easeEmphasized },
-      }}
-      style={{ transformPerspective: 1200 }}
       className={className}
+      style={{
+        perspective: '1200px',
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'none' : 'translate3d(0, 25px, 0) rotateX(8deg)',
+        transition:
+          'opacity 0.8s cubic-bezier(0, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)',
+        willChange: isVisible ? 'auto' : 'opacity, transform',
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -105,8 +120,23 @@ export function ScrollCounter({
   separator = false,
 }: ScrollCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [isInView, setIsInView] = useState(false);
   const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '-100px 0px -100px 0px' },
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
 
   const formatNumber = (num: number) => {
     const fixed = num.toFixed(decimals);

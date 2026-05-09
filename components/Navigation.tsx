@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { translations } from '@/lib/translations';
 
 interface NavigationProps {
@@ -15,7 +14,6 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // 判斷是否應該顯示白色背景樣式（滾動後或手機選單開啟時）
   const shouldShowWhiteBackground = isScrolled || isMobileMenuOpen;
 
   useEffect(() => {
@@ -54,7 +52,7 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
       if (element) {
         element.scrollIntoView({
           behavior: 'smooth',
-          block: 'start'
+          block: 'start',
         });
       }
     }
@@ -65,108 +63,110 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
     { href: '#features', label: t.nav.product },
     { href: '#about', label: t.nav.about },
     { href: '#faq', label: t.nav.faq },
-    { href: '#contact', label: t.nav.contact }
+    { href: '#contact', label: t.nav.contact },
   ];
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] px-4 md:px-0 ${isScrolled ? 'top-4 py-0' : 'top-0 py-5'
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] px-4 md:px-0 ${
+        isScrolled ? 'top-4 py-0' : 'top-0 py-5'
+      }`}
     >
       <div
-        className={`max-w-7xl mx-auto transition-all duration-400 ease-out ${shouldShowWhiteBackground
-          ? 'rounded-full bg-white/80 backdrop-blur-2xl shadow-neo border border-[#E4E7EC]/60 px-8 py-2.5 max-w-5xl'
-          : 'px-6 md:px-12 xl:px-24 bg-transparent border border-transparent'
-          }`}
+        className={`max-w-7xl mx-auto transition-all duration-400 ease-out ${
+          shouldShowWhiteBackground
+            ? 'rounded-full bg-white/80 backdrop-blur-2xl shadow-neo border border-[#E4E7EC]/60 px-8 py-2.5 max-w-5xl'
+            : 'px-6 md:px-12 xl:px-24 bg-transparent border border-transparent'
+        }`}
       >
         <div className="flex justify-between items-center h-12 md:h-14">
-          {/* Logo - Modern tech style */}
           <a
             href="#"
-            className={`text-2xl md:text-3xl font-extrabold tracking-tight transition-all duration-400 ${shouldShowWhiteBackground
-              ? 'text-[#101828] hover:text-[#2563EB]'
-              : 'text-white drop-shadow-md'
-              }`}
+            className={`text-2xl md:text-3xl font-extrabold tracking-tight transition-all duration-400 ${
+              shouldShowWhiteBackground
+                ? 'text-[#101828] hover:text-[#2563EB]'
+                : 'text-white drop-shadow-md'
+            }`}
           >
             Tryzeon
           </a>
 
-          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-10">
             {navigationItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={scrollToSection}
-                className={`text-[13px] font-medium tracking-wide transition-colors duration-300 ${shouldShowWhiteBackground
-                  ? 'text-[#1D1D1F]/80 hover:text-[#0066CC]'
-                  : 'text-white/90 hover:text-white drop-shadow-sm'
-                  }`}
+                className={`text-[13px] font-medium tracking-wide transition-colors duration-300 ${
+                  shouldShowWhiteBackground
+                    ? 'text-[#1D1D1F]/80 hover:text-[#0066CC]'
+                    : 'text-white/90 hover:text-white drop-shadow-sm'
+                }`}
               >
                 {item.label}
               </a>
             ))}
           </div>
 
-          {/* Right Side */}
           <div className="hidden lg:flex items-center space-x-6">
-            {/* Language Selector */}
             <div className="relative">
               <button
                 onClick={() => setShowLangMenu(!showLangMenu)}
-                className={`flex items-center space-x-1 text-[11px] font-semibold tracking-wide uppercase transition-colors duration-300 ${shouldShowWhiteBackground
-                  ? 'text-[#1D1D1F]/70 hover:text-[#1D1D1F]'
-                  : 'text-white/80 hover:text-white drop-shadow-sm'
-                  }`}
+                className={`flex items-center space-x-1 text-[11px] font-semibold tracking-wide uppercase transition-colors duration-300 ${
+                  shouldShowWhiteBackground
+                    ? 'text-[#1D1D1F]/70 hover:text-[#1D1D1F]'
+                    : 'text-white/80 hover:text-white drop-shadow-sm'
+                }`}
               >
                 <span>{currentLang === 'zh-TW' ? '繁中' : 'EN'}</span>
                 <ChevronDown className="w-3 h-3 opacity-70" />
               </button>
 
-              <AnimatePresence>
-                {showLangMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full right-0 mt-3 w-32 bg-white/95 rounded-xl shadow-xl border border-black/5 py-1.5 overflow-hidden"
-                  >
-                    <button
-                      onClick={() => { setCurrentLang('zh-TW'); setShowLangMenu(false); }}
-                      className="block w-full text-left px-4 py-2.5 text-[12px] font-medium text-[#1D1D1F] hover:bg-[#F5F5F7] transition-colors"
-                    >
-                      繁體中文
-                    </button>
-                    <button
-                      onClick={() => { setCurrentLang('en'); setShowLangMenu(false); }}
-                      className="block w-full text-left px-4 py-2.5 text-[12px] font-medium text-[#1D1D1F] hover:bg-[#F5F5F7] transition-colors"
-                    >
-                      English
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div
+                className={`absolute top-full right-0 mt-3 w-32 bg-white/95 rounded-xl shadow-xl border border-black/5 py-1.5 overflow-hidden origin-top-right transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  showLangMenu
+                    ? 'opacity-100 scale-100 pointer-events-auto'
+                    : 'opacity-0 scale-95 pointer-events-none'
+                }`}
+              >
+                <button
+                  onClick={() => {
+                    setCurrentLang('zh-TW');
+                    setShowLangMenu(false);
+                  }}
+                  className="block w-full text-left px-4 py-2.5 text-[12px] font-medium text-[#1D1D1F] hover:bg-[#F5F5F7] transition-colors"
+                >
+                  繁體中文
+                </button>
+                <button
+                  onClick={() => {
+                    setCurrentLang('en');
+                    setShowLangMenu(false);
+                  }}
+                  className="block w-full text-left px-4 py-2.5 text-[12px] font-medium text-[#1D1D1F] hover:bg-[#F5F5F7] transition-colors"
+                >
+                  English
+                </button>
+              </div>
             </div>
 
-            {/* CTA Button */}
             <a
               href="#contact"
               onClick={scrollToSection}
-              className={`px-5 py-2 text-[12px] font-bold rounded-full transition-all duration-300 ${shouldShowWhiteBackground
-                ? 'bg-[#1D1D1F] text-white hover:bg-[#000000] hover:scale-105 shadow-md'
-                : 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
-                }`}
+              className={`px-5 py-2 text-[12px] font-bold rounded-full transition-all duration-300 ${
+                shouldShowWhiteBackground
+                  ? 'bg-[#1D1D1F] text-white hover:bg-[#000000] hover:scale-105 shadow-md'
+                  : 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
+              }`}
             >
               {t.nav.getStarted}
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="lg:hidden p-2 -mr-2 transition-colors"
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {isMobileMenuOpen ? (
               <X className={`w-6 h-6 ${shouldShowWhiteBackground ? 'text-[#1D1D1F]' : 'text-white'}`} />
@@ -176,16 +176,13 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
           </button>
         </div>
 
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-              className="lg:hidden overflow-hidden bg-white/95 rounded-[32px] mt-2 shadow-2xl border border-black/5"
-            >
+        <div
+          className={`lg:hidden grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+            isMobileMenuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+          }`}
+        >
+          <div className="overflow-hidden min-h-0">
+            <div className="bg-white/95 rounded-[32px] mt-2 shadow-2xl border border-black/5">
               <div className="py-6 px-6 space-y-1">
                 {navigationItems.map((item) => (
                   <a
@@ -205,15 +202,17 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
                   <div className="flex bg-[#F5F5F7] rounded-full p-1">
                     <button
                       onClick={() => setCurrentLang('zh-TW')}
-                      className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${currentLang === 'zh-TW' ? 'bg-white shadow-sm text-[#1D1D1F]' : 'text-[#86868B]'
-                        }`}
+                      className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${
+                        currentLang === 'zh-TW' ? 'bg-white shadow-sm text-[#1D1D1F]' : 'text-[#86868B]'
+                      }`}
                     >
                       繁中
                     </button>
                     <button
                       onClick={() => setCurrentLang('en')}
-                      className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${currentLang === 'en' ? 'bg-white shadow-sm text-[#1D1D1F]' : 'text-[#86868B]'
-                        }`}
+                      className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${
+                        currentLang === 'en' ? 'bg-white shadow-sm text-[#1D1D1F]' : 'text-[#86868B]'
+                      }`}
                     >
                       EN
                     </button>
@@ -230,9 +229,9 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
                   </a>
                 </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
   );

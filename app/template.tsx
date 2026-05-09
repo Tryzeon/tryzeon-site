@@ -1,51 +1,36 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
 import { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 
 interface TemplateProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
-// Apple-style page transition variants
-const pageVariants = {
-    initial: {
-        opacity: 0,
-        y: 8,
-    },
-    enter: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.4,
-            ease: [0.16, 1, 0.3, 1], // Apple's easing curve
-        },
-    },
-    exit: {
-        opacity: 0,
-        y: -8,
-        transition: {
-            duration: 0.3,
-            ease: [0.16, 1, 0.3, 1],
-        },
-    },
-};
-
 export default function Template({ children }: TemplateProps) {
-    const pathname = usePathname();
+  const pathname = usePathname();
 
-    return (
-        <AnimatePresence mode="wait">
-            <motion.div
-                key={pathname}
-                initial="initial"
-                animate="enter"
-                exit="exit"
-                variants={pageVariants}
-            >
-                {children}
-            </motion.div>
-        </AnimatePresence>
-    );
+  return (
+    <div
+      key={pathname}
+      style={{
+        animation: 'pageEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        opacity: 0,
+      }}
+    >
+      <style jsx global>{`
+        @keyframes pageEnter {
+          from {
+            opacity: 0;
+            transform: translateY(8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+      {children}
+    </div>
+  );
 }

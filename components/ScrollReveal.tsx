@@ -1,10 +1,6 @@
 'use client';
 
-import { motion, useInView, Variants } from 'framer-motion';
-import { useRef, ReactNode } from 'react';
-
-const easeDecelerate = [0, 0, 0.2, 1] as const;
-const easeStandard = [0.25, 0.1, 0.25, 1.0] as const;
+import { useEffect, useRef, useState, ReactNode } from 'react';
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -21,42 +17,53 @@ export function ScrollReveal({
   duration = 0.7,
   className = '',
 }: ScrollRevealProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '-80px 0px -80px 0px' },
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
 
   const distance = 40;
-
-  const variants: Variants = (() => {
+  const initialTransform = (() => {
     switch (direction) {
       case 'down':
-        return { hidden: { y: -distance, opacity: 0 }, visible: { y: 0, opacity: 1 } };
+        return `translate3d(0, ${-distance}px, 0)`;
       case 'left':
-        return { hidden: { x: -distance, opacity: 0 }, visible: { x: 0, opacity: 1 } };
+        return `translate3d(${-distance}px, 0, 0)`;
       case 'right':
-        return { hidden: { x: distance, opacity: 0 }, visible: { x: 0, opacity: 1 } };
+        return `translate3d(${distance}px, 0, 0)`;
       case 'fade':
-        return { hidden: { opacity: 0, scale: 0.98 }, visible: { opacity: 1, scale: 1 } };
+        return 'scale(0.98)';
       case 'up':
       default:
-        return { hidden: { y: distance, opacity: 0 }, visible: { y: 0, opacity: 1 } };
+        return `translate3d(0, ${distance}px, 0)`;
     }
   })();
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={variants}
-      transition={{
-        duration,
-        delay,
-        ease: easeDecelerate,
-        opacity: { duration: duration * 0.8, ease: easeStandard },
-      }}
       className={className}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'none' : initialTransform,
+        transition: `opacity ${duration * 0.8}s cubic-bezier(0.25, 0.1, 0.25, 1) ${delay}s, transform ${duration}s cubic-bezier(0, 0, 0.2, 1) ${delay}s`,
+        willChange: isVisible ? 'auto' : 'opacity, transform',
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
