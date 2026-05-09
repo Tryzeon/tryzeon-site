@@ -18,20 +18,12 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.5,
+      autoRaf: true,
     });
 
-    lenis.on('scroll', ScrollTrigger.update);
-
-    const tickerCallback = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-    gsap.ticker.add(tickerCallback);
-    gsap.ticker.lagSmoothing(0);
+    lenis.on('scroll', () => ScrollTrigger.update());
 
     return () => {
-      gsap.ticker.remove(tickerCallback);
       lenis.destroy();
     };
   }, []);
