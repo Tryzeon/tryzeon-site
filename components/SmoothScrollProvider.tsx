@@ -23,8 +23,11 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
     lenis.on('scroll', () => ScrollTrigger.update());
 
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+
     return () => {
       lenis.destroy();
+      delete (window as unknown as { __lenis?: Lenis }).__lenis;
     };
   }, []);
 

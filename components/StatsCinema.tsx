@@ -60,9 +60,8 @@ function StatsDesktop() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: 'bottom bottom',
+          end: `+=${stats.length * 100}%`,
           pin: pinRef.current,
-          pinSpacing: false,
           scrub: 1,
         },
       });
@@ -112,7 +111,6 @@ function StatsDesktop() {
       ref={sectionRef}
       id="stats"
       className="relative bg-[#0A0A0B] text-white hidden lg:block"
-      style={{ height: `${stats.length * 100}vh` }}
       aria-label="Tryzeon market validation"
     >
       <div ref={pinRef} className="h-screen w-full overflow-hidden bg-[#0A0A0B] relative">

@@ -98,9 +98,8 @@ function FeaturesDesktop() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: 'bottom bottom',
+          end: `+=${FEATURES.length * 100}%`,
           pin: pinRef.current,
-          pinSpacing: false,
           scrub: 1,
         },
       });
@@ -189,7 +188,6 @@ function FeaturesDesktop() {
       ref={sectionRef}
       id="features"
       className="relative bg-[#0A0A0B] text-white hidden lg:block"
-      style={{ height: `${FEATURES.length * 90}vh` }}
       aria-label="Tryzeon core features"
     >
       <div ref={pinRef} className="h-screen w-full overflow-hidden bg-[#0A0A0B] relative">

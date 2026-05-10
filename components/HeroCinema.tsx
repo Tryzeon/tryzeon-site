@@ -50,9 +50,8 @@ function HeroDesktop() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: 'bottom bottom',
+          end: '+=200%',
           pin: pinRef.current,
-          pinSpacing: false,
           scrub: 1,
         },
       });
@@ -91,7 +90,6 @@ function HeroDesktop() {
     <section
       ref={sectionRef}
       className="relative bg-[#0A0A0B] hidden lg:block"
-      style={{ height: '300vh' }}
       aria-label="Tryzeon hero cinema"
     >
       <div ref={pinRef} className="h-screen w-full overflow-hidden bg-[#0A0A0B] relative">

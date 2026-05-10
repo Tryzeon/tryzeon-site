@@ -30,9 +30,8 @@ export function VisionManifesto() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: 'bottom bottom',
+          end: '+=150%',
           pin: pinRef.current,
-          pinSpacing: false,
           scrub: 1,
         },
       });
@@ -66,7 +65,6 @@ export function VisionManifesto() {
     <section
       ref={sectionRef}
       className="relative bg-[#0A0A0B] text-white"
-      style={{ height: '200vh' }}
       aria-label="Tryzeon vision manifesto"
     >
       <div ref={pinRef} className="h-screen w-full overflow-hidden bg-[#0A0A0B] relative flex items-center justify-center">
