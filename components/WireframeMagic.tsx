@@ -240,16 +240,6 @@ export function WireframeMagic() {
           </div>
         </div>
 
-        <div
-          className="absolute bottom-6 md:bottom-8 inset-x-0 px-6 md:px-12 lg:px-20 z-30 pointer-events-none"
-          aria-hidden
-        >
-          <div className="max-w-[1500px] mx-auto">
-            <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/30 text-center">
-              Placeholder visualisation. Production replaces with 30-frame image sequence canvas painter.
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   );

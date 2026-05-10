@@ -122,9 +122,6 @@ function ProcessDesktop() {
                     >
                       {String(step.index).padStart(2, '0')}
                     </span>
-                    <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-mono uppercase tracking-[0.3em] text-white/30">
-                      Placeholder · demo video here
-                    </p>
                   </div>
                 </div>
 

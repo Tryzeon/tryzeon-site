@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Outfit } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { NavigationProgress } from "@/components/NavigationProgress";
 import { WebVitals } from "@/components/WebVitals";
 import { SkipToContent } from "@/components/Accessibility";
@@ -7,9 +7,17 @@ import { CustomCursor } from "@/components/CustomCursor";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 import "./globals.css";
 
-const outfit = Outfit({
+// Swapped Outfit → Geist (Vercel's open-source typeface) for sharper editorial feel
+// matching Apple/Linear/Stripe-tier sites. Variable kept as --font-outfit for
+// downstream compatibility (tailwind config + globals.css unchanged).
+const geistSans = Geist({
   subsets: ["latin"],
   variable: "--font-outfit",
+  display: "swap",
+});
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -128,7 +136,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="zh-TW" className={outfit.variable}>
+    <html lang="zh-TW" className={`${geistSans.variable} ${geistMono.variable}`}>
       <head>
         {/* Preload critical images */}
         <link rel="preload" href="/images/slides/slide-1-brand-introduction.jpg" as="image" type="image/jpeg" />
