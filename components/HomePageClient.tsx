@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Mail } from "lucide-react";
 import { ColdOpen } from "@/components/ColdOpen";
-import { PainCinema } from "@/components/PainCinema";
 import { HeroCinema } from "@/components/HeroCinema";
 import { WireframeMagic } from "@/components/WireframeMagic";
 import { FeaturesCinema } from "@/components/FeaturesCinema";
@@ -34,10 +33,7 @@ export default function HomePageClient() {
       {/* 01 — Cold Open */}
       <ColdOpen />
 
-      {/* 02 — Pain Cinema (4 stage) */}
-      <PainCinema />
-
-      {/* 03 — Hero Reveal (existing 3-stage cinema) */}
+      {/* 02 — Hero Reveal (existing 3-stage cinema) */}
       <header className="relative">
         <HeroCinema />
       </header>

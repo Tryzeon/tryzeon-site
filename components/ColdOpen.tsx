@@ -72,8 +72,8 @@ export function ColdOpen() {
           className="!text-white font-extrabold tracking-[-0.04em] leading-[0.95]"
           style={{ fontSize: 'clamp(2rem, 6vw, 5rem)', textShadow: '0 8px 60px rgba(0,0,0,0.4)' }}
         >
-          上一次穿衣服，<br />
-          你看見<span className="text-white/40">自己</span>了嗎？
+          試穿，<br />
+          <span className="text-white/50">重新</span>定義。
         </div>
 
         <div
@@ -82,9 +82,9 @@ export function ColdOpen() {
           style={{ fontSize: 'clamp(1.75rem, 5vw, 4.25rem)', opacity: 0 }}
         >
           <span>
-            還是只看見<br />
+            一張照片，
             <span className="bg-gradient-to-r from-[#60A5FA] via-[#06B6D4] to-[#60A5FA] bg-clip-text text-transparent">
-              想像中的樣子。
+              穿上任何衣服。
             </span>
           </span>
         </div>
