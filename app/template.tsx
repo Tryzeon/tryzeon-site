@@ -10,11 +10,15 @@ interface TemplateProps {
 export default function Template({ children }: TemplateProps) {
   const pathname = usePathname();
 
+  // NOTE: Do NOT use transform in this template wrapper's animation.
+  // Any transform value (even identity) creates a containing block that
+  // traps position:fixed descendants — breaks GSAP ScrollTrigger pin
+  // across the entire site. Use opacity-only fade for page transitions.
   return (
     <div
       key={pathname}
       style={{
-        animation: 'pageEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        animation: 'pageEnter 0.4s ease forwards',
         opacity: 0,
       }}
     >
@@ -22,11 +26,9 @@ export default function Template({ children }: TemplateProps) {
         @keyframes pageEnter {
           from {
             opacity: 0;
-            transform: translateY(8px);
           }
           to {
             opacity: 1;
-            transform: translateY(0);
           }
         }
       `}</style>
