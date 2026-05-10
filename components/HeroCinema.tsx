@@ -100,14 +100,15 @@ function HeroDesktop() {
           className="absolute inset-0 will-change-transform z-0"
           style={{ transform: 'scale(1) translate3d(0,0,0)' }}
         >
-          <Image
-            src="/images/slides/slide-6-global-vision-runway-4k.jpg"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            quality={90}
-            className="object-cover"
+          <video
+            src="/videos/hero-runway.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="object-cover w-full h-full"
+            aria-hidden
           />
         </div>
 
