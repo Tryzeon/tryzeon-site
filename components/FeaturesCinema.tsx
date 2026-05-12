@@ -187,10 +187,10 @@ function FeaturesDesktop() {
     <section
       ref={sectionRef}
       id="features"
-      className="relative bg-[#0A0A0B] text-white hidden lg:block"
+      className="relative bg-[#FAFAFA] text-[#101828] hidden lg:block"
       aria-label="Tryzeon core features"
     >
-      <div ref={pinRef} className="h-screen w-full overflow-hidden bg-[#0A0A0B] relative">
+      <div ref={pinRef} className="h-screen w-full overflow-hidden bg-[#FAFAFA] relative">
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
           {FEATURES.map((f, i) => (
             <div
@@ -211,16 +211,16 @@ function FeaturesDesktop() {
               />
             </div>
           ))}
-          <div className="absolute inset-0 dot-grid-dark opacity-30" />
+          <div className="absolute inset-0 dot-grid opacity-30" />
         </div>
 
         <div className="absolute top-[10vh] md:top-[12vh] left-6 md:left-12 lg:left-20 z-10 max-w-[1500px] mx-auto right-6 md:right-12 lg:right-20">
           <div className="flex items-center justify-between">
-            <span className="inline-flex items-center gap-3 text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-white/40">
-              <span className="block w-6 h-px bg-white/30" />
+            <span className="inline-flex items-center gap-3 text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#475467]">
+              <span className="block w-6 h-px bg-[#101828]/30" />
               Core Infrastructure
             </span>
-            <h3 className="hidden md:block text-sm font-mono uppercase tracking-[0.25em] text-white/35">
+            <h3 className="hidden md:block text-sm font-mono uppercase tracking-[0.25em] text-[#475467]">
               五大核心技術
             </h3>
           </div>
@@ -254,16 +254,15 @@ function FeaturesDesktop() {
                     </div>
 
                     <h2
-                      className="!text-white font-extrabold tracking-[-0.04em] leading-[0.92] mb-6 md:mb-10"
+                      className="!text-[#101828] font-extrabold tracking-[-0.04em] leading-[0.92] mb-6 md:mb-10"
                       style={{
                         fontSize: 'clamp(2.25rem, 6.5vw, 5.75rem)',
-                        textShadow: '0 8px 60px rgba(0,0,0,0.4)',
-                      }}
+                                              }}
                     >
                       {feature.title}
                     </h2>
 
-                    <p className="text-base md:text-xl text-white/65 font-medium leading-relaxed max-w-2xl">
+                    <p className="text-base md:text-xl text-[#475467] font-medium leading-relaxed max-w-2xl">
                       {feature.desc}
                     </p>
 
@@ -273,7 +272,7 @@ function FeaturesDesktop() {
                           className="font-extrabold tracking-tighter leading-none"
                           style={{
                             fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
-                            background: `linear-gradient(135deg, ${feature.accent}, white)`,
+                            background: `linear-gradient(135deg, ${feature.accent}, #101828)`,
                             WebkitBackgroundClip: 'text',
                             backgroundClip: 'text',
                             color: 'transparent',
@@ -281,7 +280,7 @@ function FeaturesDesktop() {
                         >
                           {feature.metric.value}
                         </div>
-                        <div className="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/45">
+                        <div className="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-[#475467]">
                           {feature.metric.label}
                         </div>
                       </div>
@@ -331,7 +330,7 @@ function FeaturesDesktop() {
                 ref={(el) => {
                   progressContainerRefs.current[i] = el;
                 }}
-                className="flex-1 h-px relative overflow-hidden bg-white/[0.08]"
+                className="flex-1 h-px relative overflow-hidden bg-[#101828]/[0.08]"
                 style={{ opacity: 0.2 }}
               >
                 <div
@@ -354,23 +353,23 @@ function FeaturesMobile() {
   return (
     <section
       id="features"
-      className="relative lg:hidden bg-[#0A0A0B] text-white py-20 overflow-hidden"
+      className="relative lg:hidden bg-[#FAFAFA] text-[#101828] py-20 overflow-hidden"
       aria-label="Tryzeon core features"
     >
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute top-[5%] left-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(96,165,250,0.16)_0%,transparent_60%)] blur-3xl" />
         <div className="absolute bottom-[10%] right-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(124,58,237,0.14)_0%,transparent_60%)] blur-3xl" />
-        <div className="absolute inset-0 dot-grid-dark opacity-25" />
+        <div className="absolute inset-0 dot-grid opacity-25" />
       </div>
 
       <div className="relative z-10 px-6 max-w-md mx-auto">
         <div className="mb-12 text-center">
-          <span className="inline-flex items-center gap-3 text-[10px] font-mono font-semibold tracking-[0.4em] uppercase text-white/45 mb-4">
-            <span className="block w-6 h-px bg-white/30" />
+          <span className="inline-flex items-center gap-3 text-[10px] font-mono font-semibold tracking-[0.4em] uppercase text-[#475467] mb-4">
+            <span className="block w-6 h-px bg-[#101828]/30" />
             Core Infrastructure
-            <span className="block w-6 h-px bg-white/30" />
+            <span className="block w-6 h-px bg-[#101828]/30" />
           </span>
-          <h2 className="text-3xl font-extrabold tracking-[-0.04em] !text-white leading-[1.0]">
+          <h2 className="text-3xl font-extrabold tracking-[-0.04em] !text-[#101828] leading-[1.0]">
             五大核心技術
           </h2>
         </div>
@@ -381,7 +380,7 @@ function FeaturesMobile() {
             return (
               <div
                 key={feature.title}
-                className="relative rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6 overflow-hidden"
+                className="relative rounded-3xl border border-[#101828]/8 bg-white shadow-lg p-6 overflow-hidden"
               >
                 <div
                   className="absolute -top-6 -right-6 w-32 h-32 rounded-full opacity-30 blur-2xl"
@@ -415,24 +414,24 @@ function FeaturesMobile() {
                       />
                     </div>
                     <h3
-                      className="!text-white font-extrabold tracking-[-0.03em] leading-[1.05] flex-1"
+                      className="!text-[#101828] font-extrabold tracking-[-0.03em] leading-[1.05] flex-1"
                       style={{ fontSize: 'clamp(1.35rem, 5.5vw, 1.75rem)' }}
                     >
                       {feature.title}
                     </h3>
                   </div>
 
-                  <p className="text-sm text-white/60 leading-relaxed mb-5">
+                  <p className="text-sm text-[#475467] leading-relaxed mb-5">
                     {feature.desc}
                   </p>
 
                   {feature.metric && (
-                    <div className="flex items-baseline gap-3 pt-4 border-t border-white/5">
+                    <div className="flex items-baseline gap-3 pt-4 border-t border-[#101828]/5">
                       <div
                         className="font-extrabold tracking-tighter leading-none"
                         style={{
                           fontSize: 'clamp(1.5rem, 6vw, 2rem)',
-                          background: `linear-gradient(135deg, ${feature.accent}, white)`,
+                          background: `linear-gradient(135deg, ${feature.accent}, #101828)`,
                           WebkitBackgroundClip: 'text',
                           backgroundClip: 'text',
                           color: 'transparent',
@@ -440,7 +439,7 @@ function FeaturesMobile() {
                       >
                         {feature.metric.value}
                       </div>
-                      <div className="text-[9px] font-mono uppercase tracking-[0.25em] text-white/45">
+                      <div className="text-[9px] font-mono uppercase tracking-[0.25em] text-[#475467]">
                         {feature.metric.label}
                       </div>
                     </div>
