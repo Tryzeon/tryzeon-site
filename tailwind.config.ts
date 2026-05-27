@@ -33,6 +33,7 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-outfit)', 'Inter', '-apple-system', 'sans-serif'],
         mono: ['var(--font-mono)', 'JetBrains Mono', 'SF Mono', 'monospace'],
+        serif: ['var(--font-serif)', 'Playfair Display', 'Georgia', 'serif'],
         display: ['var(--font-outfit)', 'sans-serif'],
       },
       fontSize: {

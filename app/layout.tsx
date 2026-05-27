@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import { NavigationProgress } from "@/components/NavigationProgress";
 import { WebVitals } from "@/components/WebVitals";
 import { SkipToContent } from "@/components/Accessibility";
@@ -18,6 +18,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  display: "swap",
+});
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  style: ["normal", "italic"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -136,7 +143,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="zh-TW" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="zh-TW" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable}`}>
       <head>
         {/* Preload critical images */}
         <link rel="preload" href="/images/slides/slide-1-brand-introduction.jpg" as="image" type="image/jpeg" />
