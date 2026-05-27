@@ -8,7 +8,7 @@ import { Navigation } from "@/components/Navigation";
 import { Section } from "@/components/Section";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { ParallaxText } from "@/components/ScrollLinkedAnimations";
+import { BrandMarquee } from "@/components/BrandMarquee";
 import { SpotlightAudienceCard } from "@/components/SpotlightAudienceCard";
 import { FAQ } from "@/components/FAQ";
 import { translations } from "@/lib/translations";
@@ -29,36 +29,34 @@ export default function HomePageClient() {
       </header>
 
       {/* ============================================
-          BRAND STATEMENT — White Mesh Section
+          BRAND STATEMENT — Editorial Marquee
           ============================================ */}
-      <Section id="statement" className="py-28 md:py-56 bg-[#ffffff] relative overflow-hidden">
+      <Section id="statement" className="py-24 md:py-44 bg-[#ffffff] relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-[10%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(37,99,235,0.08)_0%,transparent_70%)] animate-mesh-float" />
           <div className="absolute bottom-0 right-[10%] w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(6,182,212,0.06)_0%,transparent_70%)] animate-mesh-float [animation-delay:4s]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(124,58,237,0.04)_0%,transparent_70%)] animate-mesh-float [animation-delay:8s]" />
           <div className="absolute inset-0 dot-grid" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 text-left relative z-10">
-          <ParallaxText>
-            <h2 className="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] font-extrabold text-[#101828] leading-[0.85] tracking-tighter mb-8 md:mb-16 flex flex-col uppercase">
-              <span className="z-10 relative">Digital</span>
-              <span className="text-outline md:ml-24 xl:ml-48">Fashion</span>
-              <span className="text-gradient-blue md:ml-12 xl:ml-24">Evolution</span>
-            </h2>
-          </ParallaxText>
+        <div className="relative z-10 mb-16 md:mb-28">
+          <BrandMarquee />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
           <ScrollReveal direction="up" delay={0.2} className="md:w-1/2 md:ml-auto">
-            <p className="text-lg md:text-2xl text-[#475467] font-medium leading-relaxed max-w-3xl mx-auto mb-10 md:mb-16 text-balance">
+            <span className="inline-flex items-center gap-3 text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#475467] mb-6">
+              <span className="block w-6 h-px bg-[#101828]/30" />
+              Manifesto
+            </span>
+            <p className="text-lg md:text-2xl text-[#475467] font-medium leading-relaxed mb-10 md:mb-12 text-balance">
               從試穿開始，重新定義你的時尚新生活。<br />整合線上與線下，打造時尚產業的 AI 基礎建設。
             </p>
-            <div className="flex justify-center">
-              <AppleLink
-                href="#contact"
-                className="text-lg md:text-xl !text-[#60A5FA] hover:!text-[#93C5FD]"
-              >
-                立即開始
-              </AppleLink>
-            </div>
+            <AppleLink
+              href="#contact"
+              className="text-lg md:text-xl !text-[#2563EB] hover:!text-[#60A5FA]"
+            >
+              立即開始
+            </AppleLink>
           </ScrollReveal>
         </div>
       </Section>
