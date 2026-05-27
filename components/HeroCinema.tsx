@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Play } from 'lucide-react';
+import { GradientWave } from '@/components/GradientWave';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -78,12 +79,17 @@ function HeroDesktop() {
       className="relative bg-[#FAFAFA] hidden lg:block overflow-hidden"
       aria-label="Tryzeon hero"
     >
-      {/* Subtle ambient mesh in background (very light) */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden>
-        <div className="absolute top-[15%] left-[-10%] w-[55vw] h-[55vh] bg-[radial-gradient(circle,rgba(37,99,235,0.06)_0%,transparent_60%)] blur-3xl animate-mesh-float" />
-        <div className="absolute bottom-[10%] right-[-10%] w-[50vw] h-[50vh] bg-[radial-gradient(circle,rgba(124,58,237,0.05)_0%,transparent_60%)] blur-3xl animate-mesh-float [animation-delay:6s]" />
-        <div className="absolute inset-0 dot-grid opacity-50" />
+      {/* Stripe-style WebGL gradient wave (21st.dev Gradient Wave adapted) */}
+      <div className="absolute inset-0 opacity-50 pointer-events-none" aria-hidden>
+        <GradientWave colors={['#FAFAFA', '#E0E7FF', '#FEF3C7', '#FFE4E6', '#E0F2FE']} />
       </div>
+      {/* Soft white wash to keep typography readable */}
+      <div
+        className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#FAFAFA] via-[#FAFAFA]/70 to-transparent"
+        aria-hidden
+      />
+      {/* Subtle dot grid texture */}
+      <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" aria-hidden />
 
       <div className="relative z-10 min-h-[100svh] flex items-center px-6 md:px-12 lg:px-20">
         <div className="w-full max-w-[1600px] mx-auto grid grid-cols-12 gap-8 lg:gap-16 items-center">
