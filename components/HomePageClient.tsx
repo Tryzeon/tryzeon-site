@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { HeartHandshake, Mail } from "lucide-react";
 import { HeroCinema } from "@/components/HeroCinema";
 import { BentoFeatures } from "@/components/BentoFeatures";
@@ -10,7 +8,8 @@ import { Navigation } from "@/components/Navigation";
 import { Section } from "@/components/Section";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { ParallaxText, ScrollZoomCard } from "@/components/ScrollLinkedAnimations";
+import { ParallaxText } from "@/components/ScrollLinkedAnimations";
+import { SpotlightAudienceCard } from "@/components/SpotlightAudienceCard";
 import { FAQ } from "@/components/FAQ";
 import { translations } from "@/lib/translations";
 import { faqData } from "@/lib/faq-data";
@@ -94,83 +93,29 @@ export default function HomePageClient() {
           </ScrollReveal>
 
           <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-            <ScrollZoomCard>
-              <div className="group relative h-full flex flex-col rounded-3xl overflow-hidden border border-[#101828]/8 bg-white hover:border-[#2563EB]/30 hover:shadow-2xl transition-all duration-500">
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <Image
-                    src="/images/audience/b2b-fashion-store.jpg"
-                    alt="Fashion Boutique Store"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#2563EB]/0 via-transparent to-[#2563EB]/0 group-hover:from-[#2563EB]/10 transition-all duration-700" />
-                </div>
-                <div className="p-8 md:p-12 flex flex-col flex-1 justify-between">
-                  <div>
-                    <span className="block text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#2563EB] mb-4 md:mb-6">
-                      01 / For Brands
-                    </span>
-                    <h3
-                      className="font-extrabold tracking-[-0.03em] leading-[1.0] text-[#101828] mb-6 md:mb-8"
-                      style={{ fontSize: 'clamp(1.75rem, 3vw, 3rem)' }}
-                    >
-                      實體門市、官網 SDK、<br />App 一次部署
-                    </h3>
-                    <p className="text-sm md:text-base text-[#475467] leading-relaxed mb-8 md:mb-10">
-                      流量計價、無前期投入。AI 自動生成試穿視覺與動態影片，<br className="hidden md:block" />
-                      實體門市裝置、品牌官網 embed SDK、Tryzeon App 同步上架。
-                    </p>
-                  </div>
-                  <Link
-                    href="/business"
-                    className="group/cta inline-flex items-center justify-center px-7 py-3.5 bg-[#101828] text-white rounded-full font-semibold text-sm hover:bg-[#1D2939] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] self-start"
-                  >
-                    品牌合作方案
-                    <span className="ml-2 transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
-                  </Link>
-                </div>
-              </div>
-            </ScrollZoomCard>
+            <SpotlightAudienceCard
+              image="/images/audience/b2b-fashion-store.jpg"
+              imageAlt="Fashion Boutique Store"
+              kicker="01 / For Brands"
+              accent="#2563EB"
+              title={<>實體門市、官網 SDK、<br />App 一次部署</>}
+              desc={<>流量計價、無前期投入。AI 自動生成試穿視覺與動態影片，<br className="hidden md:block" />實體門市裝置、品牌官網 embed SDK、Tryzeon App 同步上架。</>}
+              href="/business"
+              ctaLabel="品牌合作方案"
+              ctaVariant="primary"
+            />
 
-            <ScrollZoomCard>
-              <div className="group relative h-full flex flex-col rounded-3xl overflow-hidden border border-[#101828]/8 bg-white hover:border-[#06B6D4]/30 hover:shadow-2xl transition-all duration-500">
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <Image
-                    src="/images/audience/b2c-user-phone.jpg"
-                    alt="Mobile Fashion App"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#06B6D4]/0 via-transparent to-[#06B6D4]/0 group-hover:from-[#06B6D4]/10 transition-all duration-700" />
-                </div>
-                <div className="p-8 md:p-12 flex flex-col flex-1 justify-between">
-                  <div>
-                    <span className="block text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#06B6D4] mb-4 md:mb-6">
-                      02 / For Consumers
-                    </span>
-                    <h3
-                      className="font-extrabold tracking-[-0.03em] leading-[1.0] text-[#101828] mb-6 md:mb-8"
-                      style={{ fontSize: 'clamp(1.75rem, 3vw, 3rem)' }}
-                    >
-                      跨品牌試穿,<br />即時看見上身
-                    </h3>
-                    <p className="text-sm md:text-base text-[#475467] leading-relaxed mb-8 md:mb-10">
-                      一張照片即可虛擬試穿任何服飾。<br className="hidden md:block" />
-                      在家、在門市、在品牌官網都能即時試穿,購物決策更有信心。
-                    </p>
-                  </div>
-                  <Link
-                    href="/products/virtual-try-on"
-                    className="group/cta inline-flex items-center justify-center px-7 py-3.5 bg-white text-[#101828] rounded-full font-semibold text-sm hover:bg-[#F2F4F7] transition-all duration-300 border border-[#101828]/15 hover:border-[#101828]/30 hover:scale-[1.03] active:scale-[0.98] self-start"
-                  >
-                    了解 AI 試穿
-                    <span className="ml-2 transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
-                  </Link>
-                </div>
-              </div>
-            </ScrollZoomCard>
+            <SpotlightAudienceCard
+              image="/images/audience/b2c-user-phone.jpg"
+              imageAlt="Mobile Fashion App"
+              kicker="02 / For Consumers"
+              accent="#06B6D4"
+              title={<>跨品牌試穿，<br />即時看見上身</>}
+              desc={<>一張照片即可虛擬試穿任何服飾。<br className="hidden md:block" />在家、在門市、在品牌官網都能即時試穿，購物決策更有信心。</>}
+              href="/products/virtual-try-on"
+              ctaLabel="了解 AI 試穿"
+              ctaVariant="ghost"
+            />
           </div>
         </div>
       </Section>
