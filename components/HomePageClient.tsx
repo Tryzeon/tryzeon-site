@@ -8,7 +8,6 @@ import { Navigation } from "@/components/Navigation";
 import { Section } from "@/components/Section";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { BrandMarquee } from "@/components/BrandMarquee";
 import { SpotlightAudienceCard } from "@/components/SpotlightAudienceCard";
 import { FAQ } from "@/components/FAQ";
 import { translations } from "@/lib/translations";
@@ -29,34 +28,53 @@ export default function HomePageClient() {
       </header>
 
       {/* ============================================
-          BRAND STATEMENT — Editorial Marquee
+          BRAND STATEMENT — Editorial Minimalist Spread
           ============================================ */}
-      <Section id="statement" className="py-24 md:py-44 bg-[#ffffff] relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-[10%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(37,99,235,0.08)_0%,transparent_70%)] animate-mesh-float" />
-          <div className="absolute bottom-0 right-[10%] w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(6,182,212,0.06)_0%,transparent_70%)] animate-mesh-float [animation-delay:4s]" />
-          <div className="absolute inset-0 dot-grid" />
-        </div>
-
-        <div className="relative z-10 mb-16 md:mb-28">
-          <BrandMarquee />
+      <Section id="statement" className="py-32 md:py-56 bg-[#ffffff] relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden>
+          <div className="absolute top-[5%] right-[12%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(37,99,235,0.04)_0%,transparent_60%)] blur-3xl" />
+          <div className="absolute bottom-[8%] left-[8%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(6,182,212,0.03)_0%,transparent_60%)] blur-3xl" />
         </div>
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <ScrollReveal direction="up" delay={0.2} className="md:w-1/2 md:ml-auto">
-            <span className="inline-flex items-center gap-3 text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#475467] mb-6">
-              <span className="block w-6 h-px bg-[#101828]/30" />
-              Manifesto
-            </span>
-            <p className="text-lg md:text-2xl text-[#475467] font-medium leading-relaxed mb-10 md:mb-12 text-balance">
-              從試穿開始，重新定義你的時尚新生活。<br />整合線上與線下，打造時尚產業的 AI 基礎建設。
-            </p>
-            <AppleLink
-              href="#contact"
-              className="text-lg md:text-xl !text-[#2563EB] hover:!text-[#60A5FA]"
+          <ScrollReveal direction="down" className="flex justify-end mb-20 md:mb-32">
+            <div className="text-right">
+              <p className="flex items-center justify-end gap-3 text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#475467] mb-2">
+                <span className="block w-8 h-px bg-[#101828]/40" />
+                N°02 / Manifesto
+              </p>
+              <p className="text-[10px] md:text-[11px] font-mono tracking-[0.3em] uppercase text-[#101828]/35">
+                Tryzeon Editorial · 2026
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal direction="up" delay={0.1}>
+            <h2
+              className="font-extrabold tracking-[-0.04em] leading-[0.95] text-[#101828] mb-20 md:mb-32 max-w-[18ch]"
+              style={{ fontSize: 'clamp(2.5rem, 6.5vw, 6.25rem)' }}
             >
-              立即開始
-            </AppleLink>
+              時尚的未來，<br />
+              不是試衣間，<span className="text-[#2563EB]">是基礎建設。</span>
+            </h2>
+          </ScrollReveal>
+
+          <ScrollReveal direction="up" delay={0.2}>
+            <div className="grid md:grid-cols-12 gap-8 md:gap-16 items-end">
+              <div className="md:col-span-7 md:col-start-3">
+                <p className="text-lg md:text-2xl text-[#475467] font-medium leading-relaxed text-balance">
+                  從試穿開始，重新定義你的時尚新生活。整合線上與線下，打造時尚產業的 AI 基礎建設。
+                </p>
+              </div>
+              <div className="md:col-span-3 md:flex md:justify-end md:items-end">
+                <AppleLink
+                  href="#contact"
+                  className="text-lg md:text-xl !text-[#2563EB] hover:!text-[#60A5FA]"
+                >
+                  立即開始
+                </AppleLink>
+              </div>
+            </div>
           </ScrollReveal>
         </div>
       </Section>
