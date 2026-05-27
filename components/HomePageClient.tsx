@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { HeartHandshake, Mail } from "lucide-react";
 import { HeroCinema } from "@/components/HeroCinema";
-import { FeaturesCinema } from "@/components/FeaturesCinema";
+import { BentoFeatures } from "@/components/BentoFeatures";
 import { Navigation } from "@/components/Navigation";
 import { Section } from "@/components/Section";
 import { Footer } from "@/components/Footer";
@@ -175,7 +175,7 @@ export default function HomePageClient() {
         </div>
       </Section>
 
-      <FeaturesCinema />
+      <BentoFeatures />
 
       {/* ============================================
           ABOUT — Centered Vision (light)
