@@ -6,8 +6,8 @@ import { HeartHandshake, Mail } from "lucide-react";
 import { HeroCinema } from "@/components/HeroCinema";
 import { BentoFeatures } from "@/components/BentoFeatures";
 
-const SpatialChannels = dynamic(
-  () => import("@/components/SpatialChannels").then((m) => m.SpatialChannels),
+const FabricFlow = dynamic(
+  () => import("@/components/FabricFlow").then((m) => m.FabricFlow),
   { ssr: false },
 );
 import { Navigation } from "@/components/Navigation";
@@ -93,7 +93,7 @@ export default function HomePageClient() {
         </div>
       </Section>
 
-      <SpatialChannels />
+      <FabricFlow />
 
       <BentoFeatures />
 
