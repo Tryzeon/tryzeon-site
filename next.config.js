@@ -33,6 +33,10 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
 
+  // Three.js transpiled as first-party so Turbopack handles its ESM
+  // example modules (RoundedBoxGeometry, RoomEnvironment) consistently.
+  transpilePackages: ['three'],
+
   images: {
     formats: ['image/avif', 'image/webp'],
     qualities: [75, 90],

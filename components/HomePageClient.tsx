@@ -1,9 +1,15 @@
 'use client';
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { HeartHandshake, Mail } from "lucide-react";
 import { HeroCinema } from "@/components/HeroCinema";
 import { BentoFeatures } from "@/components/BentoFeatures";
+
+const SpatialChannels = dynamic(
+  () => import("@/components/SpatialChannels").then((m) => m.SpatialChannels),
+  { ssr: false },
+);
 import { Navigation } from "@/components/Navigation";
 import { Section } from "@/components/Section";
 import { Footer } from "@/components/Footer";
@@ -86,6 +92,8 @@ export default function HomePageClient() {
           </div>
         </div>
       </Section>
+
+      <SpatialChannels />
 
       <BentoFeatures />
 
