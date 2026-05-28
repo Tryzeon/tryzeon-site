@@ -13,12 +13,13 @@ interface ChannelInfo {
 }
 
 interface PanelConfig {
+  image: string;
   x: number;
   y: number;
   z: number;
   ry: number;
-  color: number;
   scale: number;
+  rim: number;
   delay: number;
 }
 
@@ -26,47 +27,87 @@ const CHANNELS: ChannelInfo[] = [
   {
     index: '01',
     title: '實體門市',
-    desc: '門市裝置即拍即試，導購當場成交',
+    desc: '門市平板即拍即試，導購當場成交',
     accent: '#2563EB',
   },
   {
     index: '02',
     title: 'Tryzeon App',
-    desc: '跨品牌雲端衣櫃，隨身試衣間',
+    desc: '一張照片穿上任何衣服，隨身試衣間',
     accent: '#0EA5C4',
   },
   {
     index: '03',
     title: '品牌官網 SDK',
-    desc: 'embed 一行程式，官網即上線',
+    desc: 'embed 一行程式，官網即上線試穿',
     accent: '#06B6D4',
   },
 ];
 
 const PANELS: PanelConfig[] = [
-  { x: -2.75, y: 0.25, z: -0.9, ry: 0.38, color: 0x2563eb, scale: 0.92, delay: 0 },
-  { x: 0, y: 0, z: 0.4, ry: 0, color: 0xdce8ff, scale: 1.06, delay: 0.12 },
-  { x: 2.75, y: -0.25, z: -0.9, ry: -0.38, color: 0x06b6d4, scale: 0.92, delay: 0.24 },
+  {
+    image: '/images/slides/slide-4-b2b-value.jpg',
+    x: -3.25,
+    y: 0.18,
+    z: -1.3,
+    ry: 0.44,
+    scale: 0.86,
+    rim: 0x2563eb,
+    delay: 0,
+  },
+  {
+    image: '/images/slides/slide-1-brand-introduction.jpg',
+    x: 0,
+    y: 0,
+    z: 0.6,
+    ry: 0,
+    scale: 1.05,
+    rim: 0x60a5fa,
+    delay: 0.12,
+  },
+  {
+    image: '/images/slides/slide-2-user-experience.jpg',
+    x: 3.25,
+    y: -0.18,
+    z: -1.3,
+    ry: -0.44,
+    scale: 0.86,
+    rim: 0x06b6d4,
+    delay: 0.24,
+  },
 ];
+
+const SCREEN_W = 3.3;
+const SCREEN_H = 1.86;
 
 const easeOutCubic = (x: number): number => 1 - Math.pow(1 - x, 3);
 
 function StaticFallback() {
   return (
     <div className="grid sm:grid-cols-3 gap-4 md:gap-6 mt-12">
-      {CHANNELS.map((c) => (
+      {CHANNELS.map((c, i) => (
         <div
           key={c.index}
-          className="rounded-3xl border border-[#101828]/8 bg-white p-8 shadow-[0_8px_30px_rgba(16,24,40,0.06)]"
+          className="overflow-hidden rounded-3xl border border-[#101828]/8 bg-white shadow-[0_8px_30px_rgba(16,24,40,0.06)]"
         >
-          <span
-            className="font-mono text-xs tracking-[0.3em]"
-            style={{ color: c.accent }}
-          >
-            {c.index}
-          </span>
-          <h3 className="mt-4 text-xl font-bold text-[#101828]">{c.title}</h3>
-          <p className="mt-2 text-sm text-[#475467] leading-relaxed">{c.desc}</p>
+          <div className="relative aspect-video">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={PANELS[i].image}
+              alt={c.title}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+          <div className="p-6">
+            <span
+              className="font-mono text-xs tracking-[0.3em]"
+              style={{ color: c.accent }}
+            >
+              {c.index}
+            </span>
+            <h3 className="mt-2 text-lg font-bold text-[#101828]">{c.title}</h3>
+            <p className="mt-1 text-sm text-[#475467] leading-relaxed">{c.desc}</p>
+          </div>
         </div>
       ))}
     </div>
@@ -98,8 +139,8 @@ export function SpatialChannels() {
     const target = new THREE.Vector2(0, 0);
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(0, 0, 8);
+    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+    camera.position.set(0, 0, 9);
 
     let renderer: THREE.WebGLRenderer;
     try {
@@ -121,99 +162,107 @@ export function SpatialChannels() {
     const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
     scene.environment = envTex;
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-    const dir = new THREE.DirectionalLight(0xffffff, 1.1);
-    dir.position.set(3, 4, 5);
-    scene.add(dir);
-    const dirCyan = new THREE.DirectionalLight(0x06b6d4, 0.4);
-    dirCyan.position.set(-4, -2, 2);
-    scene.add(dirCyan);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+    const key = new THREE.DirectionalLight(0xffffff, 1.0);
+    key.position.set(3, 4, 6);
+    scene.add(key);
 
     const group = new THREE.Group();
     scene.add(group);
 
-    // Soft colored backdrop blooms — give the glass something to reflect/refract
-    // and add depth atmosphere (sits behind the panels).
-    const makeBloom = (color: number, x: number, y: number, scale: number) => {
+    // soft colored backdrop blooms for depth atmosphere
+    const blooms: { tex: THREE.CanvasTexture; mat: THREE.SpriteMaterial }[] = [];
+    const addBloom = (color: number, x: number, y: number, s: number) => {
       const c = document.createElement('canvas');
       c.width = 256;
       c.height = 256;
       const ctx = c.getContext('2d');
       if (ctx) {
-        const grd = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
         const col = new THREE.Color(color);
-        grd.addColorStop(0, `rgba(${(col.r * 255) | 0},${(col.g * 255) | 0},${(col.b * 255) | 0},0.9)`);
+        const grd = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+        grd.addColorStop(
+          0,
+          `rgba(${(col.r * 255) | 0},${(col.g * 255) | 0},${(col.b * 255) | 0},0.8)`,
+        );
         grd.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, 256, 256);
       }
       const tex = new THREE.CanvasTexture(c);
-      const spriteMat = new THREE.SpriteMaterial({
+      const mat = new THREE.SpriteMaterial({
         map: tex,
         transparent: true,
-        opacity: 0.5,
+        opacity: 0.4,
         depthWrite: false,
       });
-      const sprite = new THREE.Sprite(spriteMat);
-      sprite.position.set(x, y, -3.5);
-      sprite.scale.setScalar(scale);
-      return { sprite, tex, spriteMat };
+      const sprite = new THREE.Sprite(mat);
+      sprite.position.set(x, y, -4);
+      sprite.scale.setScalar(s);
+      group.add(sprite);
+      blooms.push({ tex, mat });
     };
-    const blooms = [
-      makeBloom(0x2563eb, -2.5, 1, 7),
-      makeBloom(0x06b6d4, 2.5, -1, 7),
-      makeBloom(0x60a5fa, 0, 0, 6),
-    ];
-    blooms.forEach((b) => group.add(b.sprite));
+    addBloom(0x2563eb, -3, 1, 7);
+    addBloom(0x06b6d4, 3, -1, 7);
 
-    const geo = new RoundedBoxGeometry(2.25, 3.05, 0.12, 6, 0.16);
-    const panels: { mesh: THREE.Mesh; cfg: PanelConfig }[] = [];
+    // textures
+    const loader = new THREE.TextureLoader();
+    const textures: THREE.Texture[] = [];
+    const maxAniso = renderer.capabilities.getMaxAnisotropy();
+
+    const bezelGeo = new RoundedBoxGeometry(
+      SCREEN_W + 0.16,
+      SCREEN_H + 0.16,
+      0.14,
+      5,
+      0.12,
+    );
+    const screenGeo = new THREE.PlaneGeometry(SCREEN_W, SCREEN_H);
+
+    const panels: { group: THREE.Group; cfg: PanelConfig }[] = [];
     for (const cfg of PANELS) {
-      const mat = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(cfg.color),
-        metalness: 0.1,
-        roughness: 0.12,
-        transmission: 0.55,
-        thickness: 1.2,
-        ior: 1.45,
-        clearcoat: 1,
-        clearcoatRoughness: 0.08,
-        transparent: true,
-        opacity: 0.78,
-        attenuationColor: new THREE.Color(cfg.color),
-        attenuationDistance: 2.0,
-        iridescence: 0.8,
-        iridescenceIOR: 1.35,
-        envMapIntensity: 1.6,
-        side: THREE.DoubleSide,
-      });
-      const mesh = new THREE.Mesh(geo, mat);
-      mesh.position.set(cfg.x, cfg.y, cfg.z);
-      mesh.rotation.y = cfg.ry;
-      mesh.scale.setScalar(0.55);
-      group.add(mesh);
-      panels.push({ mesh, cfg });
-    }
+      const panelGroup = new THREE.Group();
+      panelGroup.position.set(cfg.x, cfg.y, cfg.z);
+      panelGroup.rotation.y = cfg.ry;
+      panelGroup.scale.setScalar(0.5);
 
-    const pCount = 140;
-    const pPos = new Float32Array(pCount * 3);
-    for (let i = 0; i < pCount; i++) {
-      pPos[i * 3] = (Math.random() - 0.5) * 13;
-      pPos[i * 3 + 1] = (Math.random() - 0.5) * 7.5;
-      pPos[i * 3 + 2] = (Math.random() - 0.5) * 6 - 1.5;
+      const bezelMat = new THREE.MeshPhysicalMaterial({
+        color: 0xf7f8fa,
+        metalness: 0.2,
+        roughness: 0.18,
+        clearcoat: 1,
+        clearcoatRoughness: 0.1,
+        envMapIntensity: 1.4,
+      });
+      const bezel = new THREE.Mesh(bezelGeo, bezelMat);
+      panelGroup.add(bezel);
+
+      const tex = loader.load(cfg.image, (t) => {
+        t.colorSpace = THREE.SRGBColorSpace;
+        t.anisotropy = maxAniso;
+        t.needsUpdate = true;
+      });
+      tex.colorSpace = THREE.SRGBColorSpace;
+      textures.push(tex);
+
+      const screenMat = new THREE.MeshBasicMaterial({ map: tex, toneMapped: false });
+      const screen = new THREE.Mesh(screenGeo, screenMat);
+      screen.position.z = 0.081;
+      panelGroup.add(screen);
+
+      // thin colored accent rim along the bottom edge
+      const rimGeo = new THREE.PlaneGeometry(SCREEN_W * 0.9, 0.04);
+      const rimMat = new THREE.MeshBasicMaterial({
+        color: cfg.rim,
+        transparent: true,
+        opacity: 0.9,
+      });
+      const rim = new THREE.Mesh(rimGeo, rimMat);
+      rim.position.set(0, -SCREEN_H / 2 - 0.06, 0.081);
+      panelGroup.add(rim);
+
+      group.add(panelGroup);
+      panels.push({ group: panelGroup, cfg });
     }
-    const pGeo = new THREE.BufferGeometry();
-    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    const pMat = new THREE.PointsMaterial({
-      size: 0.045,
-      color: 0x2563eb,
-      transparent: true,
-      opacity: 0.4,
-      sizeAttenuation: true,
-      depthWrite: false,
-    });
-    const points = new THREE.Points(pGeo, pMat);
-    group.add(points);
 
     const onPointerMove = (e: PointerEvent) => {
       const rect = container.getBoundingClientRect();
@@ -227,21 +276,19 @@ export function SpatialChannels() {
       if (started && startTime === 0) startTime = t;
       const since = started ? t - startTime : 0;
 
-      pointer.x += (target.x - pointer.x) * 0.04;
-      pointer.y += (target.y - pointer.y) * 0.04;
-      group.rotation.y = pointer.x * 0.14;
-      group.rotation.x = pointer.y * 0.09;
+      pointer.x += (target.x - pointer.x) * 0.045;
+      pointer.y += (target.y - pointer.y) * 0.045;
+      group.rotation.y = pointer.x * 0.16;
+      group.rotation.x = pointer.y * 0.1;
 
-      panels.forEach(({ mesh, cfg }, i) => {
+      panels.forEach(({ group: pg, cfg }, i) => {
         const raw = (since - cfg.delay) / (1.05 - cfg.delay);
         const p = easeOutCubic(Math.min(1, Math.max(0, raw)));
-        mesh.scale.setScalar(THREE.MathUtils.lerp(0.55, cfg.scale, p));
-        const floatY = Math.sin(t * 1.2 + i * 1.5) * 0.12;
-        mesh.position.y = cfg.y + (1 - p) * -1.4 + floatY * p;
-        mesh.rotation.z = Math.sin(t * 0.8 + i) * 0.02;
+        pg.scale.setScalar(THREE.MathUtils.lerp(0.5, cfg.scale, p));
+        const floatY = Math.sin(t * 1.1 + i * 1.7) * 0.1;
+        pg.position.y = cfg.y + (1 - p) * -1.5 + floatY * p;
+        pg.rotation.z = Math.sin(t * 0.7 + i) * 0.015;
       });
-
-      points.rotation.y = t * 0.018;
 
       renderer.render(scene, camera);
       raf = requestAnimationFrame(renderFrame);
@@ -285,13 +332,19 @@ export function SpatialChannels() {
       ro.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
       stopLoop();
-      geo.dispose();
-      pGeo.dispose();
-      pMat.dispose();
-      panels.forEach(({ mesh }) => (mesh.material as THREE.Material).dispose());
+      bezelGeo.dispose();
+      screenGeo.dispose();
+      panels.forEach(({ group: pg }) => {
+        pg.traverse((obj) => {
+          if (obj instanceof THREE.Mesh) {
+            (obj.material as THREE.Material).dispose();
+          }
+        });
+      });
+      textures.forEach((t) => t.dispose());
       blooms.forEach((b) => {
         b.tex.dispose();
-        b.spriteMat.dispose();
+        b.mat.dispose();
       });
       envTex.dispose();
       pmrem.dispose();
@@ -341,9 +394,9 @@ export function SpatialChannels() {
           <>
             <div
               ref={containerRef}
-              className="relative w-full h-[58vh] md:h-[68vh] mt-6 md:mt-2"
+              className="relative w-full h-[58vh] md:h-[66vh] mt-4"
             />
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-10 -mt-4 md:-mt-12">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-10 mt-2">
               {CHANNELS.map((c) => (
                 <div key={c.index} className="flex flex-col items-center text-center">
                   <span
