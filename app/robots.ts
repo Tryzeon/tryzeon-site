@@ -8,12 +8,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/_next/', '/admin/', '/private/'],
+        disallow: ['/api/', '/_next/', '/admin/', '/private/', '/s/'],
       },
       {
         userAgent: 'Googlebot',
         allow: '/',
-        disallow: ['/api/', '/_next/', '/admin/'],
+        disallow: ['/api/', '/_next/', '/admin/', '/s/'],
       },
       {
         userAgent: 'Googlebot-Image',
@@ -22,7 +22,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: 'Bingbot',
         allow: '/',
-        disallow: ['/api/', '/_next/', '/admin/'],
+        disallow: ['/api/', '/_next/', '/admin/', '/s/'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

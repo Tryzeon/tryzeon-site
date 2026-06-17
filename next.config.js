@@ -2,6 +2,11 @@
 
 const isProd = process.env.NODE_ENV === 'production';
 
+
+const RESOLVE_LINK_URL =
+  process.env.RESOLVE_LINK_URL ||
+  'https://vshrdjgrweuuxtdqsevk.supabase.co/functions/v1/resolve-link';
+
 const ContentSecurityPolicy = [
   "default-src 'self'",
   // Next.js dev needs eval for HMR/turbopack; framer-motion runtime evaluates style strings
@@ -54,6 +59,16 @@ const nextConfig = {
       {
         source: '/:path*',
         headers: securityHeaders,
+      },
+    ];
+  },
+
+  async redirects() {
+    return [
+      {
+        source: '/s/:code',
+        destination: `${RESOLVE_LINK_URL}?code=:code`,
+        permanent: false,
       },
     ];
   },
