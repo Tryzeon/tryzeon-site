@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const isProd = process.env.NODE_ENV === 'production';
+const RESOLVE_LINK_URL = process.env.RESOLVE_LINK_URL;
 
 
 const RESOLVE_LINK_URL =
@@ -67,7 +68,7 @@ const nextConfig = {
     return [
       {
         source: '/s/:code',
-        destination: `${RESOLVE_LINK_URL}?code=:code`,
+        destination: `${RESOLVE_LINK_URL}/:code`,
         permanent: false,
       },
     ];
