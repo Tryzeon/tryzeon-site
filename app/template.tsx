@@ -14,6 +14,10 @@ export default function Template({ children }: TemplateProps) {
   // Any transform value (even identity) creates a containing block that
   // traps position:fixed descendants — breaks GSAP ScrollTrigger pin
   // across the entire site. Use opacity-only fade for page transitions.
+  // @keyframes pageEnter lives in globals.css (not styled-jsx here): a client
+  // component's styled-jsx is not emitted into the SSR HTML, so on a hard load
+  // the keyframe would be missing and this opacity:0 wrapper would stay blank
+  // until hydration. The global stylesheet ships the keyframe on first paint.
   return (
     <div
       key={pathname}
@@ -22,16 +26,6 @@ export default function Template({ children }: TemplateProps) {
         opacity: 0,
       }}
     >
-      <style jsx global>{`
-        @keyframes pageEnter {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-      `}</style>
       {children}
     </div>
   );

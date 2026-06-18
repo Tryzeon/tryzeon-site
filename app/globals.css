@@ -401,6 +401,20 @@
   transform: scale(1.05);
 }
 
+/* Page enter fade — used by app/template.tsx route transitions. Defined here
+   (not via styled-jsx in the client template) so it ships in the SSR
+   stylesheet; the template sets opacity:0 inline, and a hard load (e.g. a
+   deep-link landing page) must fade in on first paint without waiting for JS. */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 /* Fade In Up */
 @keyframes fadeInUp {
   from {
