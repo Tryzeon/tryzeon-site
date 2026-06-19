@@ -4,6 +4,13 @@ export const dynamic = 'force-dynamic';
 const RESOLVE_LINK_URL = process.env.RESOLVE_LINK_URL;
 const FALLBACK_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://tryzeon.com';
 
+function redirect(location: string): Response {
+  return new Response(null, {
+    status: 302,
+    headers: { Location: location, 'Cache-Control': 'no-store' },
+  });
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ code: string }> },
@@ -11,7 +18,7 @@ export async function GET(
   const { code } = await params;
 
   if (!RESOLVE_LINK_URL) {
-    return Response.redirect(FALLBACK_URL, 302);
+    return redirect(FALLBACK_URL);
   }
 
   try {
@@ -24,8 +31,8 @@ export async function GET(
     );
 
     const location = upstream.headers.get('location');
-    return Response.redirect(location ?? FALLBACK_URL, 302);
+    return redirect(location ?? FALLBACK_URL);
   } catch {
-    return Response.redirect(FALLBACK_URL, 302);
+    return redirect(FALLBACK_URL);
   }
 }
