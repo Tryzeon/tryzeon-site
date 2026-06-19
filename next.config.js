@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 
 const isProd = process.env.NODE_ENV === 'production';
-const RESOLVE_LINK_URL = process.env.RESOLVE_LINK_URL;
 
 const ContentSecurityPolicy = [
   "default-src 'self'",
@@ -59,15 +58,6 @@ const nextConfig = {
     ];
   },
 
-  async redirects() {
-    return [
-      {
-        source: '/s/:code',
-        destination: `${RESOLVE_LINK_URL}/:code`,
-        permanent: false,
-      },
-    ];
-  },
 };
 
 module.exports = nextConfig;
