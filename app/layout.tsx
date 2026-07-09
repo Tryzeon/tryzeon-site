@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display, Noto_Serif_TC } from "next/font/google";
 import { NavigationProgress } from "@/components/NavigationProgress";
 import { WebVitals } from "@/components/WebVitals";
 import { SkipToContent } from "@/components/Accessibility";
@@ -25,6 +25,16 @@ const playfair = Playfair_Display({
   variable: "--font-serif",
   style: ["normal", "italic"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+// 中文 editorial 大標 — Playfair 只有拉丁字符，中文大標靠思源宋體撐住
+// 雜誌編輯感。serif font stack 中排在 Playfair 之後：英文吃 Playfair、
+// 中文 fallback 到宋體。CJK 字型 Google Fonts 自動按 unicode-range 切片，
+// 只會下載頁面用到的字。
+const notoSerifTC = Noto_Serif_TC({
+  subsets: ["latin"],
+  variable: "--font-serif-tc",
+  weight: ["600", "700", "900"],
   display: "swap",
 });
 
@@ -143,7 +153,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="zh-TW" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable}`}>
+    <html lang="zh-TW" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${notoSerifTC.variable}`}>
       <head>
         {/* Preload critical images */}
         <link rel="preload" href="/images/slides/slide-1-brand-introduction.jpg" as="image" type="image/jpeg" />

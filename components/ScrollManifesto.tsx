@@ -23,11 +23,12 @@ const enWords = [
 
 const zhClauses = ['時尚的未來，', '不是試衣間，', '是基礎建設。'];
 
+// 中文宋體主句 — clause 逐句浮現
 const containerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.07,
+      staggerChildren: 0.16,
       delayChildren: 0.2,
     },
   },
@@ -43,12 +44,13 @@ const wordVariants: Variants = {
   },
 };
 
-const zhContainerVariants: Variants = {
+// 英文 Playfair italic 副句 — 主句落定後逐字跟上
+const enContainerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.15,
-      delayChildren: enWords.length * 0.07 + 0.4,
+      staggerChildren: 0.05,
+      delayChildren: zhClauses.length * 0.16 + 0.55,
     },
   },
 };
@@ -70,7 +72,7 @@ const ctaVariants: Variants = {
     transition: {
       duration: 0.8,
       ease: [0.16, 1, 0.3, 1],
-      delay: enWords.length * 0.07 + zhClauses.length * 0.15 + 0.6,
+      delay: zhClauses.length * 0.16 + enWords.length * 0.05 + 0.85,
     },
   },
 };
@@ -110,7 +112,7 @@ export function ScrollManifesto() {
         >
           <div className="font-mono text-[10px] md:text-[11px] tracking-[0.4em] uppercase text-[#475467] flex items-center gap-3">
             <span className="block w-8 h-px bg-[#101828]/40" />
-            <span>N°02 / Manifesto</span>
+            <span>N°02 — Manifesto</span>
           </div>
           <div className="font-mono text-[10px] md:text-[11px] tracking-[0.4em] uppercase text-[#475467] text-right hidden sm:block">
             2026 — Tryzeon Editorial
@@ -122,42 +124,44 @@ export function ScrollManifesto() {
           時尚的未來，不是試衣間，是基礎建設。
         </h2>
 
+        {/* 主句 — 中文宋體 editorial 大標（不用 italic，CJK 假斜體會醜） */}
         <motion.p
           initial={reduced ? false : 'hidden'}
           whileInView="visible"
           viewport={viewport}
           variants={containerVariants}
-          className="font-serif italic text-[#101828] tracking-[-0.015em] leading-[1.02] flex flex-wrap gap-x-[0.28em] gap-y-2 mb-10 md:mb-16"
-          style={{ fontSize: 'clamp(2.25rem, 6vw, 5.75rem)' }}
-          aria-hidden
-        >
-          {enWords.map((word, i) => (
-            <motion.span
-              key={`en-${i}`}
-              variants={wordVariants}
-              className="inline-block"
-            >
-              {word}
-            </motion.span>
-          ))}
-        </motion.p>
-
-        <motion.p
-          initial={reduced ? false : 'hidden'}
-          whileInView="visible"
-          viewport={viewport}
-          variants={zhContainerVariants}
-          className="font-sans font-medium text-[#475467] flex flex-wrap gap-x-1 gap-y-1 leading-[1.5]"
-          style={{ fontSize: 'clamp(1rem, 1.45vw, 1.5rem)' }}
+          className="font-serif font-black text-[#101828] tracking-[-0.01em] leading-[1.2] flex flex-wrap gap-y-3 mb-8 md:mb-12"
+          style={{ fontSize: 'clamp(2.4rem, 5.8vw, 5.25rem)' }}
           aria-hidden
         >
           {zhClauses.map((clause, i) => (
             <motion.span
               key={`zh-${i}`}
+              variants={wordVariants}
+              className={`inline-block ${i === zhClauses.length - 1 ? 'text-[#2563EB]' : ''}`}
+            >
+              {clause}
+            </motion.span>
+          ))}
+        </motion.p>
+
+        {/* 副句 — 英文 Playfair italic，雜誌 pull-quote 感 */}
+        <motion.p
+          initial={reduced ? false : 'hidden'}
+          whileInView="visible"
+          viewport={viewport}
+          variants={enContainerVariants}
+          className="font-serif italic text-[#475467] tracking-[-0.01em] leading-[1.35] flex flex-wrap gap-x-[0.26em] gap-y-1"
+          style={{ fontSize: 'clamp(1.2rem, 2.1vw, 1.9rem)' }}
+          aria-hidden
+        >
+          {enWords.map((word, i) => (
+            <motion.span
+              key={`en-${i}`}
               variants={zhClauseVariants}
               className="inline-block"
             >
-              {clause}
+              {word}
             </motion.span>
           ))}
         </motion.p>

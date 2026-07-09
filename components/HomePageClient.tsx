@@ -22,6 +22,7 @@ import { faqData } from "@/lib/faq-data";
 import { trackCTA } from "@/lib/analytics";
 import { AppleButton } from "@/components/MicroInteractions";
 import { Magnetic } from "@/components/Magnetic";
+import { SectionHeader } from "@/components/SectionHeader";
 
 export default function HomePageClient() {
   const [currentLang, setCurrentLang] = useState('zh-TW');
@@ -48,23 +49,19 @@ export default function HomePageClient() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6">
-          <ScrollReveal direction="up" className="text-center mb-16 md:mb-24">
-            <span className="inline-flex items-center gap-3 text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#475467] mb-6">
-              <span className="block w-6 h-px bg-[#101828]/30" />
-              For Brands & Consumers
-              <span className="block w-6 h-px bg-[#101828]/30" />
-            </span>
-            <h2
-              className="font-extrabold tracking-[-0.04em] leading-[0.95] text-[#101828]"
-              style={{ fontSize: 'clamp(2.5rem, 7vw, 6rem)' }}
-            >
-              一個平台，<br />
-              <span className="bg-gradient-to-r from-[#2563EB] via-[#06B6D4] to-[#2563EB] bg-clip-text text-transparent">
-                兩端共贏
-              </span>
-              。
-            </h2>
-          </ScrollReveal>
+          <SectionHeader
+            kicker="N°03 — For Brands & Consumers"
+            title={
+              <>
+                一個平台，
+                <span className="bg-gradient-to-r from-[#2563EB] to-[#06B6D4] bg-clip-text text-transparent">
+                  兩端共贏
+                </span>
+                。
+              </>
+            }
+            lede="品牌要導購成交，消費者要放心購買——Tryzeon 讓兩端在同一套試穿基礎建設上各取所需。"
+          />
 
           <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <SpotlightAudienceCard
@@ -101,7 +98,7 @@ export default function HomePageClient() {
       {/* ============================================
           ABOUT — Centered Vision (light)
           ============================================ */}
-      <Section id="about" className="relative py-32 md:py-56 bg-[#ffffff] overflow-hidden">
+      <Section id="about" className="relative py-24 md:py-40 bg-[#ffffff] overflow-hidden">
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vh] bg-[radial-gradient(circle,rgba(37,99,235,0.06)_0%,transparent_60%)] blur-3xl animate-mesh-float" />
           <div className="absolute top-[10%] right-[-15%] w-[50vw] h-[50vh] bg-[radial-gradient(circle,rgba(6,182,212,0.05)_0%,transparent_60%)] blur-3xl animate-mesh-float [animation-delay:8s]" />
@@ -113,20 +110,12 @@ export default function HomePageClient() {
             <div className="w-20 h-20 md:w-24 md:h-24 glass-card rounded-3xl flex items-center justify-center mx-auto mb-10 md:mb-14">
               <HeartHandshake className="h-10 w-10 md:h-12 md:w-12 text-[#2563EB]" />
             </div>
-            <span className="inline-flex items-center gap-3 text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#475467] mb-6 md:mb-8">
-              <span className="block w-6 h-px bg-[#101828]/30" />
-              Core Vision
-              <span className="block w-6 h-px bg-[#101828]/30" />
-            </span>
-            <h3
-              className="font-extrabold tracking-[-0.04em] leading-[1.0] text-[#101828] mb-10 md:mb-14"
-              style={{ fontSize: 'clamp(2.25rem, 5vw, 4.5rem)' }}
-            >
-              {t.about.title}
-            </h3>
+          </ScrollReveal>
+          <SectionHeader kicker="N°06 — Core Vision" title={t.about.title} />
+          <ScrollReveal direction="up" delay={0.15}>
             <p
-              className="text-[#475467] font-medium leading-relaxed max-w-3xl mx-auto text-balance"
-              style={{ fontSize: 'clamp(1.125rem, 1.6vw, 1.5rem)' }}
+              className="font-serif text-[#475467] leading-[1.7] max-w-3xl mx-auto text-balance -mt-4 md:-mt-8"
+              style={{ fontSize: 'clamp(1.125rem, 1.6vw, 1.45rem)' }}
             >
               &ldquo;{t.about.desc}&rdquo;
             </p>
@@ -144,24 +133,11 @@ export default function HomePageClient() {
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto px-6">
-          <ScrollReveal direction="up">
-            <div className="text-center mb-16 md:mb-24">
-              <span className="inline-flex items-center gap-3 text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#475467] mb-6">
-                <span className="block w-6 h-px bg-[#101828]/30" />
-                Support
-                <span className="block w-6 h-px bg-[#101828]/30" />
-              </span>
-              <h3
-                className="font-extrabold tracking-[-0.04em] leading-[1.0] text-[#101828] mb-6 md:mb-10"
-                style={{ fontSize: 'clamp(2.25rem, 5vw, 4.5rem)' }}
-              >
-                常見問題
-              </h3>
-              <p className="text-[#475467] font-medium text-lg lg:text-xl">
-                關於 Tryzeon 的常見疑問,我們都在這裡為您解答
-              </p>
-            </div>
-          </ScrollReveal>
+          <SectionHeader
+            kicker="N°07 — Support"
+            title="常見問題"
+            lede="關於 Tryzeon 的常見疑問，我們都在這裡為您解答。"
+          />
           <ScrollReveal direction="up" delay={0.2}>
             <div className="glass-card rounded-3xl p-6 md:p-12">
               <FAQ items={faqData[currentLang as keyof typeof faqData] || faqData['zh-TW']} />
@@ -173,7 +149,7 @@ export default function HomePageClient() {
       {/* ============================================
           CONTACT / CTA — Light with subtle mesh
           ============================================ */}
-      <Section id="contact" className="py-28 md:py-56 bg-[#ffffff] relative overflow-hidden">
+      <Section id="contact" className="py-24 md:py-40 bg-[#ffffff] relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(37,99,235,0.08)_0%,transparent_60%)] animate-mesh-float" />
           <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(6,182,212,0.06)_0%,transparent_60%)] animate-mesh-float [animation-delay:4s]" />
@@ -181,17 +157,12 @@ export default function HomePageClient() {
         </div>
 
         <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
-          <ScrollReveal direction="up">
-            <span className="inline-block text-xs md:text-sm font-mono font-semibold uppercase tracking-[0.3em] text-[#2563EB] mb-6 md:mb-8 bg-[#2563EB]/10 px-4 py-1.5 rounded-full">
-              Get Started
-            </span>
-            <h3 className="text-4xl md:text-7xl lg:text-8xl font-extrabold text-[#101828] mb-6 md:mb-8 tracking-tight leading-tight">
-              準備好讓你的時尚<br />即時上身?
-            </h3>
-            <p className="text-lg md:text-2xl text-[#475467] font-medium mb-12 md:mb-16 leading-relaxed max-w-2xl mx-auto text-balance">
-              無論你是消費者還是品牌——加入正在重新定義時尚試穿的新世代。
-            </p>
-
+          <SectionHeader
+            kicker="N°08 — Get Started"
+            title={<>準備好讓你的時尚<br />即時上身？</>}
+            lede="無論你是消費者還是品牌——加入正在重新定義時尚試穿的新世代。"
+          />
+          <ScrollReveal direction="up" delay={0.1}>
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
               <Magnetic className="w-full md:w-auto">
                 <AppleButton

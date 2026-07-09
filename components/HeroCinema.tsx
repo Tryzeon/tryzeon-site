@@ -130,8 +130,8 @@ function HeroDesktop() {
             </motion.div>
 
             <h1
-              className="font-extrabold tracking-[-0.05em] leading-[0.88] text-[#101828] mb-10"
-              style={{ fontSize: 'clamp(3rem, 8.5vw, 7.5rem)' }}
+              className="font-serif font-black tracking-[-0.02em] leading-[1.06] text-[#101828] mb-10"
+              style={{ fontSize: 'clamp(2.75rem, 7.8vw, 6.75rem)' }}
             >
               <KineticHeading text="重新定義" baseDelay={0.35} />
               <br />
@@ -252,8 +252,8 @@ function HeroMobile() {
         </div>
 
         <h1
-          className="font-extrabold tracking-[-0.05em] leading-[0.9] text-[#101828] mb-6"
-          style={{ fontSize: 'clamp(3rem, 14vw, 5rem)' }}
+          className="font-serif font-black tracking-[-0.02em] leading-[1.08] text-[#101828] mb-6"
+          style={{ fontSize: 'clamp(2.75rem, 12.5vw, 4.6rem)' }}
         >
           <KineticHeading text="重新定義" baseDelay={0.2} />
           <br />

@@ -171,10 +171,14 @@ export function BentoFeatures() {
         {/* Header */}
         <header className="mb-12 flex flex-col gap-6 border-b border-[#101828]/8 pb-8 md:flex-row md:items-end md:justify-between">
           <div className="flex flex-col gap-3">
-            <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-[#475467] font-mono font-semibold">
-              Core Infrastructure
+            <span className="inline-flex items-center gap-3 text-[10px] md:text-[11px] uppercase tracking-[0.4em] text-[#475467] font-mono font-semibold">
+              <span className="block w-8 h-px bg-[#101828]/40" />
+              N°05 — Core Infrastructure
             </span>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-[-0.04em] leading-[0.95] text-[#101828]">
+            <h2
+              className="font-serif font-black tracking-[-0.02em] leading-[1.12] text-[#101828]"
+              style={{ fontSize: 'clamp(2rem, 4.6vw, 3.9rem)' }}
+            >
               五大核心技術
             </h2>
           </div>

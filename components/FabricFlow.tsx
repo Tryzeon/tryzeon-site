@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { SectionHeader } from '@/components/SectionHeader';
 
 const VERTEX_SHADER = /* glsl */ `
   uniform float uTime;
@@ -204,28 +205,21 @@ export function FabricFlow() {
       id="channels"
       className="relative bg-[#FAFAFA] pt-24 md:pt-36 pb-16 md:pb-24 overflow-hidden"
     >
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 text-center mb-10 md:mb-14">
-        <span className="inline-flex items-center gap-3 font-mono text-[10px] md:text-[11px] tracking-[0.4em] uppercase text-[#475467] mb-6">
-          <span className="block w-6 h-px bg-[#101828]/30" />
-          Omnichannel
-          <span className="block w-6 h-px bg-[#101828]/30" />
-        </span>
-        <h2
-          className="font-extrabold tracking-[-0.04em] leading-[1.02] text-[#101828] max-w-[20ch] mx-auto"
-          style={{ fontSize: 'clamp(2.25rem, 5vw, 4.5rem)' }}
-        >
-          一套 AI 試穿，
-          <span className="bg-gradient-to-r from-[#2563EB] to-[#06B6D4] bg-clip-text text-transparent">
-            無縫流動於每個通路
-          </span>
-          。
-        </h2>
-        <p
-          className="mt-6 text-[#475467] font-medium leading-relaxed max-w-2xl mx-auto text-balance"
-          style={{ fontSize: 'clamp(1rem, 1.4vw, 1.375rem)' }}
-        >
-          門市、Tryzeon App、品牌官網——像絲綢一樣，同一套體驗順暢流過每個接觸點。
-        </p>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
+        <SectionHeader
+          kicker="N°04 — Omnichannel"
+          title={
+            <>
+              一套 AI 試穿，
+              <span className="bg-gradient-to-r from-[#2563EB] to-[#06B6D4] bg-clip-text text-transparent">
+                無縫流動於每個通路
+              </span>
+              。
+            </>
+          }
+          lede="門市、Tryzeon App、品牌官網——像絲綢一樣，同一套體驗順暢流過每個接觸點。"
+          className="!mb-8 md:!mb-10"
+        />
       </div>
 
       {reduced ? (
