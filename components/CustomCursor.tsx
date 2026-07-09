@@ -2,94 +2,90 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+/**
+ * CustomCursor — awwwards-grade cursor.
+ * - A trailing ring using mix-blend-mode: difference (inverts whatever it's over)
+ * - A precise center dot
+ * - Ring grows + fills when over interactive elements
+ * - Hides on touch / when leaving the window
+ */
 export function CustomCursor() {
-  const [isDesktop, setIsDesktop] = useState(false);
-  const [cursorVariant, setCursorVariant] = useState<'default' | 'hover'>('default');
-  const ringRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+  const [isPointer, setIsPointer] = useState(false);
+  const [isDown, setIsDown] = useState(false);
+  const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
-    setIsDesktop(window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 1024);
-  }, []);
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
 
-  useEffect(() => {
-    if (!isDesktop) return;
+    let mx = 0;
+    let my = 0;
+    let rx = 0;
+    let ry = 0;
 
-    const target = { x: -100, y: -100 };
-    const ringPos = { x: -100, y: -100 };
-    let rafId = 0;
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-
-    const update = () => {
-      ringPos.x = lerp(ringPos.x, target.x, 0.22);
-      ringPos.y = lerp(ringPos.y, target.y, 0.22);
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ringPos.x}px, ${ringPos.y}px, 0) translate(-50%, -50%)`;
-      }
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
-      }
-      rafId = requestAnimationFrame(update);
+    const loop = () => {
+      rx += (mx - rx) * 0.16;
+      ry += (my - ry) * 0.16;
+      dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
+      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+      raf = requestAnimationFrame(loop);
     };
-    rafId = requestAnimationFrame(update);
+    let raf = requestAnimationFrame(loop);
 
-    const handleMouseMove = (e: MouseEvent) => {
-      target.x = e.clientX;
-      target.y = e.clientY;
+    const onMove = (e: MouseEvent) => {
+      mx = e.clientX;
+      my = e.clientY;
+      if (hidden) setHidden(false);
+      const target = e.target as HTMLElement | null;
+      setIsPointer(
+        !!target?.closest('a, button, [role="button"], input, textarea, select, label'),
+      );
     };
+    const onDown = () => setIsDown(true);
+    const onUp = () => setIsDown(false);
+    const onLeave = () => setHidden(true);
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const t = e.target as HTMLElement;
-      if (
-        t.closest('a') ||
-        t.closest('button') ||
-        t.closest('[role="button"]') ||
-        t.tagName.toLowerCase() === 'input' ||
-        t.tagName.toLowerCase() === 'textarea'
-      ) {
-        setCursorVariant('hover');
-      } else {
-        setCursorVariant('default');
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mousedown', onDown);
+    window.addEventListener('mouseup', onUp);
+    document.documentElement.addEventListener('mouseleave', onLeave);
 
     return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseover', handleMouseOver);
+      cancelAnimationFrame(raf);
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mousedown', onDown);
+      window.removeEventListener('mouseup', onUp);
+      document.documentElement.removeEventListener('mouseleave', onLeave);
     };
-  }, [isDesktop]);
-
-  if (!isDesktop) return null;
-
-  const isHover = cursorVariant === 'hover';
+  }, [hidden]);
 
   return (
     <>
-      <div
-        ref={ringRef}
-        className="fixed top-0 left-0 w-10 h-10 rounded-full border pointer-events-none z-[9999] hidden lg:block"
-        style={{
-          transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%)',
-          backgroundColor: isHover ? 'white' : 'transparent',
-          borderColor: isHover ? 'transparent' : 'rgba(255, 255, 255, 0.5)',
-          mixBlendMode: isHover ? 'difference' : 'normal',
-          scale: isHover ? '1.5' : '1',
-          transition:
-            'background-color 0.2s ease, border-color 0.2s ease, scale 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        }}
-      />
+      {/* Center dot — precise, brand blue */}
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 w-1.5 h-1.5 bg-white rounded-full pointer-events-none z-[10000] hidden lg:block mix-blend-difference"
-        style={{
-          transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%)',
-          opacity: isHover ? 0 : 1,
-          transition: 'opacity 0.15s ease',
-        }}
+        aria-hidden
+        className={`hidden lg:block fixed top-0 left-0 -ml-[3px] -mt-[3px] w-1.5 h-1.5 rounded-full bg-[#2563EB] z-[9999] pointer-events-none transition-opacity duration-300 ${
+          hidden ? 'opacity-0' : 'opacity-100'
+        }`}
+      />
+      {/* Trailing ring — inverts content via difference blend, grows on hover */}
+      <div
+        ref={ringRef}
+        aria-hidden
+        style={{ mixBlendMode: 'difference' }}
+        className={`hidden lg:block fixed top-0 left-0 rounded-full z-[9999] pointer-events-none bg-white transition-[width,height,margin,opacity,background-color] duration-300 ease-out ${
+          hidden ? 'opacity-0' : 'opacity-100'
+        } ${
+          isPointer
+            ? 'w-16 h-16 -ml-8 -mt-8'
+            : isDown
+              ? 'w-6 h-6 -ml-3 -mt-3'
+              : 'w-9 h-9 -ml-[18px] -mt-[18px]'
+        }`}
       />
     </>
   );
