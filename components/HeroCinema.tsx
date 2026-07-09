@@ -1,16 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Play } from 'lucide-react';
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import { GradientWave } from '@/components/GradientWave';
+import { Magnetic } from '@/components/Magnetic';
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+const AURORA = ['#FAFAFA', '#E0E7FF', '#E0F2FE', '#CFFAFE', '#FAFAFA'];
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function HeroCinema() {
   return (
@@ -22,42 +21,55 @@ export function HeroCinema() {
 }
 
 /**
- * HeroDesktop — ORYZO/Lusion-style light cinematic hero.
- *
- * Layout (1 viewport):
- *  Left  ~58% : kicker + 巨型黑字標題 + 副標 + 2 CTA
- *  Right ~42% : video thumbnail with PLAY button overlay → fullscreen video
- *
- * No sticky cinema 3-stage anymore — Hero is a single confident statement,
- * not a scroll-controlled narrative. The cinema scroll narrative happens
- * in subsequent sections (Stats / Features).
+ * KineticHeading — per-character clip-up reveal (COS / Lusion editorial type).
+ * Each glyph rises out of an overflow-hidden mask, staggered.
  */
+function KineticHeading({
+  text,
+  baseDelay = 0,
+  className,
+}: {
+  text: string;
+  baseDelay?: number;
+  className?: string;
+}) {
+  const reduced = useReducedMotion();
+  const chars = Array.from(text);
+  return (
+    <span className={className} aria-label={text}>
+      {chars.map((c, i) => (
+        <span
+          key={i}
+          className="inline-block overflow-hidden align-bottom"
+          aria-hidden
+        >
+          <motion.span
+            className="inline-block"
+            initial={reduced ? false : { y: '115%' }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.95, ease: EASE, delay: baseDelay + i * 0.055 }}
+          >
+            {c === ' ' ? ' ' : c}
+          </motion.span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: (d: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.9, ease: EASE, delay: d },
+  }),
+};
+
 function HeroDesktop() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const kickerRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const subheadRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const thumbRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.set(
-        [kickerRef.current, headingRef.current, subheadRef.current, ctaRef.current, thumbRef.current],
-        { opacity: 0, y: 30 },
-      );
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.9 } });
-      tl.to(kickerRef.current, { opacity: 1, y: 0 }, 0.15)
-        .to(headingRef.current, { opacity: 1, y: 0, duration: 1.1 }, 0.25)
-        .to(subheadRef.current, { opacity: 1, y: 0 }, 0.55)
-        .to(ctaRef.current, { opacity: 1, y: 0 }, 0.75)
-        .to(thumbRef.current, { opacity: 1, y: 0, duration: 1.1 }, 0.4);
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
+  const reduced = useReducedMotion();
 
   const togglePlay = () => {
     const v = videoRef.current;
@@ -75,113 +87,142 @@ function HeroDesktop() {
 
   return (
     <section
-      ref={sectionRef}
       className="relative bg-[#FAFAFA] hidden lg:block overflow-hidden"
       aria-label="Tryzeon hero"
     >
-      {/* Stripe-style WebGL gradient wave (21st.dev Gradient Wave adapted) */}
-      <div className="absolute inset-0 opacity-50 pointer-events-none" aria-hidden>
-        <GradientWave colors={['#FAFAFA', '#E0E7FF', '#FEF3C7', '#FFE4E6', '#E0F2FE']} />
+      {/* Aurora WebGL backdrop (blue/cyan only — system aligned) */}
+      <div className="absolute inset-0 opacity-70 pointer-events-none" aria-hidden>
+        <GradientWave colors={AURORA} />
       </div>
-      {/* Soft white wash to keep typography readable */}
       <div
-        className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#FAFAFA] via-[#FAFAFA]/70 to-transparent"
+        className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#FAFAFA] via-[#FAFAFA]/55 to-transparent"
         aria-hidden
       />
-      {/* Subtle dot grid texture */}
-      <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" aria-hidden />
+      <div className="absolute inset-0 dot-grid opacity-25 pointer-events-none" aria-hidden />
+
+      {/* Editorial top markers */}
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        custom={0.1}
+        className="absolute top-28 inset-x-0 z-10 hidden xl:flex justify-between px-20 font-mono text-[10px] tracking-[0.4em] uppercase text-[#475467]/70"
+      >
+        <span>N°01 — Try-On Infrastructure</span>
+        <span>Taipei · Est. 2024</span>
+      </motion.div>
 
       <div className="relative z-10 min-h-[100svh] flex items-center px-6 md:px-12 lg:px-20">
         <div className="w-full max-w-[1600px] mx-auto grid grid-cols-12 gap-8 lg:gap-16 items-center">
-          {/* Left: Typography */}
+          {/* Left: Kinetic typography */}
           <div className="col-span-7">
-            <div ref={kickerRef} className="flex items-center gap-3 mb-10">
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={0.15}
+              className="flex items-center gap-3 mb-10"
+            >
               <span className="block w-8 h-px bg-[#101828]/40" />
               <span className="text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#475467]">
                 Tryzeon · AI Try-On Infrastructure
               </span>
-            </div>
+            </motion.div>
 
             <h1
-              ref={headingRef}
               className="font-extrabold tracking-[-0.05em] leading-[0.88] text-[#101828] mb-10"
               style={{ fontSize: 'clamp(3rem, 8.5vw, 7.5rem)' }}
             >
-              重新定義<br />
-              <span className="bg-gradient-to-r from-[#101828] via-[#101828] to-[#475467] bg-clip-text text-transparent">
-                你的時尚。
-              </span>
+              <KineticHeading text="重新定義" baseDelay={0.35} />
+              <br />
+              <KineticHeading text="你的時尚。" baseDelay={0.6} />
             </h1>
 
-            <p
-              ref={subheadRef}
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={1.05}
               className="text-lg md:text-xl lg:text-2xl text-[#475467] font-medium leading-relaxed max-w-2xl mb-12"
             >
               一張照片，穿上任何衣服。<br />
               無論線上、實體門市、品牌官網——Tryzeon 把實體服飾即時變成數位試穿。
-            </p>
+            </motion.p>
 
-            <div ref={ctaRef} className="flex flex-col sm:flex-row gap-3 md:gap-4">
-              <Link
-                href="/products/virtual-try-on"
-                className="group inline-flex items-center justify-center px-9 py-4 bg-[#101828] text-white rounded-full font-semibold text-base hover:bg-[#1D2939] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
-              >
-                立即體驗
-                <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
-              </Link>
-              <Link
-                href="/business"
-                className="group inline-flex items-center justify-center px-9 py-4 bg-white text-[#101828] rounded-full font-semibold text-base hover:bg-[#F2F4F7] transition-all duration-300 border border-[#101828]/10 hover:border-[#101828]/25 hover:scale-[1.02] active:scale-[0.98]"
-              >
-                品牌合作方案
-              </Link>
-            </div>
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={1.25}
+              className="flex flex-col sm:flex-row gap-3 md:gap-4"
+            >
+              <Magnetic>
+                <Link
+                  href="/products/virtual-try-on"
+                  className="group inline-flex items-center justify-center px-9 py-4 bg-[#101828] text-white rounded-full font-semibold text-base hover:bg-[#1D2939] transition-colors duration-300 shadow-lg hover:shadow-xl"
+                >
+                  立即體驗
+                  <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </Link>
+              </Magnetic>
+              <Magnetic>
+                <Link
+                  href="/business"
+                  className="group inline-flex items-center justify-center px-9 py-4 bg-white/70 backdrop-blur-md text-[#101828] rounded-full font-semibold text-base hover:bg-white transition-colors duration-300 border border-white/60"
+                >
+                  品牌合作方案
+                </Link>
+              </Magnetic>
+            </motion.div>
           </div>
 
-          {/* Right: Video thumbnail with PLAY */}
-          <div className="col-span-5">
-            <div
-              ref={thumbRef}
-              className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl cursor-pointer group"
-              onClick={togglePlay}
-            >
-              <video
-                ref={videoRef}
-                src="/videos/hero-runway.mp4"
-                muted
-                loop
-                playsInline
-                autoPlay
-                className="absolute inset-0 w-full h-full object-cover"
-                aria-hidden
-              />
-              {/* Subtle vignette to give edge contrast on light page */}
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40 pointer-events-none" />
+          {/* Right: Video in floating glass frame */}
+          <motion.div
+            className="col-span-5"
+            initial={reduced ? false : { opacity: 0, y: 40, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1.1, ease: EASE, delay: 0.5 }}
+          >
+            <div className="relative p-2 rounded-[2rem] bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_30px_80px_rgba(16,24,40,0.12)]">
+              <div
+                className="relative aspect-[4/5] rounded-3xl overflow-hidden cursor-pointer group"
+                onClick={togglePlay}
+              >
+                <video
+                  ref={videoRef}
+                  src="/videos/hero-runway.mp4"
+                  muted
+                  loop
+                  playsInline
+                  autoPlay
+                  className="absolute inset-0 w-full h-full object-cover"
+                  aria-hidden
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40 pointer-events-none" />
 
-              {/* PLAY button overlay */}
-              {!isPlaying && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center shadow-2xl transition-transform duration-500 group-hover:scale-110">
-                    <Play className="w-7 h-7 md:w-9 md:h-9 text-[#101828] fill-[#101828] ml-1" />
+                {!isPlaying && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center shadow-2xl transition-transform duration-500 group-hover:scale-110">
+                      <Play className="w-7 h-7 md:w-9 md:h-9 text-[#101828] fill-[#101828] ml-1" />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Caption strip */}
-              <div className="absolute bottom-0 inset-x-0 p-6 text-white pointer-events-none">
-                <span className="block text-[10px] font-mono font-semibold tracking-[0.4em] uppercase opacity-80 mb-2">
-                  Hero Demo · 8s
-                </span>
-                <p className="text-sm md:text-base font-medium leading-snug">
-                  從照片到上身，<br />一鍵看見。
-                </p>
+                <div className="absolute bottom-0 inset-x-0 p-6 text-white pointer-events-none">
+                  <span className="block text-[10px] font-mono font-semibold tracking-[0.4em] uppercase opacity-80 mb-2">
+                    Hero Demo · 8s
+                  </span>
+                  <p className="text-sm md:text-base font-medium leading-snug">
+                    從照片到上身，<br />一鍵看見。
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
-      {/* Scroll hint at bottom */}
+      {/* Scroll hint */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-[#475467]/60 pointer-events-none">
         <span className="text-[10px] font-mono tracking-[0.4em] uppercase">Scroll</span>
         <span className="text-xl animate-bounce">↓</span>
@@ -198,7 +239,7 @@ function HeroMobile() {
     >
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute top-[5%] left-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(37,99,235,0.08)_0%,transparent_60%)] blur-3xl" />
-        <div className="absolute bottom-[5%] right-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(124,58,237,0.06)_0%,transparent_60%)] blur-3xl" />
+        <div className="absolute bottom-[5%] right-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(6,182,212,0.06)_0%,transparent_60%)] blur-3xl" />
         <div className="absolute inset-0 dot-grid opacity-40" />
       </div>
 
@@ -214,8 +255,9 @@ function HeroMobile() {
           className="font-extrabold tracking-[-0.05em] leading-[0.9] text-[#101828] mb-6"
           style={{ fontSize: 'clamp(3rem, 14vw, 5rem)' }}
         >
-          重新定義<br />
-          你的時尚。
+          <KineticHeading text="重新定義" baseDelay={0.2} />
+          <br />
+          <KineticHeading text="你的時尚。" baseDelay={0.4} />
         </h1>
 
         <p className="text-base text-[#475467] font-medium leading-relaxed max-w-md mb-8">

@@ -21,6 +21,7 @@ import { translations } from "@/lib/translations";
 import { faqData } from "@/lib/faq-data";
 import { trackCTA } from "@/lib/analytics";
 import { AppleButton } from "@/components/MicroInteractions";
+import { Magnetic } from "@/components/Magnetic";
 
 export default function HomePageClient() {
   const [currentLang, setCurrentLang] = useState('zh-TW');
@@ -103,13 +104,13 @@ export default function HomePageClient() {
       <Section id="about" className="relative py-32 md:py-56 bg-[#ffffff] overflow-hidden">
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vh] bg-[radial-gradient(circle,rgba(37,99,235,0.06)_0%,transparent_60%)] blur-3xl animate-mesh-float" />
-          <div className="absolute top-[10%] right-[-15%] w-[50vw] h-[50vh] bg-[radial-gradient(circle,rgba(124,58,237,0.05)_0%,transparent_60%)] blur-3xl animate-mesh-float [animation-delay:8s]" />
+          <div className="absolute top-[10%] right-[-15%] w-[50vw] h-[50vh] bg-[radial-gradient(circle,rgba(6,182,212,0.05)_0%,transparent_60%)] blur-3xl animate-mesh-float [animation-delay:8s]" />
           <div className="absolute inset-0 dot-grid opacity-40" />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           <ScrollReveal direction="up">
-            <div className="w-20 h-20 md:w-24 md:h-24 bg-[#F2F4F7] rounded-3xl flex items-center justify-center mx-auto mb-10 md:mb-14 border border-[#101828]/8">
+            <div className="w-20 h-20 md:w-24 md:h-24 glass-card rounded-3xl flex items-center justify-center mx-auto mb-10 md:mb-14">
               <HeartHandshake className="h-10 w-10 md:h-12 md:w-12 text-[#2563EB]" />
             </div>
             <span className="inline-flex items-center gap-3 text-[10px] md:text-[11px] font-mono font-semibold tracking-[0.4em] uppercase text-[#475467] mb-6 md:mb-8">
@@ -162,7 +163,7 @@ export default function HomePageClient() {
             </div>
           </ScrollReveal>
           <ScrollReveal direction="up" delay={0.2}>
-            <div className="bg-white rounded-3xl p-6 md:p-12 border border-[#101828]/8 shadow-lg">
+            <div className="glass-card rounded-3xl p-6 md:p-12">
               <FAQ items={faqData[currentLang as keyof typeof faqData] || faqData['zh-TW']} />
             </div>
           </ScrollReveal>
@@ -192,24 +193,28 @@ export default function HomePageClient() {
             </p>
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
-              <AppleButton
-                variant="secondary"
-                size="lg"
-                className="!bg-[#101828] !text-white hover:!bg-[#1D2939] w-full md:w-auto shadow-lg"
-                onClick={() => { trackCTA.contactEmail(); window.location.href = `mailto:${t.contact.email}`; }}
-              >
-                <Mail className="h-5 w-5 md:h-6 md:w-6 mr-3" />
-                {t.contact.email}
-              </AppleButton>
+              <Magnetic className="w-full md:w-auto">
+                <AppleButton
+                  variant="secondary"
+                  size="lg"
+                  className="!bg-[#101828] !text-white hover:!bg-[#1D2939] w-full md:w-auto shadow-lg"
+                  onClick={() => { trackCTA.contactEmail(); window.location.href = `mailto:${t.contact.email}`; }}
+                >
+                  <Mail className="h-5 w-5 md:h-6 md:w-6 mr-3" />
+                  {t.contact.email}
+                </AppleButton>
+              </Magnetic>
 
-              <AppleButton
-                variant="ghost"
-                size="lg"
-                className="!text-[#101828] border border-[#101828]/15 hover:!bg-[#F2F4F7] hover:border-[#101828]/30 w-full md:w-auto"
-                onClick={() => { trackCTA.exploreFeatures(); document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }); }}
-              >
-                了解五大核心技術
-              </AppleButton>
+              <Magnetic className="w-full md:w-auto">
+                <AppleButton
+                  variant="ghost"
+                  size="lg"
+                  className="!text-[#101828] border border-[#101828]/15 hover:!bg-[#F2F4F7] hover:border-[#101828]/30 w-full md:w-auto"
+                  onClick={() => { trackCTA.exploreFeatures(); document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }); }}
+                >
+                  了解五大核心技術
+                </AppleButton>
+              </Magnetic>
             </div>
           </ScrollReveal>
         </div>

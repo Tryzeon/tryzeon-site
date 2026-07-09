@@ -146,7 +146,7 @@ export function BentoFeatures() {
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse 55% 80% at 12% 0%, rgba(99,102,241,0.06), transparent 65%), radial-gradient(ellipse 40% 70% at 88% 0%, rgba(148,163,184,0.08), transparent 70%), #FAFAFA',
+              'radial-gradient(ellipse 55% 80% at 12% 0%, rgba(37,99,235,0.07), transparent 65%), radial-gradient(ellipse 40% 70% at 88% 0%, rgba(6,182,212,0.06), transparent 70%), #FAFAFA',
           }}
         />
         <div
@@ -214,25 +214,25 @@ function BentoCard({ feature, span, index, isVisible }: BentoCardProps) {
 
   return (
     <article
-      className={`group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-[#101828]/8 bg-white p-6 md:p-8 shadow-[0_10px_40px_rgba(16,24,40,0.04)] transition-transform duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(16,24,40,0.08)] motion-safe:opacity-0 ${
+      className={`group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/60 bg-white/70 backdrop-blur-xl p-6 md:p-8 shadow-[0_10px_40px_rgba(16,24,40,0.05)] transition-all duration-300 ease-out hover:-translate-y-1 hover:bg-white/85 hover:shadow-[0_24px_70px_rgba(37,99,235,0.10)] motion-safe:opacity-0 ${
         isVisible ? 'motion-safe:animate-[tz-bento-card_0.8s_ease-out_forwards]' : ''
       } ${span}`}
       style={{ animationDelay: delay }}
     >
       {/* Subtle gradient backdrop */}
       <div
-        className="absolute inset-0 -z-10 opacity-50 pointer-events-none"
+        className="absolute inset-0 -z-10 opacity-60 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse 60% 120% at 10% 0%, rgba(148,163,184,0.18), transparent 72%)',
+            'radial-gradient(ellipse 60% 120% at 10% 0%, rgba(37,99,235,0.10), transparent 72%)',
         }}
       />
 
       {/* Top: icon + meta tag */}
       <header className="flex items-start gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#101828]/10 bg-white">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#2563EB]/15 bg-gradient-to-br from-[#2563EB]/10 to-[#06B6D4]/10">
           <Icon
-            className="h-6 w-6 text-[#101828]"
+            className="h-6 w-6 text-[#2563EB]"
             strokeWidth={1.5}
             style={{ animation }}
           />
