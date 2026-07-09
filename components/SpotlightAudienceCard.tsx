@@ -68,7 +68,7 @@ export function SpotlightAudienceCard({
       onMouseLeave={() => setSpotlightOpacity(0)}
       whileHover={{ y: -6 }}
       transition={{ type: 'spring', stiffness: 200, damping: 22 }}
-      className="group relative h-full flex flex-col rounded-3xl overflow-hidden border border-[#101828]/8 bg-white shadow-[0_10px_40px_rgba(16,24,40,0.04)] hover:shadow-[0_30px_80px_rgba(16,24,40,0.10)] transition-shadow duration-500"
+      className="group relative h-full flex flex-col rounded-3xl overflow-hidden border border-white/60 bg-white/70 backdrop-blur-xl shadow-[0_10px_40px_rgba(16,24,40,0.05)] hover:shadow-[0_30px_80px_rgba(37,99,235,0.10)] transition-shadow duration-500"
     >
       {/* Spotlight overlay */}
       <div
