@@ -50,10 +50,27 @@ Used for: text gradients, shader ramps, glass edges, aurora blooms.
 
 - **Display / editorial moments:** Playfair Display (italic for manifesto/quotes).
   e.g. Brand Statement, big pull-quotes. Loaded as `--font-serif`.
+- **CJK display:** Noto Serif TC（宋體）via `--font-serif-tc` in the same
+  `font-serif` stack — Latin resolves to Playfair, CJK falls through to 宋體.
+  中文禁 italic（假斜體醜）。
 - **Headings / UI / body:** Geist (`--font-outfit`). Sharp, techy, neutral.
 - **Kicker / metadata / labels:** Geist Mono (`--font-mono`), `tracking-[0.4em]`,
   uppercase, 10–11px, `#475467`. This mono kicker is a site-wide signature.
 - Body line-height 1.5–1.75; line length 65–75ch; min 16px on mobile.
+
+### CJK display rules (2026-07 tune)
+
+- **Two-tier tracking:** hero display (80–108px) `-0.02em`; section display
+  (32–62px) `-0.01em`; serif body/quote `0`. 不要把 hero 的緊排帶到小字級。
+- **Punctuation trim:** every 宋體 display headline gets `.cjk-punct`
+  (`font-feature-settings: 'halt' 1`) — 全形「。」「，」半寬化，置中標題
+  不被尾標點推偏。內文不套。
+- **Mixed-script weight:** display 標題一律 `font-black`；Playfair 必須載 900，
+  否則「關於 Tryzeon」的英文會比宋體細一級。serif 引言明確宣告 `font-semibold`
+  （Noto Serif TC 沒有 400，隱式 fallback 是意外不是設計）。
+- **Section title size curve:** `clamp(2.125rem, 1.4rem + 2.8vw, 3.9rem)`
+  （舊 `4.6vw` 曲線在 700–1100px 平板段會塌到 35px）。SectionHeader.tsx 是
+  唯一 source；BentoFeatures 的特殊版型手抄同值，改一處要同步另一處。
 
 (Tool suggested Inter for body; we keep Geist — sharper "tech" half of the
 Editorial Tech hybrid. Deliberate, documented deviation.)
@@ -65,7 +82,8 @@ Editorial Tech hybrid. Deliberate, documented deviation.)
 | Token | Value |
 |-------|-------|
 | `--ease-fluid` | `cubic-bezier(0.16, 1, 0.3, 1)` (the house ease-out) |
-| Enter duration | 0.6–0.9s |
+| Enter duration | 0.6–0.9s (content) |
+| Atmosphere dawn-in | up to 1.4s（僅限 ambient 層：aurora/shader canvas 淡入，不適用內容元素） |
 | Morph / fluid | 400–600ms loops, organic |
 | Stagger children | 0.06–0.15s |
 | Micro-interaction | 150–300ms (hover, color) |
