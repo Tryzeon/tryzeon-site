@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { MotionConfig } from 'framer-motion';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -31,5 +32,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     };
   }, []);
 
-  return <>{children}</>;
+  // reducedMotion="user"：偏好減少動態的使用者，所有 framer 進場只留 opacity、
+  // 去掉 transform——不必逐一在每個 fadeUp 補 useReducedMotion
+  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 }

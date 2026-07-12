@@ -22,7 +22,7 @@ export default function Template({ children }: TemplateProps) {
     <div
       key={pathname}
       style={{
-        animation: 'pageEnter 0.4s ease forwards',
+        animation: 'pageEnter 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         opacity: 0,
       }}
     >

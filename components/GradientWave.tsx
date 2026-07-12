@@ -439,7 +439,8 @@ class Gradient {
   colors: string[];
   minigl: MiniGl;
   mesh!: Mesh;
-  time = 0;
+  // 隨機起始相位：淡入時波已在流動中，而不是從靜止姿勢開始
+  time = 1000 * 60 * Math.random();
   last = 0;
   animationId?: number;
   isPlaying = false;
@@ -557,8 +558,8 @@ interface GradientWaveProps {
 }
 
 export function GradientWave({
-  // Tryzeon palette: cream white + soft sky + warm sand + light blush
-  colors = ['#FAFAFA', '#E0E7FF', '#FEF3C7', '#FFE4E6', '#E0F2FE'],
+  // Tryzeon palette: 藍青系 only（與 Hero AURORA 同源；禁 amber/rose）
+  colors = ['#FAFAFA', '#E0E7FF', '#E0F2FE', '#CFFAFE', '#FAFAFA'],
   className = '',
 }: GradientWaveProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -575,6 +576,10 @@ export function GradientWave({
       width: '100%',
       height: '100%',
       display: 'block',
+      // dawn-in：hydration 到達的時間點不可控，aurora 用 1.4s 亮起
+      // 而不是瞬間全亮 pop-in
+      opacity: '0',
+      transition: 'opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1)',
     });
     containerRef.current.appendChild(canvas);
 
@@ -582,6 +587,12 @@ export function GradientWave({
     try {
       gradient = new Gradient(canvas, colors);
       gradient.start();
+      // 雙層 rAF：等第一個 shader frame commit 後才開始淡入
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          canvas.style.opacity = '1';
+        });
+      });
     } catch (err) {
       console.error('GradientWave init failed:', err);
     }

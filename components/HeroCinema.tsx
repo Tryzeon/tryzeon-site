@@ -100,13 +100,13 @@ function HeroDesktop() {
       />
       <div className="absolute inset-0 dot-grid opacity-25 pointer-events-none" aria-hidden />
 
-      {/* Editorial top markers */}
+      {/* Editorial top markers — 矮視窗會撞到置中內容的 kicker，gate 在 800px 高 */}
       <motion.div
         variants={fadeUp}
         initial="hidden"
         animate="show"
-        custom={0.1}
-        className="absolute top-28 inset-x-0 z-10 hidden xl:flex justify-between px-20 font-mono text-[10px] tracking-[0.4em] uppercase text-[#475467]/70"
+        custom={0.9}
+        className="absolute top-28 inset-x-0 z-10 hidden [@media(min-width:1280px)_and_(min-height:800px)]:flex justify-between px-20 font-mono text-[10px] tracking-[0.4em] uppercase text-[#475467]/70"
       >
         <span>N°01 — Try-On Infrastructure</span>
         <span>Taipei · Est. 2024</span>
@@ -120,7 +120,7 @@ function HeroDesktop() {
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              custom={0.15}
+              custom={0.45}
               className="flex items-center gap-3 mb-10"
             >
               <span className="block w-8 h-px bg-[#101828]/40" />
@@ -130,19 +130,19 @@ function HeroDesktop() {
             </motion.div>
 
             <h1
-              className="font-serif font-black tracking-[-0.02em] leading-[1.06] text-[#101828] mb-10"
+              className="cjk-punct font-serif font-black tracking-[-0.02em] leading-[1.06] text-[#101828] mb-10"
               style={{ fontSize: 'clamp(2.75rem, 7.8vw, 6.75rem)' }}
             >
-              <KineticHeading text="重新定義" baseDelay={0.35} />
+              <KineticHeading text="重新定義" baseDelay={0.6} />
               <br />
-              <KineticHeading text="你的時尚。" baseDelay={0.6} />
+              <KineticHeading text="你的時尚。" baseDelay={0.85} />
             </h1>
 
             <motion.p
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              custom={1.05}
+              custom={1.5}
               className="text-lg md:text-xl lg:text-2xl text-[#475467] font-medium leading-relaxed max-w-2xl mb-12"
             >
               一張照片，穿上任何衣服。<br />
@@ -153,7 +153,7 @@ function HeroDesktop() {
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              custom={1.25}
+              custom={1.7}
               className="flex flex-col sm:flex-row gap-3 md:gap-4"
             >
               <Magnetic>
@@ -181,7 +181,7 @@ function HeroDesktop() {
             className="col-span-5"
             initial={reduced ? false : { opacity: 0, y: 40, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1.1, ease: EASE, delay: 0.5 }}
+            transition={{ duration: 0.9, ease: EASE, delay: 1.0 }}
           >
             <div className="relative p-2 rounded-[2rem] bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_30px_80px_rgba(16,24,40,0.12)]">
               <div
@@ -191,6 +191,7 @@ function HeroDesktop() {
                 <video
                   ref={videoRef}
                   src="/videos/hero-runway.mp4"
+                  poster="/images/hero-runway-poster.jpg"
                   muted
                   loop
                   playsInline
@@ -222,10 +223,19 @@ function HeroDesktop() {
         </div>
       </div>
 
-      {/* Scroll hint */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-[#475467]/60 pointer-events-none">
-        <span className="text-[10px] font-mono tracking-[0.4em] uppercase">Scroll</span>
-        <span className="text-xl animate-bounce">↓</span>
+      {/* Scroll hint — 編排最後一拍，等舞台就緒才出現。
+          置中放外層：framer 的 inline transform 會蓋掉 -translate-x-1/2 */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={2.3}
+          className="flex flex-col items-center gap-2 text-[#475467]/60"
+        >
+          <span className="text-[10px] font-mono tracking-[0.4em] uppercase">Scroll</span>
+          <span className="text-xl animate-scroll-drift">↓</span>
+        </motion.div>
       </div>
     </section>
   );
@@ -244,35 +254,53 @@ function HeroMobile() {
       </div>
 
       <div className="relative z-10 min-h-[100svh] flex flex-col px-6 pt-32 pb-10">
-        <div className="flex items-center gap-3 mb-8">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={0.25}
+          className="flex items-center gap-3 mb-8"
+        >
           <span className="block w-8 h-px bg-[#101828]/40" />
           <span className="text-[10px] font-mono font-semibold tracking-[0.4em] uppercase text-[#475467]">
             Tryzeon · 2026
           </span>
-        </div>
+        </motion.div>
 
         <h1
-          className="font-serif font-black tracking-[-0.02em] leading-[1.08] text-[#101828] mb-6"
+          className="cjk-punct font-serif font-black tracking-[-0.02em] leading-[1.08] text-[#101828] mb-6"
           style={{ fontSize: 'clamp(2.75rem, 12.5vw, 4.6rem)' }}
         >
-          <KineticHeading text="重新定義" baseDelay={0.2} />
+          <KineticHeading text="重新定義" baseDelay={0.5} />
           <br />
-          <KineticHeading text="你的時尚。" baseDelay={0.4} />
+          <KineticHeading text="你的時尚。" baseDelay={0.75} />
         </h1>
 
-        <p className="text-base text-[#475467] font-medium leading-relaxed max-w-md mb-8">
+        <motion.p
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={1.3}
+          className="text-base text-[#475467] font-medium leading-relaxed max-w-md mb-8"
+        >
           一張照片，穿上任何衣服。<br />
           線上、實體門市、品牌官網都能即時試穿。
-        </p>
+        </motion.p>
 
-        <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-xl mb-8">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={1.5}
+          className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-xl mb-8"
+        >
           <Image
             src="/images/slides/slide-6-global-vision-runway-4k.jpg"
             alt="Tryzeon AI runway"
             fill
             priority
             sizes="100vw"
-            quality={85}
+            quality={90}
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
@@ -281,9 +309,15 @@ function HeroMobile() {
               <Play className="w-5 h-5 text-[#101828] fill-[#101828] ml-0.5" />
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="flex flex-col gap-3 mt-auto">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={1.75}
+          className="flex flex-col gap-3 mt-auto"
+        >
           <Link
             href="/products/virtual-try-on"
             className="inline-flex items-center justify-center px-8 py-4 bg-[#101828] text-white rounded-full font-semibold text-base hover:bg-[#1D2939] transition-all duration-300 shadow-lg active:scale-[0.98]"
@@ -297,7 +331,7 @@ function HeroMobile() {
           >
             品牌合作方案
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
