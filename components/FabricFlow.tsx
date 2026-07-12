@@ -8,23 +8,34 @@ const VERTEX_SHADER = /* glsl */ `
   uniform float uTime;
   uniform vec2 uMouse;
   varying vec3 vNormal;
+  varying vec3 vTangent;
   varying vec3 vView;
   varying float vElev;
+  varying vec2 vPos;
+
+  // 褶皺剖面：窄脊寬谷（1 - |sin|）。純正弦的圓弧起伏是水波的數學特徵，
+  // 布料的皺摺是不對稱的——脊線窄而銳、谷面寬而緩。
+  // +0.035 讓脊尖保留一點圓角，有限差分法線才不會在脊線上炸出鋸齒。
+  float ridge(float x) {
+    return 1.0 - sqrt(sin(x) * sin(x) + 0.035);
+  }
 
   float wave(vec2 p, float t) {
     float e = 0.0;
-    e += sin(p.x * 0.55 + t * 0.75) * 0.42;
-    e += sin(p.y * 0.85 - t * 0.55) * 0.30;
-    e += sin((p.x * 0.7 + p.y * 0.9) + t * 0.95) * 0.24;
-    e += sin((p.x * 1.7 - p.y * 1.2) - t * 0.8) * 0.11;
+    e += (ridge(p.x * 0.55 + p.y * 0.15 + t * 0.50) - 0.40) * 0.62;
+    e += sin(p.y * 0.85 - t * 0.38) * 0.22;
+    e += (ridge((p.x * 0.7 + p.y * 0.9) + t * 0.62) - 0.40) * 0.30;
+    e += sin((p.x * 1.7 - p.y * 1.2) - t * 0.55) * 0.09;
+    // cloth-lift：游標像一隻手從布底下緩緩托起（取代原本的水滴漣漪——
+    // 那是整頁最快、最「液態」的動作）
     float d = length(p - uMouse);
-    e += sin(d * 1.6 - t * 2.2) * 0.30 * exp(-d * d * 0.06);
+    e += 0.34 * exp(-d * d * 0.10) + sin(d * 1.3 - t * 1.1) * 0.06 * exp(-d * d * 0.08);
     return e;
   }
 
   void main() {
     float t = uTime;
-    float eps = 0.15;
+    float eps = 0.09;
     float e0 = wave(position.xy, t);
     float ex = wave(position.xy + vec2(eps, 0.0), t);
     float ey = wave(position.xy + vec2(0.0, eps), t);
@@ -35,7 +46,9 @@ const VERTEX_SHADER = /* glsl */ `
     vec3 nrm = normalize(cross(px - p0, py - p0));
 
     vElev = e0;
+    vPos = position.xy;
     vNormal = normalize(normalMatrix * nrm);
+    vTangent = normalize(normalMatrix * normalize(px - p0));
 
     vec4 mvPosition = modelViewMatrix * vec4(p0, 1.0);
     vView = -mvPosition.xyz;
@@ -48,35 +61,62 @@ const FRAGMENT_SHADER = /* glsl */ `
   uniform float uTime;
   uniform vec3 uLightDir;
   varying vec3 vNormal;
+  varying vec3 vTangent;
   varying vec3 vView;
   varying float vElev;
+  varying vec2 vPos;
 
   void main() {
     vec3 N = normalize(vNormal);
+
+    float depth = smoothstep(4.5, 9.0, length(vView));
+
+    // 織紋微法線：大褶皺之間的細皺紋，幅度壓得極低（>0.01 就開始讀成
+    // 編織網/髒點，headless 實測過）；遠景按深度衰減防斜掠角 moiré；
+    // uTime*0.12 讓紋理近乎靜止地緩慢呼吸。
+    float wr = sin(vPos.x * 7.0 + vPos.y * 17.0 + vElev * 3.0)
+             + 0.6 * sin(vPos.y * 26.0 - vPos.x * 10.0 + uTime * 0.12);
+    wr *= 1.0 - depth * 0.85;
+    N = normalize(N + vec3(wr * 0.010, wr * 0.007, 0.0));
+
     vec3 V = normalize(vView);
     vec3 L = normalize(uLightDir);
     vec3 H = normalize(L + V);
 
-    float diff = max(dot(N, L), 0.0) * 0.55 + 0.45;
-    float spec = pow(max(dot(N, H), 0.0), 48.0);
+    float diff = max(dot(N, L), 0.0) * 0.72 + 0.28;
+
+    // Kajiya-Kay 各向異性絲光：絲的高光是沿織線方向拉開的長條，
+    // 不是 Blinn-Phong 那種圓形濕亮點（濕亮點 = 液體的 tell）
+    vec3 T = normalize(vTangent);
+    float TdotH = dot(T, H);
+    float sinTH = sqrt(max(1.0 - TdotH * TdotH, 0.0));
+    float spec = pow(sinTH, 110.0) * 0.42 + pow(max(dot(N, H), 0.0), 64.0) * 0.10;
     float fres = pow(1.0 - max(dot(N, V), 0.0), 3.0);
 
     float h = clamp(vElev * 0.7 + 0.5, 0.0, 1.0);
 
-    // airy pale-blue silk ramp (light-theme friendly)
-    vec3 trough = vec3(0.16, 0.40, 0.92);   // saturated blue in folds
-    vec3 mid    = vec3(0.48, 0.78, 0.99);   // light blue
-    vec3 crest  = vec3(0.93, 0.99, 1.00);   // near-white peaks
+    // 布料靠褶影讀形：谷更深的品牌藍、頂離開純白往淡青收
+    vec3 trough = vec3(0.10, 0.29, 0.74);
+    vec3 mid    = vec3(0.35, 0.67, 0.95);
+    vec3 crest  = vec3(0.80, 0.94, 0.99);
     vec3 base = mix(trough, mid, smoothstep(0.0, 0.55, h));
     base = mix(base, crest, smoothstep(0.55, 1.0, h));
 
-    // iridescent shimmer
-    float ir = sin(vElev * 7.0 + fres * 7.0 + uTime * 0.5) * 0.5 + 0.5;
-    base += vec3(0.0, 0.10, 0.16) * ir * 0.6;
+    float ir = sin(vElev * 7.0 + fres * 7.0 + uTime * 0.35) * 0.5 + 0.5;
+    base += vec3(0.0, 0.10, 0.16) * ir * 0.32;
 
     vec3 col = base * diff;
-    col = mix(col, vec3(0.97, 1.0, 1.0), fres * 0.5);  // bright rim
-    col += spec * vec3(0.85, 0.95, 1.0);               // silk sheen
+    // 谷底 occlusion：立體感來自褶皺陰影，不是發光的頂
+    col *= 0.82 + 0.18 * smoothstep(-0.7, 0.5, vElev);
+    col = mix(col, vec3(0.86, 0.96, 1.0), fres * 0.22);
+    col += spec * vec3(0.72, 0.90, 1.00);
+
+    // 空氣透視：遠端往頁面底色 #FAFAFA 收，絲綢退入頁面
+    // 而不是一塊浮著的動畫長方形
+    col = mix(col, vec3(0.980, 0.984, 0.988), depth * 0.60);
+
+    // shimmer 降低後，淡藍大面積漸層在 8-bit 螢幕會 banding，補 1/255 dither
+    col += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0;
 
     gl_FragColor = vec4(col, 1.0);
   }
@@ -84,10 +124,19 @@ const FRAGMENT_SHADER = /* glsl */ `
 
 export function FabricFlow() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [reduced, setReduced] = useState(false);
+  // lazy init：reduced-motion 使用者不必先建一個 WebGL context 再拆掉
+  // （此元件 dynamic ssr:false，首次 render 已在 client）
+  const [reduced, setReduced] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
 
   useEffect(() => {
-    setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const onChange = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
   }, []);
 
   useEffect(() => {
@@ -113,7 +162,6 @@ export function FabricFlow() {
       renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
-        preserveDrawingBuffer: true,
       });
     } catch {
       return;
@@ -125,7 +173,8 @@ export function FabricFlow() {
     const uniforms = {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uLightDir: { value: new THREE.Vector3(0.4, 0.9, 0.6).normalize() },
+      // 光壓低角度：斜掠光讓褶皺接住長條絲光（頂光只會照平整面）
+      uLightDir: { value: new THREE.Vector3(0.55, 0.65, 0.52).normalize() },
     };
 
     const geometry = new THREE.PlaneGeometry(15, 9, 240, 160);
@@ -151,7 +200,7 @@ export function FabricFlow() {
     const renderFrame = () => {
       const t = clock.getElapsedTime();
       uniforms.uTime.value = t;
-      mouse.lerp(mouseTarget, 0.05);
+      mouse.lerp(mouseTarget, 0.035);
       uniforms.uMouse.value.copy(mouse);
       mesh.rotation.z = 0.08 + Math.sin(t * 0.15) * 0.04;
       renderer.render(scene, camera);
