@@ -23,7 +23,6 @@
     --neo-blue-light: #60A5FA;
     --neo-blue-deep: #1D4ED8;
     --neo-cyan: #06B6D4;
-    --neo-violet: #7C3AED;
 
     /* Typography */
     --font-outfit: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -237,6 +236,13 @@
     text-wrap: balance;
   }
 
+  /* CJK display 排印：全形標點半寬化（halt）。宋體大標結尾的「。」不再吃掉
+     整個 em box——置中標題不會被尾標點推偏，句中「，」節奏也更緊。
+     只給 display 標題用，內文不要套。 */
+  .cjk-punct {
+    font-feature-settings: 'halt' 1;
+  }
+
   /* Gradient text utility */
   .text-gradient-blue {
     background: linear-gradient(135deg, var(--neo-blue) 0%, var(--neo-cyan) 100%);
@@ -413,6 +419,52 @@
   to {
     opacity: 1;
   }
+}
+
+/* 載入編排第一拍：導覽列先落定（CSS-only，hydration 前就會跑）。
+   Navigation 掛在各 page client 內、template 以 pathname 為 key，
+   所以路由切換時會連同 pageEnter 一起重播——與整頁 fade 同拍，屬預期行為。
+   transform 直接落在 fixed nav 本體上，不是 fixed 元素的 wrapper，
+   所以不會踩 template.tsx 註解裡的 containing-block 陷阱。 */
+@keyframes navEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.nav-enter {
+  animation: navEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+
+/* 首次進場後 Navigation 會在 <html> 標記 data-nav-entered，
+   route change 重掛載時不再重播（避免 fixed nav 消失 0.25s 再落下） */
+html[data-nav-entered='1'] .nav-enter {
+  animation: none;
+}
+
+/* Scroll hint：取代 animate-bounce（1s 太急促、off-language）的慢速漂移 */
+@keyframes scrollDrift {
+
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+
+.animate-scroll-drift {
+  animation: scrollDrift 2.4s ease-in-out infinite;
 }
 
 /* Fade In Up */

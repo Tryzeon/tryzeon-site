@@ -21,7 +21,7 @@ const config: Config = {
           'blue-light': '#60A5FA',
           'blue-deep': '#1D4ED8',
           cyan: '#06B6D4',
-          violet: '#7C3AED',
+          
         },
         // Keep accent for backward compatibility
         accent: {

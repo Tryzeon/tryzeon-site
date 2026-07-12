@@ -17,6 +17,11 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
   const shouldShowWhiteBackground = isScrolled || isMobileMenuOpen;
 
   useEffect(() => {
+    // 首次進場動畫播完後做記號，route change 重掛載不再重播 nav-enter
+    const enteredTimer = setTimeout(() => {
+      document.documentElement.dataset.navEntered = '1';
+    }, 1100);
+
     let rafId = 0;
     let ticking = false;
 
@@ -32,6 +37,7 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
+      clearTimeout(enteredTimer);
       window.removeEventListener('scroll', handleScroll);
       if (rafId) cancelAnimationFrame(rafId);
     };
@@ -68,12 +74,12 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] px-4 md:px-0 ${
+      className={`nav-enter fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] px-4 md:px-0 ${
         isScrolled ? 'top-4 py-0' : 'top-0 py-5'
       }`}
     >
       <div
-        className={`max-w-7xl mx-auto transition-all duration-400 ease-out ${
+        className={`max-w-7xl mx-auto transition-all duration-300 ease-out ${
           shouldShowWhiteBackground
             ? 'rounded-full bg-white/80 backdrop-blur-2xl shadow-neo border border-[#E4E7EC]/60 px-8 py-2.5 max-w-5xl'
             : 'px-6 md:px-12 xl:px-24 bg-transparent border border-transparent'
@@ -82,11 +88,7 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
         <div className="flex justify-between items-center h-12 md:h-14">
           <a
             href="#"
-            className={`text-2xl md:text-3xl font-extrabold tracking-tight transition-all duration-400 ${
-              shouldShowWhiteBackground
-                ? 'text-[#101828] hover:text-[#2563EB]'
-                : 'text-white drop-shadow-md'
-            }`}
+            className="text-2xl md:text-3xl font-extrabold tracking-tight transition-all duration-300 text-[#101828] hover:text-[#2563EB]"
           >
             Tryzeon
           </a>
@@ -97,11 +99,7 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
                 key={item.href}
                 href={item.href}
                 onClick={scrollToSection}
-                className={`text-[13px] font-medium tracking-wide transition-colors duration-300 ${
-                  shouldShowWhiteBackground
-                    ? 'text-[#1D1D1F]/80 hover:text-[#0066CC]'
-                    : 'text-white/90 hover:text-white drop-shadow-sm'
-                }`}
+                className="text-[13px] font-medium tracking-wide transition-colors duration-300 text-[#101828]/80 hover:text-[#2563EB]"
               >
                 {item.label}
               </a>
@@ -112,11 +110,7 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
             <div className="relative">
               <button
                 onClick={() => setShowLangMenu(!showLangMenu)}
-                className={`flex items-center space-x-1 text-[11px] font-semibold tracking-wide uppercase transition-colors duration-300 ${
-                  shouldShowWhiteBackground
-                    ? 'text-[#1D1D1F]/70 hover:text-[#1D1D1F]'
-                    : 'text-white/80 hover:text-white drop-shadow-sm'
-                }`}
+                className="flex items-center space-x-1 text-[11px] font-semibold tracking-wide uppercase transition-colors duration-300 text-[#101828]/70 hover:text-[#101828]"
               >
                 <span>{currentLang === 'zh-TW' ? '繁中' : 'EN'}</span>
                 <ChevronDown className="w-3 h-3 opacity-70" />
@@ -134,7 +128,7 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
                     setCurrentLang('zh-TW');
                     setShowLangMenu(false);
                   }}
-                  className="block w-full text-left px-4 py-2.5 text-[12px] font-medium text-[#1D1D1F] hover:bg-[#F5F5F7] transition-colors"
+                  className="block w-full text-left px-4 py-2.5 text-[12px] font-medium text-[#101828] hover:bg-[#F2F4F7] transition-colors"
                 >
                   繁體中文
                 </button>
@@ -143,7 +137,7 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
                     setCurrentLang('en');
                     setShowLangMenu(false);
                   }}
-                  className="block w-full text-left px-4 py-2.5 text-[12px] font-medium text-[#1D1D1F] hover:bg-[#F5F5F7] transition-colors"
+                  className="block w-full text-left px-4 py-2.5 text-[12px] font-medium text-[#101828] hover:bg-[#F2F4F7] transition-colors"
                 >
                   English
                 </button>
@@ -155,8 +149,8 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
               onClick={scrollToSection}
               className={`px-5 py-2 text-[12px] font-bold rounded-full transition-all duration-300 ${
                 shouldShowWhiteBackground
-                  ? 'bg-[#1D1D1F] text-white hover:bg-[#000000] hover:scale-105 shadow-md'
-                  : 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
+                  ? 'bg-[#101828] text-white hover:bg-[#1D2939] hover:scale-105 shadow-md'
+                  : 'bg-white/60 backdrop-blur-md border border-[#101828]/10 text-[#101828] hover:bg-white'
               }`}
             >
               {t.nav.getStarted}
@@ -169,9 +163,9 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
             aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {isMobileMenuOpen ? (
-              <X className={`w-6 h-6 ${shouldShowWhiteBackground ? 'text-[#1D1D1F]' : 'text-white'}`} />
+              <X className="w-6 h-6 text-[#101828]" />
             ) : (
-              <Menu className={`w-6 h-6 ${shouldShowWhiteBackground ? 'text-[#1D1D1F]' : 'text-white'}`} />
+              <Menu className="w-6 h-6 text-[#101828]" />
             )}
           </button>
         </div>
@@ -189,7 +183,7 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
                     key={item.href}
                     href={item.href}
                     onClick={scrollToSection}
-                    className="block px-4 py-3.5 text-base font-semibold text-[#1D1D1F] hover:bg-[#F5F5F7] hover:text-[#0066CC] rounded-xl transition-all"
+                    className="block px-4 py-3.5 text-base font-semibold text-[#101828] hover:bg-[#F2F4F7] hover:text-[#2563EB] rounded-xl transition-all"
                   >
                     {item.label}
                   </a>
@@ -198,12 +192,12 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
                 <div className="h-px bg-black/5 my-4 mx-4"></div>
 
                 <div className="flex justify-between items-center px-4 py-2">
-                  <span className="text-sm font-medium text-[#86868B]">Language</span>
-                  <div className="flex bg-[#F5F5F7] rounded-full p-1">
+                  <span className="text-sm font-medium text-[#667085]">Language</span>
+                  <div className="flex bg-[#F2F4F7] rounded-full p-1">
                     <button
                       onClick={() => setCurrentLang('zh-TW')}
                       className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${
-                        currentLang === 'zh-TW' ? 'bg-white shadow-sm text-[#1D1D1F]' : 'text-[#86868B]'
+                        currentLang === 'zh-TW' ? 'bg-white shadow-sm text-[#101828]' : 'text-[#667085]'
                       }`}
                     >
                       繁中
@@ -211,7 +205,7 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
                     <button
                       onClick={() => setCurrentLang('en')}
                       className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${
-                        currentLang === 'en' ? 'bg-white shadow-sm text-[#1D1D1F]' : 'text-[#86868B]'
+                        currentLang === 'en' ? 'bg-white shadow-sm text-[#101828]' : 'text-[#667085]'
                       }`}
                     >
                       EN
@@ -223,7 +217,7 @@ export function Navigation({ currentLang, setCurrentLang }: NavigationProps) {
                   <a
                     href="#contact"
                     onClick={scrollToSection}
-                    className="block w-full py-3.5 text-center text-sm font-bold bg-[#0066CC] text-white rounded-full shadow-lg active:scale-95 transition-transform"
+                    className="block w-full py-3.5 text-center text-sm font-bold bg-[#2563EB] text-white rounded-full shadow-lg active:scale-95 transition-transform"
                   >
                     {t.nav.getStarted}
                   </a>
