@@ -64,10 +64,10 @@ export function SectionHeader({
         whileInView="show"
         viewport={{ once: true, amount: 0.5 }}
         custom={0.12}
-        className={`font-serif font-black tracking-[-0.02em] leading-[1.12] text-[#101828] ${
+        className={`cjk-punct font-serif font-black tracking-[-0.01em] leading-[1.12] text-[#101828] ${
           isCenter ? 'mx-auto' : ''
         } max-w-[22ch]`}
-        style={{ fontSize: 'clamp(2rem, 4.6vw, 3.9rem)' }}
+        style={{ fontSize: 'clamp(2.125rem, 1.4rem + 2.8vw, 3.9rem)' }}
       >
         {title}
       </motion.h2>

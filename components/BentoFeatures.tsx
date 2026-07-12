@@ -175,9 +175,10 @@ export function BentoFeatures() {
               <span className="block w-8 h-px bg-[#101828]/40" />
               N°05 — Core Infrastructure
             </span>
+            {/* 字級/tracking 與 SectionHeader.tsx 鎖同值（此處版型特殊沒法直用元件） */}
             <h2
-              className="font-serif font-black tracking-[-0.02em] leading-[1.12] text-[#101828]"
-              style={{ fontSize: 'clamp(2rem, 4.6vw, 3.9rem)' }}
+              className="cjk-punct font-serif font-black tracking-[-0.01em] leading-[1.12] text-[#101828]"
+              style={{ fontSize: 'clamp(2.125rem, 1.4rem + 2.8vw, 3.9rem)' }}
             >
               五大核心技術
             </h2>

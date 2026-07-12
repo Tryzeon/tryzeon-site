@@ -113,8 +113,10 @@ export default function HomePageClient() {
           </ScrollReveal>
           <SectionHeader kicker="N°06 — Core Vision" title={t.about.title} />
           <ScrollReveal direction="up" delay={0.15}>
+            {/* font-semibold 明確化：Noto Serif TC 沒有 400，CJK 本來就 fallback 到
+                600 在渲染；宣告出來讓 Playfair 引號也跟上同字重 */}
             <p
-              className="font-serif text-[#475467] leading-[1.7] max-w-3xl mx-auto text-balance -mt-4 md:-mt-8"
+              className="font-serif font-semibold text-[#475467] leading-[1.7] max-w-3xl mx-auto text-balance -mt-4 md:-mt-8"
               style={{ fontSize: 'clamp(1.125rem, 1.6vw, 1.45rem)' }}
             >
               &ldquo;{t.about.desc}&rdquo;

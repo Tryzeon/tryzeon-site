@@ -130,7 +130,7 @@ export function ScrollManifesto() {
           whileInView="visible"
           viewport={viewport}
           variants={containerVariants}
-          className="font-serif font-black text-[#101828] tracking-[-0.01em] leading-[1.2] flex flex-wrap gap-y-3 mb-8 md:mb-12"
+          className="cjk-punct font-serif font-black text-[#101828] tracking-[-0.01em] leading-[1.2] flex flex-wrap gap-x-[0.12em] gap-y-3 mb-8 md:mb-12"
           style={{ fontSize: 'clamp(2.4rem, 5.8vw, 5.25rem)' }}
           aria-hidden
         >

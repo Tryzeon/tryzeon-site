@@ -20,22 +20,28 @@ const geistMono = Geist_Mono({
   variable: "--font-mono",
   display: "swap",
 });
+// 900 必須載：display 標題全是 font-black，缺 900 時中英混排（「關於 Tryzeon」
+// 「一套 AI 試穿」）英文會掉到 700，比旁邊的宋體 900 細一級
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
   style: ["normal", "italic"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "900"],
   display: "swap",
 });
 // 中文 editorial 大標 — Playfair 只有拉丁字符，中文大標靠思源宋體撐住
 // 雜誌編輯感。serif font stack 中排在 Playfair 之後：英文吃 Playfair、
 // 中文 fallback 到宋體。CJK 字型 Google Fonts 自動按 unicode-range 切片，
 // 只會下載頁面用到的字。
+// 只載實際用到的字重（600 內文引言 / 900 display）；fallback 指定各 OS 的
+// 本機宋體，讓 CJK 切片下載期間的 FOUT 停留在宋體家族內（Android 沒有本機
+// 宋體，仍會先閃黑體，屬平台限制）
 const notoSerifTC = Noto_Serif_TC({
   subsets: ["latin"],
   variable: "--font-serif-tc",
-  weight: ["600", "700", "900"],
+  weight: ["600", "900"],
   display: "swap",
+  fallback: ["Songti TC", "Noto Serif CJK TC", "PMingLiU", "serif"],
 });
 
 export const metadata: Metadata = {
@@ -155,11 +161,6 @@ export default function RootLayout({
   return (
     <html lang="zh-TW" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${notoSerifTC.variable}`}>
       <head>
-        {/* Preload critical images */}
-        <link rel="preload" href="/images/slides/slide-1-brand-introduction.jpg" as="image" type="image/jpeg" />
-        {/* Preconnect to external domains */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         {/* Consolidated JSON-LD Structured Data */}
         <script
           type="application/ld+json"
