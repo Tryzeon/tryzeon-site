@@ -122,6 +122,31 @@ export default function HomePageClient() {
               &ldquo;{t.about.desc}&rdquo;
             </p>
           </ScrollReveal>
+
+          {/* 願景之後的承諾收尾——灰階願景敘述 → 墨色行動宣示的層級落差 */}
+          <ScrollReveal direction="up" delay={0.3}>
+            <div className="mt-14 md:mt-20 flex flex-col items-center">
+              <span className="block w-12 h-px bg-[#101828]/15" aria-hidden />
+              <span className="mt-8 font-mono text-[10px] md:text-[11px] font-semibold tracking-[0.4em] uppercase text-[#475467]">
+                Impact · Sustainability
+              </span>
+              {/* 每個子句包成 inline-block：瀏覽器對中文會斷在詞中間，包成不可分割的
+                  區塊後只會斷在句讀處，任何寬度下都是乾淨的分行 */}
+              <p
+                className="cjk-punct font-serif font-semibold text-[#101828] leading-[1.7] max-w-2xl mt-6"
+                style={{ fontSize: 'clamp(1.1rem, 1.45vw, 1.35rem)' }}
+              >
+                {t.about.impactClauses.map((clause) => (
+                  <span key={clause} className="inline-block">
+                    {clause}
+                  </span>
+                ))}
+                <span className="inline-block bg-gradient-to-r from-[#2563EB] to-[#06B6D4] bg-clip-text text-transparent">
+                  {t.about.impactAccent}
+                </span>
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
       </Section>
 
