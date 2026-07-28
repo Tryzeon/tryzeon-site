@@ -95,7 +95,7 @@ export function Footer({ t }: FooterProps) {
     ],
     resources: [
       { label: '常見問題', href: '/#faq' },
-      { label: '下載 App', href: '/store' },
+      { label: '下載 App', href: '/download' },
     ],
     contact: [
       { label: t.footer.businessCooperation, href: '/business' },
