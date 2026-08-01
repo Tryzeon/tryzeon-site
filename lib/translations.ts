@@ -92,7 +92,7 @@ export const translations = {
     contact: {
       title: '聯絡我們',
       desc: '有任何問題或合作提案，歡迎與我們聯繫',
-      email: 'tryzeon.team@gmail.com',
+      email: 'contact@tryzeon.com',
     },
     footer: {
       products: '產品與服務',
@@ -204,7 +204,7 @@ export const translations = {
     contact: {
       title: 'Contact Us',
       desc: 'Have any questions or partnership proposals? Feel free to reach out',
-      email: 'tryzeon.team@gmail.com',
+      email: 'contact@tryzeon.com',
     },
     footer: {
       products: 'Products & Services',

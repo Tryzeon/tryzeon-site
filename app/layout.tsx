@@ -142,7 +142,7 @@ export default function RootLayout({
         url: 'https://tryzeon.com',
         logo: 'https://tryzeon.com/icon',
         description: '運用 AI 技術提供虛擬試穿解決方案，重新定義時尚購物體驗。',
-        contactPoint: { '@type': 'ContactPoint', email: 'tryzeon.team@gmail.com', contactType: 'Customer Service' },
+        contactPoint: { '@type': 'ContactPoint', email: 'contact@tryzeon.com', contactType: 'Customer Service' },
         sameAs: ['https://www.instagram.com/tryzeon', 'https://www.linkedin.com/company/tryzeon'],
         foundingDate: '2024',
         address: { '@type': 'PostalAddress', addressCountry: 'TW', addressLocality: 'Taipei' },

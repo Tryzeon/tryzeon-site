@@ -99,8 +99,8 @@ export function Footer({ t }: FooterProps) {
     ],
     contact: [
       { label: t.footer.businessCooperation, href: '/business' },
-      { label: t.footer.technicalSupport, href: 'mailto:tryzeon.team@gmail.com' },
-      { label: t.footer.mediaContact, href: 'mailto:tryzeon.team@gmail.com' },
+      { label: t.footer.technicalSupport, href: 'mailto:contact@tryzeon.com' },
+      { label: t.footer.mediaContact, href: 'mailto:contact@tryzeon.com' },
     ],
   };
 
@@ -159,11 +159,11 @@ export function Footer({ t }: FooterProps) {
 
             {/* Contact Info */}
             <div className="space-y-4 mb-8">
-              <a href="mailto:tryzeon.team@gmail.com" className="flex items-center text-white/60 hover:text-white transition-colors text-sm group">
+              <a href="mailto:contact@tryzeon.com" className="flex items-center text-white/60 hover:text-white transition-colors text-sm group">
                 <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center mr-3 group-hover:bg-[#0066CC] transition-colors">
                   <Mail className="h-4 w-4" />
                 </span>
-                tryzeon.team@gmail.com
+                contact@tryzeon.com
               </a>
               <div className="flex items-center text-white/60 text-sm">
                 <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center mr-3">

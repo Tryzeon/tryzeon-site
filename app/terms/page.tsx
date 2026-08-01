@@ -132,7 +132,7 @@ export default function TermsOfServicePage() {
 
               <h3 className="text-xl font-semibold mt-6 mb-3">4.3 侵權處理</h3>
               <p className="text-gray-700 leading-relaxed">
-                如果您認為有內容侵犯了您的權利，請透過 tryzeon.team@gmail.com 聯絡我們，我們會盡快處理。
+                如果您認為有內容侵犯了您的權利，請透過 contact@tryzeon.com 聯絡我們，我們會盡快處理。
               </p>
             </div>
 
@@ -233,7 +233,7 @@ export default function TermsOfServicePage() {
               </p>
               
               <ul className="space-y-2 text-gray-700">
-                <li><strong>Email：</strong><a href="mailto:tryzeon.team@gmail.com" className="text-blue-600 hover:text-blue-800">tryzeon.team@gmail.com</a></li>
+                <li><strong>Email：</strong><a href="mailto:contact@tryzeon.com" className="text-blue-600 hover:text-blue-800">contact@tryzeon.com</a></li>
                 <li><strong>Instagram：</strong><a href="https://www.instagram.com/tryzeon" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">@tryzeon</a></li>
                 <li><strong>公司名稱：</strong>Tryzeon</li>
               </ul>

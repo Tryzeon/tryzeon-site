@@ -138,7 +138,7 @@ export default function PrivacyPolicyPage() {
               </ul>
               
               <p className="text-gray-700 leading-relaxed mt-4">
-                如需行使這些權利，請透過 <a href="mailto:tryzeon.team@gmail.com" className="text-blue-600 hover:text-blue-800">tryzeon.team@gmail.com</a> 聯絡我們。
+                如需行使這些權利，請透過 <a href="mailto:contact@tryzeon.com" className="text-blue-600 hover:text-blue-800">contact@tryzeon.com</a> 聯絡我們。
               </p>
             </div>
 
@@ -185,7 +185,7 @@ export default function PrivacyPolicyPage() {
               </p>
               
               <ul className="space-y-2 text-gray-700">
-                <li><strong>Email：</strong><a href="mailto:tryzeon.team@gmail.com" className="text-blue-600 hover:text-blue-800">tryzeon.team@gmail.com</a></li>
+                <li><strong>Email：</strong><a href="mailto:contact@tryzeon.com" className="text-blue-600 hover:text-blue-800">contact@tryzeon.com</a></li>
                 <li><strong>Instagram：</strong><a href="https://www.instagram.com/tryzeon" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">@tryzeon</a></li>
                 <li><strong>公司名稱：</strong>Tryzeon</li>
               </ul>

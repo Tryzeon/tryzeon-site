@@ -89,7 +89,7 @@ export default function BusinessPage() {
               <ArrowRight className="w-5 h-5" />
             </a>
             <a
-              href="mailto:tryzeon.team@gmail.com?subject=Tryzeon%20%E5%93%81%E7%89%8C%E5%90%88%E4%BD%9C%E8%A9%A2%E5%95%8F"
+              href="mailto:contact@tryzeon.com?subject=Tryzeon%20%E5%93%81%E7%89%8C%E5%90%88%E4%BD%9C%E8%A9%A2%E5%95%8F"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#101828] rounded-full font-semibold hover:bg-[#F2F4F7] transition-all duration-300 shadow-lg hover:shadow-xl border border-[#E4E7EC]"
             >
               <Mail className="w-5 h-5" />

@@ -42,7 +42,7 @@ export const faqData = {
     },
     {
       question: '我是服飾品牌，如何與 Tryzeon 合作？',
-      answer: '我們提供虛擬試穿後台、商品數位化工具與動態模擬影片生成服務。採用流量制收費，依據您的商品在 Tryzeon App 上的使用者試穿流量付費。初期提供免費試用方案，讓您快速體驗虛擬試穿的價值。歡迎填寫品牌申請表單或透過 tryzeon.team@gmail.com 聯絡我們。',
+      answer: '我們提供虛擬試穿後台、商品數位化工具與動態模擬影片生成服務。採用流量制收費，依據您的商品在 Tryzeon App 上的使用者試穿流量付費。初期提供免費試用方案，讓您快速體驗虛擬試穿的價值。歡迎填寫品牌申請表單或透過 contact@tryzeon.com 聯絡我們。',
       category: '商業合作'
     },
     {
@@ -57,7 +57,7 @@ export const faqData = {
     },
     {
       question: '遇到技術問題該怎麼辦？',
-      answer: '如果您遇到任何問題，可以透過以下方式聯絡我們：1. App 內的「客服中心」2. Email: tryzeon.team@gmail.com 3. Instagram 私訊 @tryzeon。我們會盡快為您解決。',
+      answer: '如果您遇到任何問題，可以透過以下方式聯絡我們：1. App 內的「客服中心」2. Email: contact@tryzeon.com 3. Instagram 私訊 @tryzeon。我們會盡快為您解決。',
       category: '技術支援'
     },
     {
@@ -104,7 +104,7 @@ export const faqData = {
     },
     {
       question: 'I\'m a fashion brand, how can I partner with Tryzeon?',
-      answer: 'We provide complete B2B solutions, including API integration, custom features, and dedicated technical support. Please contact our business team at tryzeon.team@gmail.com.',
+      answer: 'We provide complete B2B solutions, including API integration, custom features, and dedicated technical support. Please contact our business team at contact@tryzeon.com.',
       category: 'Business'
     },
     {
@@ -119,7 +119,7 @@ export const faqData = {
     },
     {
       question: 'What should I do if I encounter technical issues?',
-      answer: 'If you encounter any problems, you can contact us through: 1. Customer Service in the App 2. Email: tryzeon.team@gmail.com 3. Instagram DM @tryzeon. We will resolve your issue as soon as possible.',
+      answer: 'If you encounter any problems, you can contact us through: 1. Customer Service in the App 2. Email: contact@tryzeon.com 3. Instagram DM @tryzeon. We will resolve your issue as soon as possible.',
       category: 'Support'
     },
     {

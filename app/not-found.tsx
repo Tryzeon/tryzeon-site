@@ -59,7 +59,7 @@ export default function NotFound() {
           </Link>
 
           <a
-            href="mailto:tryzeon.team@gmail.com"
+            href="mailto:contact@tryzeon.com"
             className="group p-6 bg-white rounded-2xl text-left hover:shadow-lg transition-all duration-300 border border-black/5"
           >
             <div className="w-10 h-10 bg-[#0066CC]/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-[#0066CC]/20 transition-colors">

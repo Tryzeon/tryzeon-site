@@ -144,7 +144,7 @@ npx tsc --noEmit
 
 ## 📞 聯絡資訊
 
-- **Email**: tryzeon.team@gmail.com
+- **Email**: contact@tryzeon.com
 - **Instagram**: [@tryzeon](https://www.instagram.com/tryzeon)
 
 ## 📄 授權
