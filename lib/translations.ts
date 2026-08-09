@@ -71,7 +71,7 @@ export const translations = {
       },
       dataAnalytics: {
         title: '時尚趨勢數據分析',
-        desc: '分析試穿與偏好數據，提供品牌精準趨勢洞察與商品決策依據，讓中小型服飾品牌精準進貨，降低退貨與庫存風險，並以數據驅動精準進貨與行銷策略。',
+        desc: '分析試穿與偏好數據，提供品牌趨勢洞察與商品決策依據，讓中小型服飾品牌精準進貨、降低庫存與紡織資源浪費。',
       },
       tryOnRoom: {
         title: '虛擬試衣間',
@@ -183,7 +183,7 @@ export const translations = {
       },
       dataAnalytics: {
         title: 'Fashion Trend Analytics',
-        desc: 'Analyze try-on and preference data to provide brands with precise trend insights and product decision support. Help small and medium fashion brands make accurate purchases, reduce returns and inventory risks, and drive data-driven procurement and marketing strategies.',
+        desc: 'Analyze try-on and preference data to give brands trend insights and product decision support, helping small and medium fashion brands buy more accurately and reduce overstock and textile waste.',
       },
       tryOnRoom: {
         title: 'Virtual Try-On Room',

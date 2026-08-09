@@ -33,7 +33,7 @@ const products = [
     icon: Video,
     title: 'AI 動態試穿影片',
     en: 'Dynamic Try-On Video',
-    desc: '靜態照片秒變動態走秀影片，看見自己穿上服飾後行走、旋轉的真實效果。',
+    desc: '靜態商品照一鍵生成 10-15 秒動態走秀影片，看見服飾行走、旋轉時的真實樣貌。',
     cta: '查看示範',
   },
   {
@@ -51,7 +51,7 @@ const products = [
     icon: TrendingUp,
     title: '時尚趨勢數據分析',
     en: 'Trend Analytics',
-    desc: '從試穿與互動數據洞察消費者偏好，協助品牌精準進貨、降低退貨與庫存風險。',
+    desc: '從試穿與互動數據洞察消費者偏好，協助品牌精準進貨、降低庫存與紡織資源浪費。',
     cta: '查看分析能力',
   },
   {

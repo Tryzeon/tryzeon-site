@@ -7,7 +7,7 @@ import VirtualTryOnPageClient from './VirtualTryOnPageClient';
 export const metadata: Metadata = {
   title: 'AI 虛擬試穿 — 一張照片，秒速試穿任何服飾',
   description:
-    'Tryzeon AI 虛擬試穿：上傳一張全身照，AI 自動辨識身形並生成逼真的試穿效果。降低退貨率 25%、提升轉換率 30%，無需離開家就能體驗各種風格。',
+    'Tryzeon AI 虛擬試穿：上傳一張全身照，AI 自動辨識身形並生成逼真的試穿效果。打破想像的隔閡——買之前就看見穿在自己身上的樣子。',
   alternates: { canonical: 'https://tryzeon.com/products/virtual-try-on' },
   openGraph: {
     type: 'website',
@@ -46,7 +46,7 @@ const faqJsonLd = {
       name: '虛擬試穿的準確度如何？',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: '我們使用團隊自家研發的專屬 AI 時尚模型，根據市場研究，導入虛擬試穿後，轉換率提升 30%、退貨率降低 20-30%。',
+        text: '我們使用團隊自家研發的專屬 AI 時尚模型進行虛擬試衣與動態影片生成。AI 無法達到 100% 精準，但相較於平面商品照，能更具體呈現服飾穿在你身上的樣子——這正是我們要解決的「想像的隔閡」。',
       },
     },
     {
@@ -181,7 +181,7 @@ export default function VirtualTryOnPage() {
           <div className="bg-gradient-to-br from-[#F2F4F7] to-white rounded-3xl p-8 md:p-12 border border-[#E4E7EC]">
             <ShieldCheck className="w-12 h-12 text-[#2563EB] mb-6" />
             <ul className="space-y-3 text-[#101828]">
-              <li>• 端對端加密傳輸</li>
+              <li>• SSL/TLS 加密傳輸</li>
               <li>• 試穿結果僅你可見</li>
               <li>• 隨時刪除照片與紀錄</li>
               <li>• 不用於第三方模型訓練</li>

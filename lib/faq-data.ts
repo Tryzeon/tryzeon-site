@@ -22,12 +22,12 @@ export const faqData = {
     },
     {
       question: '虛擬試穿的準確度如何？',
-      answer: '我們使用團隊自家研發的專屬 AI 時尚模型進行虛擬試衣與動態影片生成。雖然 AI 技術無法達到 100% 的精準度，但相較於傳統網購平台的靜態照片，我們透過 AI 已更加具體呈現消費者的穿搭感覺。根據市場研究，導入虛擬試穿後，轉換率提升 30%、退貨率降低 20-30%。',
+      answer: '我們使用團隊自家研發的專屬 AI 時尚模型進行虛擬試衣與動態影片生成。雖然 AI 技術無法達到 100% 的精準度，但相較於傳統網購平台的靜態照片，我們透過 AI 已更加具體呈現消費者的穿搭感覺——打破「想像的隔閡」，正是我們要解決的問題。',
       category: '技術相關'
     },
     {
-      question: 'Tryzeon 是免費的嗎？',
-      answer: '我們提供免費版本讓您體驗基本功能。如需更多進階功能（如無限次試穿、動態影片生成等），可以選擇訂閱專業版。詳細方案請下載 App 查看。',
+      question: 'Tryzeon 怎麼收費？',
+      answer: '對消費者完全免費。對品牌採 pay-per-use：每 5 次試穿 NT$1，前 3 個月免費，沒有月費也沒有前期建置費用——試穿越多代表導購機會越強，成本與效益同向成長。',
       category: '價格方案'
     },
     {
@@ -47,12 +47,12 @@ export const faqData = {
     },
     {
       question: '我是時尚創作者，可以加入 Tryzeon 嗎？',
-      answer: '當然可以！我們正在建立創作者生態圈，歡迎時尚部落客、KOL 和內容創作者加入。請透過 App 內的「加入創作者」功能申請，或直接聯絡我們。',
+      answer: '我們正在建立創作者生態圈，歡迎時尚部落客、KOL 和內容創作者加入。請來信 contact@tryzeon.com，主旨註明「創作者合作」。',
       category: '創作者計畫'
     },
     {
       question: 'Tryzeon 未來有什麼新功能？',
-      answer: '我們計劃分三階段發展：第一階段專注 B2B & B2C 雙線並進；第二階段與穿搭 KOL、時尚創作者合作，推出創作者分潤計畫；第三階段將擴展至美髮、美妝、配件等領域，提供全身造型模擬，並串接大型電商平台（如蝦皮、樂天、SHEIN）提供跨境虛擬試穿服務。追蹤我們的 Instagram @tryzeon 獲取最新消息。',
+      answer: '我們的成長路線分三年三階段：第 1 年將 App、品牌官網、門市 QR 與 LINE 官方帳號四大通路系統落地，並開始 B2B 收費；第 2 年把時尚趨勢數據商品化，回饋品牌的進貨與行銷決策；第 3 年推出自有 AI 時尚模型與 API 授權，並複製至日、韓與東南亞市場。追蹤我們的 Instagram @tryzeon 獲取最新消息。',
       category: '未來規劃'
     },
     {
@@ -61,9 +61,9 @@ export const faqData = {
       category: '技術支援'
     },
     {
-      question: '可以取消訂閱嗎？',
-      answer: '可以的。您可以隨時在 App 內的「帳戶設定」中取消訂閱。取消後，您仍可使用至當期結束，不會立即失去權限。',
-      category: '訂閱管理'
+      question: '品牌導入需要多久？資料要怎麼上架？',
+      answer: '上架流程設計成手機就能完成：拍照後由多模態 AI 自動預填商品欄位，也支援語音輸入與 Excel 批次匯入，10 分鐘可上傳 100-200 件。我們會指派專屬技術窗口協助首批商品上架與素材轉換。',
+      category: '商業合作'
     }
   ],
   'en': [
@@ -84,12 +84,12 @@ export const faqData = {
     },
     {
       question: 'How accurate is the virtual try-on?',
-      answer: 'We use state-of-the-art deep learning technology to accurately simulate how clothing looks on different body types. Our AI considers your body shape, posture, and clothing characteristics to provide highly realistic results.',
+      answer: 'We use our own in-house fashion AI models for virtual try-on and video generation. AI cannot be 100% precise, but compared with a flat product photo it shows far more concretely how a garment looks on you — closing the imagination gap is exactly the problem we set out to solve.',
       category: 'Technology'
     },
     {
-      question: 'Is Tryzeon free?',
-      answer: 'We offer a free version for you to experience basic features. For advanced features (unlimited try-ons, dynamic video generation, etc.), you can subscribe to the Pro version. Check the App for detailed plans.',
+      question: 'How does Tryzeon charge?',
+      answer: 'Free for consumers. Brands pay per use: NT$1 per 5 try-ons, with the first 3 months free — no monthly fee and no setup cost. The more try-ons, the stronger the conversion opportunity, so cost and benefit move together.',
       category: 'Pricing'
     },
     {
@@ -109,12 +109,12 @@ export const faqData = {
     },
     {
       question: 'I\'m a fashion creator, can I join Tryzeon?',
-      answer: 'Absolutely! We are building a creator ecosystem and welcome fashion bloggers, KOLs, and content creators. Apply through the "Join Creators" feature in the App or contact us directly.',
+      answer: 'We are building a creator ecosystem and welcome fashion bloggers, KOLs, and content creators. Email us at contact@tryzeon.com with "Creator Partnership" in the subject line.',
       category: 'Creators'
     },
     {
       question: 'What new features are coming to Tryzeon?',
-      answer: 'We are continuously developing new features, including: dynamic video generation, 3D virtual try-on, AR try-on, personalized outfit recommendations, and more. Follow us on Instagram @tryzeon for updates.',
+      answer: 'Our roadmap runs in three yearly stages: Year 1 — roll out all four channels (App, brand sites, in-store QR, LINE Official Account) and begin B2B billing; Year 2 — productise fashion trend data to inform brands\' buying and marketing decisions; Year 3 — launch our own fashion AI model with API licensing and expand into Japan, Korea and Southeast Asia. Follow us on Instagram @tryzeon for updates.',
       category: 'Roadmap'
     },
     {
@@ -123,9 +123,9 @@ export const faqData = {
       category: 'Support'
     },
     {
-      question: 'Can I cancel my subscription?',
-      answer: 'Yes, you can cancel your subscription anytime in the App\'s "Account Settings". After cancellation, you can still use the service until the end of the current period.',
-      category: 'Subscription'
+      question: 'How long does brand onboarding take?',
+      answer: 'Onboarding is built to run entirely from a phone: multimodal AI pre-fills product fields from a photo, with voice input and Excel batch import also supported — 100-200 items in about 10 minutes. A dedicated technical contact helps with your first upload and asset conversion.',
+      category: 'Business'
     }
   ]
 };

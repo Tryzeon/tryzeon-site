@@ -6,23 +6,26 @@ import BusinessPageClient from './BusinessPageClient';
 export const metadata: Metadata = {
   title: '品牌合作 — 為服飾品牌打造的 AI 虛擬試穿解決方案',
   description:
-    'Tryzeon 為中小型服飾品牌提供 AI 虛擬試穿、動態影片生成與時尚趨勢數據分析。流量計價模式：依被試穿次數付費，提升轉換率、降低退貨率。',
+    'Tryzeon 為中小型服飾品牌提供 AI 虛擬試穿、動態影片生成與時尚趨勢數據分析。pay-per-use：每 5 次試穿 NT$1、前 3 個月免費，零前期投入。試穿數據回饋精準進貨，降低庫存風險。',
   alternates: { canonical: 'https://tryzeon.com/business' },
   openGraph: {
     type: 'website',
     url: 'https://tryzeon.com/business',
     title: '品牌合作 — 為服飾品牌打造的 AI 虛擬試穿解決方案',
-    description: 'Tryzeon B2B 解決方案：AI 虛擬試穿、流量計價、降低退貨率 25%。',
+    description:
+      'Tryzeon B2B 解決方案：AI 虛擬試穿串連門市、品牌官網與 App，pay-per-use 零固定成本，前 3 個月免費導入。',
   },
 };
 
 export const revalidate = 3600;
 
+// 一律使用 Tryzeon 自身可佐證的事實，不引用無來源的外部研究數字
+// （對外用語紅線：84% 不得使用、退貨率宣稱禁止、轉換率須具名來源）
 const stats = [
-  { value: '+30%', label: '電商轉換率提升', desc: '虛擬試穿讓消費者更有信心購買' },
-  { value: '-25%', label: '退貨率降低', desc: '試穿後購買，尺寸與風格更精準' },
-  { value: '84%', label: 'AR 試穿興趣', desc: '消費者期待虛擬試穿體驗' },
-  { value: '70-90%', label: '行銷拍攝成本節省', desc: 'AI 生成試穿影像，無需棚拍' },
+  { value: 'NT$1', label: '每 5 次試穿', desc: 'pay-per-use，用多少付多少' },
+  { value: '3 個月', label: '免費導入期', desc: '零前期投入、不收月費，先驗證成效' },
+  { value: '8 成', label: '品牌願依試穿流量付費', desc: '實地訪談 100 家品牌、20 家深度受訪' },
+  { value: 'NT$ 數萬', label: '一次模特兒＋棚拍成本', desc: 'AI 生成試穿影像可直接取代此支出' },
 ];
 
 const valueProps = [
@@ -54,9 +57,9 @@ const valueProps = [
 ];
 
 const pricingHighlights = [
-  '依「實際被試穿次數」計費，不靠流量也不收月費',
-  '初期提供免費試用，零成本驗證效果',
-  '不需修改既有電商系統，跨平台整合',
+  '按實際試穿次數計費：每 5 次試穿 NT$1，不收月費、不收上架費',
+  '前 3 個月免費導入，零前期投入驗證成效',
+  '手機就能完成上架：多模態自動預填、語音輸入、Excel 批次匯入',
   '專屬技術窗口協助上架與素材轉換',
 ];
 

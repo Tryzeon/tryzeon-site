@@ -69,8 +69,8 @@ export default function HomePageClient() {
               imageAlt="Fashion Boutique Store"
               kicker="01 / For Brands"
               accent="#2563EB"
-              title={<>實體門市、官網 SDK、<br />App 一次部署</>}
-              desc={<>流量計價、無前期投入。AI 自動生成試穿視覺與動態影片，<br className="hidden md:block" />實體門市裝置、品牌官網 embed SDK、Tryzeon App 同步上架。</>}
+              title={<>門市 QR、品牌官網、App<br />同一套試穿引擎</>}
+              desc={<>pay-per-use、零前期投入：每 5 次試穿 NT$1，前 3 個月免費。<br className="hidden md:block" />雙平台 App 與 LINE 官方帳號已上線，門市 QR 與品牌官網嵌入導入中。</>}
               href="/business"
               ctaLabel="品牌合作方案"
               ctaVariant="primary"

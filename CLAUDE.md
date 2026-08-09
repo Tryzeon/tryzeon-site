@@ -131,11 +131,13 @@ allows no third-party script or connect origins beyond Google Fonts / Google Doc
 analytics or embed script will be blocked at runtime. **Do not modify the security headers
 block**; if a feature needs a new origin, raise it rather than widening the policy.
 
-### Dead components
+### Removed components
 
 `FeaturesCinema`, `PainCinema`, `StatsCinema`, `ProcessScroll`, `ScrollLinkedAnimations`,
-`VisionManifesto`, `WireframeMagic` are unreferenced leftovers from earlier designs. Don't
-wire them back in — MASTER.md explicitly bans pain-point/stats/market-analysis sections.
+`VisionManifesto`, `WireframeMagic` were unreferenced leftovers from earlier designs and
+have been deleted. Don't resurrect them from git history — MASTER.md bans pain-point /
+stats / market-analysis sections, and `StatsCinema` in particular hardcoded the banned
+84% / 71% figures, so re-importing it would ship a redline violation.
 
 ## Design system
 
@@ -180,14 +182,49 @@ touching visuals.** Identity: Editorial Tech × Liquid Glass, light only. Hard r
 
 ## Content rules
 
-- **Confidential:** never mention internal AI model names in any outward-facing copy, doc,
-  or commit message. Public wording is always「團隊自家研發的專屬 AI 時尚模型」.
-- Unverified conversion claims (e.g. "reduces returns by X%") must not be added to site
-  copy, marketing material, or commit messages without a source link or internal
-  whitepaper reference.
-- The company name is always written "Tryzeon".
-- Approved public stats: 84% interest in AR try-on, 71% would shop more often, +30%
-  e-commerce conversion.
+### Audience (decides the tone of every string)
+
+The site's real readers are **① B2B brand decision-makers ② tech partners ③ startup-
+competition judges / investors** — *not* B2C consumers. LINE Taiwan reached out precisely
+because they read this site. Before writing copy, ask who the sentence is addressed to;
+if the answer is "a shopper", rewrite or demote it. Consumer-side try-on is framed as the
+traffic-and-data engine that feeds the B2B model, not as the product being sold here.
+
+### Positioning (2026-07)
+
+"別人做工具，我們做生態系" — an OMO integration ecosystem for Asian fashion brands, not a
+single try-on tool. Revenue is B2B pay-per-use: NT$1 per 5 try-ons, first 3 months free,
+no monthly or setup fee. Company is **pre-revenue**; consumer monetisation is auxiliary
+and not live.
+
+### ⛔ Outward-facing redlines (violating these is a serious error)
+
+1. **Never use the 84% stat** — it has no reliable source. 61% / 71% (2016 Retail
+   Perceptions) may appear as on-screen text only, never cited aloud as sourced.
+2. **Conversion-rate figures must be attributed to Deloitte or Shopify** on screen;
+   market-size figures to Grand View Research.
+3. **No return-rate claims of any kind** ("reduces returns by X%", "減少退貨"). Consumer-
+   side framing is only「打破想像的隔閡」(closing the imagination gap). In a B2B or
+   sustainability context, "precise buying reduces overstock and textile waste" is fine.
+4. **Never describe in-development features as shipped.** Live: dual-platform app,
+   LINE OA (LIFF). In development: in-store QR, brand-site embed, platform integrations
+   (SHOPLINE / Shopify / Cyberbiz / 91APP), the three patent directions.
+5. **Pre-revenue** — never imply revenue, paying customers, or a running paid
+   subscription (payments are sandbox-only).
+6. **"Benchmarked against ISO 27001" — never "certified".** Keep security wording exact:
+   it is SSL/TLS in transit plus RLS/JWT, *not* end-to-end encryption (try-on requires
+   server-side compute, so E2EE is technically false).
+7. **No partner logos until contracts are signed**; never describe a prospect as a
+   confirmed partner.
+8. **Never name third-party or internal AI models** (Gemini, nano-banana, Veo3 …). Public
+   wording is always「團隊自家研發的專屬 AI 時尚模型」.
+9. **State technical specs honestly**: static try-on 5-7s, dynamic video 10-15s. No
+   rounding down into a stronger claim.
+10. Market-claim boundary: "no leader yet in Asian AI OMO integration" is fair; **"no
+    leader in virtual try-on" is not** (Perfect Corp is the counter-example).
+
+Sources must be nameable before a number goes on the site. If it cannot be attributed,
+leave it out. The company name is always written "Tryzeon".
 
 ## Git
 
