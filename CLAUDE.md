@@ -105,10 +105,16 @@ Built on top of it:
 - `app/store/[[...slug]]/page.tsx`, `app/product/[[...slug]]/page.tsx` — Universal Link /
   App Link fallbacks rendering `components/AppDownload.tsx`. The **optional** catch-all
   matters: bare `/store` and `/product` must not 404.
-- `app/s/[code]/route.ts` — proxies to `RESOLVE_LINK_URL` (a Supabase edge function),
-  forwarding the UA and returning upstream's `Location`; any failure or missing env var
-  degrades to the site root.
-
+- `app/s/[code]/route.ts` — where store QR codes land. Calls `SHORT_LINKS_URL` (a Supabase
+  edge function) which owns the lookup, UA classification and open-event logging, and 302s
+  to the LIFF URL it returns; anything else degrades to the site root. `/s/` must not be
+  claimed by the app or the OS intercepts a scan before the browser sees it, which is why
+  the path is gone from the AASA here and from the app's AndroidManifest — note an Android
+  intent-filter is compiled into the installed binary and iOS caches the AASA until
+  reinstall, so an older install still intercepts.
+  Not built yet, deliberately: distinguishing an expired link from an outage, and letting
+  non-LINE scans tap through instead of redirecting (iOS 18.3 stopped honouring redirects
+  into Universal Links). Both wait until this path is verified on a device.
 Route handlers here all use `runtime = 'edge'`, `dynamic = 'force-dynamic'`,
 `Cache-Control: no-store`, and `X-Robots-Tag: noindex`. The paths are declared in
 `public/.well-known/apple-app-site-association` and `assetlinks.json` — changing a path
