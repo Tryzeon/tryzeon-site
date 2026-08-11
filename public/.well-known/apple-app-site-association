@@ -6,8 +6,7 @@
         "appID": "ZRT8ZB9565.com.tryzeon.app",
         "paths": [
           "/store/*",
-          "/product/*",
-          "/s/*"
+          "/product/*"
         ]
       }
     ]
