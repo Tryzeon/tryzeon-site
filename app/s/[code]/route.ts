@@ -3,8 +3,6 @@ import { resolveShortLink } from '@/lib/short-link';
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
-const FALLBACK_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://tryzeon.com';
-
 function redirect(location: string): Response {
   return new Response(null, {
     status: 302,
@@ -21,7 +19,14 @@ export async function GET(
   { params }: { params: Promise<{ code: string }> },
 ): Promise<Response> {
   const { code } = await params;
-  const url = await resolveShortLink(code, request.headers.get('user-agent') ?? '');
+  const resolution = await resolveShortLink(code, request.headers.get('user-agent') ?? '');
 
-  return redirect(url ?? FALLBACK_URL);
+  switch (resolution.state) {
+    case 'ok':
+      return redirect(resolution.url);
+    case 'expired':
+      return redirect('/link-expired');
+    case 'unavailable':
+      return redirect('/link-unavailable');
+  }
 }

@@ -6,7 +6,18 @@
  */
 
 /**
- * 解析一個短連結 code，回傳目的地；未知、已停用或後端故障都回 null。
+ * `expired` 與 `unavailable` 必須分開：把後端故障顯示成「連結已失效」，等於告訴店家的
+ * 客人他的立牌沒用 —— 而重新掃一次就會好。上游用狀態碼區分這兩者（404 vs 5xx）。
+ */
+export type ShortLinkResolution =
+  | { state: 'ok'; url: string }
+  | { state: 'expired' }
+  | { state: 'unavailable' };
+
+const UNAVAILABLE: ShortLinkResolution = { state: 'unavailable' };
+
+/**
+ * 解析一個短連結 code。
  *
  * `cache: 'no-store'` 是正確性依賴，不只是新鮮度：每次呼叫都會在 upstream 記一筆開啟
  * 事件。加上快取會讓掃碼數少算。請不要把它換成 revalidate。
@@ -14,10 +25,10 @@
 export async function resolveShortLink(
   code: string,
   userAgent: string,
-): Promise<string | null> {
+): Promise<ShortLinkResolution> {
   const endpoint = process.env.SHORT_LINKS_URL;
   if (!endpoint) {
-    return null;
+    return UNAVAILABLE;
   }
 
   try {
@@ -26,13 +37,20 @@ export async function resolveShortLink(
       cache: 'no-store',
     });
 
+    if (upstream.status === 404) {
+      return { state: 'expired' };
+    }
     if (!upstream.ok) {
-      return null;
+      console.error(`short link upstream failed: ${upstream.status}`);
+      return UNAVAILABLE;
     }
 
     const body = (await upstream.json()) as Record<string, unknown>;
-    return typeof body.url === 'string' && body.url.length > 0 ? body.url : null;
-  } catch {
-    return null;
+    return typeof body.url === 'string' && body.url.length > 0
+      ? { state: 'ok', url: body.url }
+      : UNAVAILABLE;
+  } catch (err) {
+    console.error('short link upstream unreachable:', err);
+    return UNAVAILABLE;
   }
 }
