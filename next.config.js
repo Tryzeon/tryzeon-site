@@ -8,7 +8,7 @@ const ContentSecurityPolicy = [
   `script-src 'self' 'unsafe-inline' ${isProd ? '' : "'unsafe-eval'"}`.trim(),
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
-  "img-src 'self' data: blob: https://images.unsplash.com",
+  "img-src 'self' data: blob: https://images.unsplash.com https://images.tryzeon.com",
   "media-src 'self'",
   "connect-src 'self' https://docs.google.com https://www.google.com",
   "form-action 'self' https://docs.google.com",
@@ -45,6 +45,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.tryzeon.com',
       },
     ],
   },

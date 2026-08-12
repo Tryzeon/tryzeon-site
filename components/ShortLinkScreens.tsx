@@ -1,6 +1,6 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import type { LucideIcon } from 'lucide-react';
 import { Home, Link2Off, MessageCircle, RefreshCw, Store } from 'lucide-react';
 
 /**
@@ -10,8 +10,9 @@ import { Home, Link2Off, MessageCircle, RefreshCw, Store } from 'lucide-react';
  * 例外，不沿用），主色只用 blue→cyan。不放遠端圖片 —— CSP 的 img-src 只允許自家與
  * unsplash，而安全標頭不為單一功能放寬。
  */
-function Notice({ icon: Icon, title, lede, children }: {
-  icon: LucideIcon;
+function Notice({ emblem, title, lede, children }: {
+  /** 玻璃方框裡的東西：錯誤頁放 Lucide 圖示，落地頁放店家 logo。 */
+  emblem: ReactNode;
   title: string;
   lede: string;
   children?: ReactNode;
@@ -28,8 +29,8 @@ function Notice({ icon: Icon, title, lede, children }: {
       <div className="relative z-10 w-full max-w-xl px-6 py-20">
         <div className="glass-card rounded-3xl px-8 py-12 text-center sm:px-12">
           <div className="mb-8 flex justify-center">
-            <div className="flex h-20 w-20 items-center justify-center rounded-[1.75rem] border border-white/60 bg-white/70 shadow-[0_8px_32px_rgba(16,24,40,0.10)]">
-              <Icon className="h-9 w-9 text-[#2563EB]" strokeWidth={1.4} />
+            <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-[1.75rem] border border-white/60 bg-white/70 shadow-[0_8px_32px_rgba(16,24,40,0.10)]">
+              {emblem}
             </div>
           </div>
 
@@ -69,7 +70,7 @@ function Notice({ icon: Icon, title, lede, children }: {
 export function ShortLinkExpired() {
   return (
     <Notice
-      icon={Link2Off}
+      emblem={<Link2Off className="h-9 w-9 text-[#2563EB]" strokeWidth={1.4} />}
       title="連結已失效"
       lede="這個連結不存在或已停用。如果是從店家的 QR Code 掃來的，請向店家確認。"
     />
@@ -83,7 +84,7 @@ export function ShortLinkExpired() {
 export function ShortLinkUnavailable() {
   return (
     <Notice
-      icon={RefreshCw}
+      emblem={<RefreshCw className="h-9 w-9 text-[#2563EB]" strokeWidth={1.4} />}
       title="暫時無法開啟"
       lede="伺服器忙線或連線中斷。請稍後重新掃一次，連結本身沒有問題。"
     />
@@ -93,6 +94,8 @@ export function ShortLinkUnavailable() {
 interface LiffLandingProps {
   /** 店家名稱。null 時退回通用標題，不猜。 */
   storeName: string | null;
+  /** 店家 logo。null 時退回通用圖示。 */
+  logoUrl: string | null;
   liffUrl: string;
 }
 
@@ -100,10 +103,23 @@ interface LiffLandingProps {
  * 在 LINE 之外掃到店家 QR 時的落地頁。存在的理由是那一次點擊：universal link 只有一次
  * 觸發機會，而自動跳轉用不掉它。
  */
-export function LiffLanding({ storeName, liffUrl }: LiffLandingProps) {
+export function LiffLanding({ storeName, logoUrl, liffUrl }: LiffLandingProps) {
   return (
     <Notice
-      icon={Store}
+      emblem={logoUrl
+        ? (
+          // next/image 會依 width 產出縮圖並轉成 avif/webp（next.config.js 已設定），
+          // 所以原檔多大都不會整份送到手機上。host 要同時在 CSP 的 img-src 與
+          // images.remotePatterns 裡。
+          <Image
+            src={logoUrl}
+            alt=""
+            width={80}
+            height={80}
+            className="h-full w-full object-cover"
+          />
+        )
+        : <Store className="h-9 w-9 text-[#2563EB]" strokeWidth={1.4} />}
       title={storeName ?? 'Tryzeon 合作店家'}
       lede="在 LINE 中開啟，即可試穿這家店的商品。"
     >

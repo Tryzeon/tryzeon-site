@@ -47,6 +47,10 @@ export default async function ShortLinkPage() {
   }
 
   return (
-    <LiffLanding storeName={view.store.name} liffUrl={view.url} />
+    <LiffLanding
+      storeName={view.store.name}
+      logoUrl={view.store.logoUrl}
+      liffUrl={view.url}
+    />
   );
 }
