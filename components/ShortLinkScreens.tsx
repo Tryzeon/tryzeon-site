@@ -1,18 +1,20 @@
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
-import { Home, Link2Off, RefreshCw } from 'lucide-react';
+import { Home, Link2Off, MessageCircle, RefreshCw, Store } from 'lucide-react';
 
 /**
- * 掃到店家 QR 但連結沒有帶到目的地時看到的兩種畫面。
+ * 掃到店家 QR 之後、在 LINE 之外看到的三種畫面。
  *
- * 兩者共用同一層玻璃外殼。走 MASTER.md 的淺色系統（`AppDownload` 的深色底是既有
+ * 三者共用同一層玻璃外殼。走 MASTER.md 的淺色系統（`AppDownload` 的深色底是既有
  * 例外，不沿用），主色只用 blue→cyan。不放遠端圖片 —— CSP 的 img-src 只允許自家與
  * unsplash，而安全標頭不為單一功能放寬。
  */
-function Notice({ icon: Icon, title, lede }: {
+function Notice({ icon: Icon, title, lede, children }: {
   icon: LucideIcon;
   title: string;
   lede: string;
+  children?: ReactNode;
 }) {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#FAFAFA]">
@@ -42,6 +44,8 @@ function Notice({ icon: Icon, title, lede }: {
           <p className="mx-auto max-w-sm text-base leading-relaxed text-[#475467]">
             {lede}
           </p>
+
+          {children && <div className="mt-10">{children}</div>}
         </div>
 
         <div className="mt-8 text-center">
@@ -83,5 +87,39 @@ export function ShortLinkUnavailable() {
       title="暫時無法開啟"
       lede="伺服器忙線或連線中斷。請稍後重新掃一次，連結本身沒有問題。"
     />
+  );
+}
+
+interface LiffLandingProps {
+  /** 店家名稱。null 時退回通用標題，不猜。 */
+  storeName: string | null;
+  liffUrl: string;
+}
+
+/**
+ * 在 LINE 之外掃到店家 QR 時的落地頁。存在的理由是那一次點擊：universal link 只有一次
+ * 觸發機會，而自動跳轉用不掉它。
+ */
+export function LiffLanding({ storeName, liffUrl }: LiffLandingProps) {
+  return (
+    <Notice
+      icon={Store}
+      title={storeName ?? 'Tryzeon 合作店家'}
+      lede="在 LINE 中開啟，即可試穿這家店的商品。"
+    >
+      {/*
+        必須是 <a href>，不能改成自動跳轉。Apple 的 DTS 明講 301/302 導向 universal link
+        在 iOS 18.3 之後不再開啟 App（developer.apple.com/forums/thread/780496），LINE 也
+        不保證外部瀏覽器能喚起 LIFF，並建議改由使用者點擊觸發
+        （developers.line.biz/en/tips/2026/05/07/line-launch-issue/）。
+      */}
+      <a
+        href={liffUrl}
+        className="inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#2563EB] to-[#06B6D4] px-8 py-4 font-semibold text-white shadow-[0_8px_32px_rgba(37,99,235,0.25)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+      >
+        <MessageCircle className="h-5 w-5" strokeWidth={1.8} />
+        在 LINE 中開啟
+      </a>
+    </Notice>
   );
 }
