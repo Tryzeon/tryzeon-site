@@ -29,13 +29,16 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const title = product.storeName ? `${product.name}｜${product.storeName}` : product.name;
   const price = product.price === null ? '' : `NT$${product.price} · `;
   const description = `${price}用 Tryzeon App 虛擬試穿這件商品。`;
+  const url = `/product/${id}`;
 
   return {
     title,
     description,
+    alternates: { canonical: url },
     openGraph: {
       title,
       description,
+      url,
       type: 'website',
       images: product.imageUrl
         ? [{ url: product.imageUrl, width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT }]

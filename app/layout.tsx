@@ -76,7 +76,6 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://tryzeon.com',
     languages: {
       'zh-TW': 'https://tryzeon.com',
       'en-US': 'https://tryzeon.com/en',
