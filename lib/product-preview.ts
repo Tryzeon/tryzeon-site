@@ -10,18 +10,6 @@
 
 const IMAGES_BASE_URL = 'https://images.tryzeon.com';
 
-/**
- * 預覽卡的圖固定 1200×630。這個尺寸決定 LINE / Messenger 顯示的是滿版大卡還是角落小
- * 縮圖 —— 不是美觀問題。原圖是直式（實測 0.61–1.19），所以用 `fit=pad` 補底色而不是
- * `fit=cover`：服飾照被裁掉領口或裙襬比左右留白難看得多。底色取設計系統的 `#FAFAFA`。
- * 轉檔由 Cloudflare Image Resizing 做，這個 zone 已經開了。
- */
-const OG_TRANSFORM =
-  'cdn-cgi/image/width=1200,height=630,fit=pad,background=%23FAFAFA';
-
-export const OG_IMAGE_WIDTH = 1200;
-export const OG_IMAGE_HEIGHT = 630;
-
 const SELECT = 'name,price,image_paths,store_profiles!products_store_id_fkey(name)';
 
 /** PostgREST 對非 UUID 的 `id=eq.` 回 400，先擋掉省一次往返與一則假錯誤。 */
@@ -51,7 +39,7 @@ function parseRow(value: unknown): ProductPreview | null {
     name,
     storeName: asString(store.name),
     price: typeof row.price === 'number' ? row.price : null,
-    imageUrl: path ? `${IMAGES_BASE_URL}/${OG_TRANSFORM}/${path}` : null,
+    imageUrl: path ? `${IMAGES_BASE_URL}/${path}` : null,
   };
 }
 
