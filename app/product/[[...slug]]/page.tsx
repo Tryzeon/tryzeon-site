@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
 
 import { AppDownload } from '@/components/AppDownload';
-import { fetchProductPreview } from '@/lib/product-preview';
+import {
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_WIDTH,
+  fetchProductPreview,
+} from '@/lib/product-preview';
 
 /** 沒帶 id、查不到、或後端故障時的文案 —— 這頁必須永遠算得出來。 */
 const FALLBACK: Metadata = {
@@ -33,7 +37,9 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       title,
       description,
       type: 'website',
-      images: product.imageUrl ? [{ url: product.imageUrl }] : undefined,
+      images: product.imageUrl
+        ? [{ url: product.imageUrl, width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT }]
+        : undefined,
     },
   };
 }
