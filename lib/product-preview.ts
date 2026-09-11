@@ -3,17 +3,12 @@
  *
  * 走 Supabase REST 而不是 `@supabase/supabase-js`：這裡只有一個 anon 讀取，為它加一個
  * 依賴不划算。`products` 的 RLS 是 `Anyone can view all products`，所以 anon key 夠用。
- *
- * 圖片主機寫死而不是再開一個環境變數 —— `next.config.js` 的 CSP `img-src` 與
- * `images.remotePatterns` 已經各寫死一次，第三處跟著它們走比多一個會漂移的設定安全。
  */
 
-const IMAGES_BASE_URL = 'https://images.tryzeon.com';
+import { publicImageUrl } from '@/lib/images';
+import { isUuid } from '@/lib/uuid';
 
 const SELECT = 'name,price,image_paths,store_profiles!products_store_id_fkey(name)';
-
-/** PostgREST 對非 UUID 的 `id=eq.` 回 400，先擋掉省一次往返與一則假錯誤。 */
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export interface ProductPreview {
   name: string;
@@ -39,7 +34,7 @@ function parseRow(value: unknown): ProductPreview | null {
     name,
     storeName: asString(store.name),
     price: typeof row.price === 'number' ? row.price : null,
-    imageUrl: path ? `${IMAGES_BASE_URL}/${path}` : null,
+    imageUrl: publicImageUrl(path),
   };
 }
 
@@ -50,7 +45,7 @@ function parseRow(value: unknown): ProductPreview | null {
 export async function fetchProductPreview(id: string): Promise<ProductPreview | null> {
   const baseUrl = process.env.SUPABASE_URL;
   const anonKey = process.env.SUPABASE_ANON_KEY;
-  if (!baseUrl || !anonKey || !UUID.test(id)) {
+  if (!baseUrl || !anonKey || !isUuid(id)) {
     return null;
   }
 
