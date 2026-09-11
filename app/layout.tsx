@@ -138,6 +138,7 @@ export default function RootLayout({
         '@type': 'Organization',
         '@id': 'https://tryzeon.com/#organization',
         name: 'Tryzeon',
+        legalName: '創然科技有限公司',
         url: 'https://tryzeon.com',
         logo: 'https://tryzeon.com/icon',
         description: '運用 AI 技術提供虛擬試穿解決方案，重新定義時尚購物體驗。',

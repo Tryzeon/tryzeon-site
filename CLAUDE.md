@@ -28,7 +28,7 @@ is a build error, not a warning.
 
 ## Architecture
 
-Marketing site for Tryzeon (創然科技股份有限公司), an AI virtual-try-on fashion-tech
+Marketing site for Tryzeon (創然科技有限公司), an AI virtual-try-on fashion-tech
 startup. Next.js 16 App Router, React 18, TypeScript strict, TailwindCSS 3. Primary
 content language is Traditional Chinese.
 

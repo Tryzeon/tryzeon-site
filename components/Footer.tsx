@@ -263,7 +263,7 @@ export function Footer({ t }: FooterProps) {
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-xs text-[#86868B]">
-              Copyright © {currentYear} Tryzeon Inc. All rights reserved.
+              {t.footer.copyright.replace('{year}', String(currentYear))}
             </div>
             <div className="flex flex-wrap justify-center gap-6">
               <Link href="/privacy" className="text-xs text-[#86868B] hover:text-white transition-colors">

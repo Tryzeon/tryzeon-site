@@ -108,7 +108,7 @@ export const translations = {
       privacyPolicy: '隱私權政策',
       termsOfService: '服務條款',
       cookiePolicy: 'Cookie 政策',
-      copyright: '© 創然科技股份有限公司 Tryzeon. All rights reserved.',
+      copyright: '© {year} 創然科技有限公司 Tryzeon. All rights reserved.',
     },
   },
   'en': {
@@ -220,7 +220,7 @@ export const translations = {
       privacyPolicy: 'Privacy Policy',
       termsOfService: 'Terms of Service',
       cookiePolicy: 'Cookie Policy',
-      copyright: '© Tryzeon. All rights reserved.',
+      copyright: '© {year} Tryzeon Co., Ltd. All rights reserved.',
     },
   },
 };

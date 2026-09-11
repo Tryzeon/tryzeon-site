@@ -187,7 +187,7 @@ export default function PrivacyPolicyPage() {
               <ul className="space-y-2 text-gray-700">
                 <li><strong>Email：</strong><a href="mailto:contact@tryzeon.com" className="text-blue-600 hover:text-blue-800">contact@tryzeon.com</a></li>
                 <li><strong>Instagram：</strong><a href="https://www.instagram.com/tryzeon" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">@tryzeon</a></li>
-                <li><strong>公司名稱：</strong>Tryzeon</li>
+                <li><strong>公司名稱：</strong>創然科技有限公司（Tryzeon）</li>
               </ul>
             </div>
         </div>
