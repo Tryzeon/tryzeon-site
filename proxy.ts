@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 import { SHORT_LINK_HEADER, encodeView, resolveShortLink } from '@/lib/short-link';
+import { refreshSession } from '@/lib/supabase/proxy';
 
 /**
  * 短連結的決策點。
@@ -15,10 +16,10 @@ import { SHORT_LINK_HEADER, encodeView, resolveShortLink } from '@/lib/short-lin
  * 所以請保持它極簡。
  */
 export const config = {
-  matcher: '/s/:code+',
+  matcher: ['/s/:code+', '/admin/:path*'],
 };
 
-/** 掃碼的回應取決於 User-Agent，且不該被任何中間層留下來。 */
+/** 掃碼與後台的回應都取決於請求者，且不該被任何中間層留下來。 */
 function withNoStore(response: NextResponse): NextResponse {
   response.headers.set('Cache-Control', 'no-store');
   response.headers.set('X-Robots-Tag', 'noindex');
@@ -26,6 +27,13 @@ function withNoStore(response: NextResponse): NextResponse {
 }
 
 export async function proxy(request: NextRequest): Promise<NextResponse> {
+  if (request.nextUrl.pathname.startsWith('/admin')) {
+    return handleAdmin(request);
+  }
+  return handleShortLink(request);
+}
+
+async function handleShortLink(request: NextRequest): Promise<NextResponse> {
   const code = request.nextUrl.pathname.split('/').filter(Boolean).pop() ?? '';
   const resolution = await resolveShortLink(code, request.headers.get('user-agent') ?? '');
 
@@ -47,4 +55,27 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   );
 
   return withNoStore(NextResponse.next({ request: { headers } }));
+}
+
+/** 登入頁與 OAuth callback 是唯二不需要 session 的 /admin 路徑。 */
+const ADMIN_PUBLIC_PATHS: ReadonlySet<string> = new Set(['/admin/login', '/admin/auth/callback']);
+
+/** 302 也要帶上剛刷新的 session cookie，否則瀏覽器和伺服器的 session 會脫節。 */
+function redirectWithCookies(request: NextRequest, path: string, from: NextResponse): NextResponse {
+  const redirect = NextResponse.redirect(new URL(path, request.url), 302);
+  from.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
+  return withNoStore(redirect);
+}
+
+async function handleAdmin(request: NextRequest): Promise<NextResponse> {
+  const { pathname } = request.nextUrl;
+  const { response, user } = await refreshSession(request);
+
+  if (!user && !ADMIN_PUBLIC_PATHS.has(pathname)) {
+    return redirectWithCookies(request, '/admin/login', response);
+  }
+  if (user && pathname === '/admin/login') {
+    return redirectWithCookies(request, '/admin', response);
+  }
+  return withNoStore(response);
 }
