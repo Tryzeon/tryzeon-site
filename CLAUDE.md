@@ -10,9 +10,11 @@ npm run build        # production build
 npm run type-check   # tsc --noEmit — THE verification gate before committing
 npm run build:analyze  # build + scripts/analyze-bundle.js size report
 npm run clean        # rm -rf .next node_modules/.cache
+npm test          # node --test for lib/admin-analytics pure helpers
 ```
 
-There is no test suite. Verification = `npm run type-check` + `npm run build` + a visual
+The only tests are `npm test` (pure helpers); everything else is verified by hand.
+Verification = `npm run type-check` + `npm run build` + a visual
 check in the browser (MASTER.md requires a screenshot check before commit).
 
 Two package scripts are currently broken — don't rely on them and don't "fix" a phantom
@@ -119,6 +121,43 @@ Route handlers here all use `runtime = 'edge'`, `dynamic = 'force-dynamic'`,
 `Cache-Control: no-store`, and `X-Robots-Tag: noindex`. The paths are declared in
 `public/.well-known/apple-app-site-association` and `assetlinks.json` — changing a path
 requires editing those files and the app side too.
+
+### Internal admin dashboard (`/admin`)
+
+Team-only brand analytics (KAN-50). Auth is Supabase Google OAuth via `@supabase/ssr`,
+entirely server-side (`lib/supabase/server.ts` for pages/actions/route handlers,
+`lib/supabase/proxy.ts` for `proxy.ts`), so the CSP's `connect-src 'self'` is untouched —
+keep it that way; never create a browser Supabase client here. Authorization is RLS: the
+app repo's migrations add an `admin_users` allowlist, an `is_admin()` helper, and
+staff-read SELECT policies on the event tables. Every number comes from a
+`security_invoker` view that aggregates the raw events on read, per store (or product)
+and Taipei calendar month: `analytics_store_monthly_summary`, `analytics_product_monthly_summary`,
+`scan_store_monthly_summary` (the product view keeps the old table's name because
+installed app versions read it). The site queries them through PostgREST with the signed-in user's
+own session and the anon key — `lib/admin-analytics/data.ts` (paged, ordered reads),
+`aggregate.ts` (period filtering and sums, pure and tested), and `queries.ts` (one
+`fetchOverview` / `fetchBrand` per page; it asks `is_admin()` first because RLS answers
+a non-admin with empty results, not an error, and throws `AdminAccessDeniedError` which
+each page turns into the `AccessDenied` card). `requireSession()`
+(`lib/admin-analytics/session.ts`, React `cache`) only verifies the JWT locally with
+`getClaims()`. Image paths become URLs via `lib/images.ts`.
+
+`proxy.ts` now matches `/admin/:path*` too: it refreshes the session cookie and bounces
+anonymous visitors to `/admin/login`; `/admin/login` and `/admin/auth/callback` are the
+only unauthenticated paths. All `/admin` responses are `no-store` + `noindex`, and
+`robots.ts` disallows the prefix.
+
+Copy is zh-TW only and written inline in the admin components and helpers: the
+`lib/translations.ts` rule does not apply here (internal tool, no language switch). Pure helpers under
+`lib/admin-analytics/` use relative `.ts` imports because `npm test` runs them with Node's
+native type stripping (`node --test`); `allowImportingTsExtensions` in `tsconfig.json`
+exists for that, and `*.test.ts` is excluded from `tsc`/the Next build.
+
+Onboarding a teammate: they sign in once at `/admin/login`, then someone runs
+`insert into admin_users (user_id) select id from auth.users where email = '<their email>'`
+in the Supabase SQL editor. The Google provider needs a Web client ID + secret and
+`https://tryzeon.com/admin/auth/callback` (plus the localhost equivalent) in Auth →
+URL Configuration → Redirect URLs.
 
 ### Content and SEO wiring
 
