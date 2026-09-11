@@ -158,7 +158,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="zh-TW" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${notoSerifTC.variable}`}>
+    <html data-scroll-behavior="smooth" lang="zh-TW" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${notoSerifTC.variable}`}>
       <head>
         {/* Consolidated JSON-LD Structured Data */}
         <script
