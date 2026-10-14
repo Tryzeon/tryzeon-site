@@ -1,0 +1,261 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   Neo-Tech Design System
+   Futuristic Lab × Digital Minimalism
+   ======================================== */
+
+@layer base {
+  :root {
+    /* Neo-Tech Color System */
+    --neo-white: #FAFAFA;
+    --neo-ice: #F2F4F7;
+    --neo-ink: #050505;
+
+    /* Accent: Electric Blue Spectrum */
+    --neo-blue: #2563EB;
+
+    /* Typography */
+    --font-outfit: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+    --system-font: var(--font-outfit);
+
+    /* Neo-Tech Transitions - Snappy & Precise */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Neo-Tech Shadows */
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.04), 0 10px 20px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.06), 0 20px 48px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Accessibility: reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Shimmer animation for loading states */
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  /* 不設 scroll-behavior: smooth：平滑捲動交給 Lenis，同頁連結由 SiteLink 指定 smooth。
+     兩套同時開，Next 換頁時的錨點捲動會跟 Lenis 搶，偶爾停在頁首 */
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--neo-white);
+    font-family: var(--system-font);
+    margin: 0;
+    padding: 0;
+    color: var(--neo-ink);
+    letter-spacing: -0.011em;
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: rgba(37, 99, 235, 0.15);
+    color: #101828;
+    text-shadow: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: var(--neo-ink);
+  }
+
+  h1 {
+    font-weight: 800;
+    letter-spacing: -0.035em;
+  }
+
+  h2 {
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  h3 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    letter-spacing: -0.006em;
+    line-height: 1.65;
+    margin-bottom: 1.25em;
+  }
+}
+
+@layer components {
+
+  /* Neo-Tech Glass Card - Frosted Glass Effect */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-md);
+    transition: all 300ms var(--ease-out-expo);
+  }
+
+  .glass-card:hover {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+
+  /* MASTER.md 的預設表面：靜態毛玻璃卡（不帶 hover 位移）。padding 由使用處決定 */
+  .glass-panel {
+    @apply rounded-3xl border border-white/60 bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(16,24,40,0.06)];
+  }
+
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2;
+  }
+
+  /* 深色主按鈕；尺寸以外的外觀。gap／寬度由使用處補 */
+  .btn-primary {
+    @apply focus-ring inline-flex items-center justify-center rounded-full bg-[#101828] px-9 py-4 font-semibold text-white transition-colors duration-300 hover:bg-[#1D2939];
+  }
+
+  /* Neo-Tech Mesh Gradient Background */
+  .gradient-mesh-bg {
+    background:
+      radial-gradient(at 20% 20%, rgba(37, 99, 235, 0.08) 0px, transparent 50%),
+      radial-gradient(at 80% 10%, rgba(6, 182, 212, 0.06) 0px, transparent 50%),
+      radial-gradient(at 60% 80%, rgba(6, 182, 212, 0.05) 0px, transparent 50%),
+      linear-gradient(180deg, var(--neo-white) 0%, var(--neo-ice) 100%);
+  }
+
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@layer utilities {
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* CJK display 排印：全形標點半寬化（halt）。宋體大標結尾的「。」不再吃掉
+     整個 em box——置中標題不會被尾標點推偏，句中「，」節奏也更緊。
+     只給 display 標題用，內文不要套。 */
+  .cjk-punct {
+    font-feature-settings: 'halt' 1;
+  }
+
+  /* Avant-garde texture overlay */
+  .noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.15;
+    mix-blend-mode: overlay;
+    background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+  }
+}
+
+/* ========================================
+   Neo-Tech Micro-Animation System
+   ======================================== */
+
+/* Page enter fade — used by app/template.tsx route transitions. Defined here
+   (not via styled-jsx in the client template) so it ships in the SSR
+   stylesheet; the template sets opacity:0 inline, and a hard load (e.g. a
+   deep-link landing page) must fade in on first paint without waiting for JS. */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* 載入編排第一拍：導覽列先落定（CSS-only，hydration 前就會跑）。
+   Navigation 掛在各 page client 內、template 以 pathname 為 key，
+   所以路由切換時會連同 pageEnter 一起重播——與整頁 fade 同拍，屬預期行為。
+   transform 直接落在 fixed nav 本體上，不是 fixed 元素的 wrapper，
+   所以不會踩 template.tsx 註解裡的 containing-block 陷阱。 */
+@keyframes navEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.nav-enter {
+  animation: navEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+
+/* 首次進場後 Navigation 會在 <html> 標記 data-nav-entered，
+   route change 重掛載時不再重播（避免 fixed nav 消失 0.25s 再落下） */
+html[data-nav-entered='1'] .nav-enter {
+  animation: none;
+}
+
+/* 首頁 hero 文字欄的進場（CSS-only，hydration 前就會跑）：主張在第一眼就讀得到，
+   不等 Framer 掛上。各元素的錯開用 [animation-delay:…] 寫在元件上。 */
+@keyframes heroEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-enter {
+  animation: heroEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+

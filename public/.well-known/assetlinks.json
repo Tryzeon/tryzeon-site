@@ -1,0 +1,15 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.tryzeon.app",
+            "sha256_cert_fingerprints": [
+                "27:68:C3:B9:14:44:EA:0E:49:DB:79:98:E6:2F:61:BD:A2:89:01:42:9D:E5:A7:A2:85:F8:58:F2:A6:12:2A:98",
+                "86:05:82:F5:31:E3:9C:CE:FB:E7:BF:9E:5B:94:2B:91:84:AC:40:23:5B:BC:52:9B:09:7E:13:56:7C:DB:C4:A4"
+            ]
+        }
+    }
+]
