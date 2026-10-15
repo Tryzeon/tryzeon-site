@@ -12,9 +12,9 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: 'portrait-primary',
     icons: [
       {
-        src: '/icon',
-        sizes: 'any',
-        type: 'image/jpeg',
+        src: '/icon.png',
+        sizes: '512x512',
+        type: 'image/png',
       },
     ],
     categories: ['fashion', 'technology', 'shopping'],

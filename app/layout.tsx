@@ -134,7 +134,7 @@ export default function RootLayout({
         name: 'Tryzeon',
         legalName: '創然科技有限公司',
         url: 'https://tryzeon.com',
-        logo: 'https://tryzeon.com/icon',
+        logo: 'https://tryzeon.com/icon.png',
         description: '為時尚產業打造的垂直型 AI（Vertical Fashion AI），連結消費者與時尚品牌的時尚 AI 生態系。',
         contactPoint: { '@type': 'ContactPoint', email: 'contact@tryzeon.com', contactType: 'Customer Service' },
         sameAs: ['https://www.instagram.com/tryzeon', 'https://www.linkedin.com/company/tryzeon'],
