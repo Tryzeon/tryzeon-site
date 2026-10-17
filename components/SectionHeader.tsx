@@ -5,12 +5,14 @@ import { motion, type Variants } from 'framer-motion';
 import { clauseWrap } from '@/components/clauseWrap';
 import { EASE } from '@/lib/motion';
 
+// 對焦式進場：標題從失焦的模糊收成清晰，像鏡頭拉焦（filter 不是位移，減少動態時仍保留）
 const item: Variants = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 22, filter: 'blur(14px)' },
   show: (d: number = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: EASE, delay: d },
+    filter: 'blur(0px)',
+    transition: { duration: 1, ease: EASE, delay: d },
   }),
 };
 

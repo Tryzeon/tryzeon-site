@@ -6,15 +6,20 @@ import { AppScreen } from '@/components/AppScreen';
 import { MoreLink } from '@/components/MoreLink';
 import { PhoneFrame } from '@/components/PhoneFrame';
 import { SectionHeader } from '@/components/SectionHeader';
+import { TiltStage } from '@/components/TiltStage';
 import { TryOnVideo } from '@/components/TryOnVideo';
 import type { AppImageName } from '@/lib/app-images';
 import type { HomeCopy } from '@/lib/copy';
-import { EASE, fadeUpItem, inView } from '@/lib/motion';
+import { fadeUpItem, inView } from '@/lib/motion';
 
 const FOCUS_RING = 'focus-ring focus-visible:ring-offset-[#FAFAFA]';
 
 // 滑過清單時停留這麼久才切換：游標斜著劃過其他項目去點右邊時，畫面不會一路閃過
 const HOVER_INTENT_MS = 120;
+
+// 換畫面時新畫面由上往下掃描進來（globals.css 的 .screen-scan-in，0.8s）；
+// 舊畫面留在下層，等新畫面蓋滿才移除
+const SCAN_S = 0.8;
 
 // 功能 → 畫面，順序對應 copy.home.experience.items
 const SCREENS = [
@@ -86,9 +91,13 @@ interface DesktopShowcaseProps {
  * 桌機：功能清單切換右側手機畫面，採 WAI-ARIA tabs 模式（直向 tablist + 一個 tabpanel）：
  * 滑鼠停在項目上就切換（不必點擊）；點擊與鍵盤照常可用——
  * 只有選中項在 Tab 順序裡，上下（或左右）方向鍵、Home、End 在項目間移動並直接切換。
+ * 手機是 3D 舞台：游標在整個區塊內移動時轉向游標；換畫面時一道掃描光把新畫面「生成」出來。
  */
 function DesktopShowcase({ copy }: DesktopShowcaseProps) {
+  const stageRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  // 切換過幾次：第一個畫面不掃描，之後每次切換重播掃描光
+  const [scans, setScans] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const baseId = useId();
   const tabId = (i: number) => `${baseId}-tab-${i}`;
@@ -108,7 +117,9 @@ function DesktopShowcase({ copy }: DesktopShowcaseProps) {
 
   const select = (i: number) => {
     cancelHover();
+    if (i === active) return;
     setActive(i);
+    setScans((n) => n + 1);
   };
 
   const onTabHover = (i: number) => {
@@ -136,7 +147,7 @@ function DesktopShowcase({ copy }: DesktopShowcaseProps) {
   };
 
   return (
-    <motion.div {...revealProps} className="mx-auto hidden max-w-5xl items-center gap-16 lg:grid lg:grid-cols-[1fr_auto]">
+    <motion.div ref={stageRef} {...revealProps} className="mx-auto hidden max-w-5xl items-center gap-16 lg:grid lg:grid-cols-[1fr_auto]">
       <div
         role="tablist"
         aria-label={copy.title}
@@ -178,24 +189,36 @@ function DesktopShowcase({ copy }: DesktopShowcaseProps) {
         })}
       </div>
 
-      <div role="tabpanel" id={panelId} aria-labelledby={tabId(active)} className="flex w-[300px] flex-col items-center">
-        <PhoneFrame className="w-full">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={current ?? 'video'}
-              className="absolute inset-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { duration: 0.5, ease: EASE } }}
-              exit={{ opacity: 0, transition: { duration: 0.25, ease: 'easeIn' } }}
-            >
-              {current === null ? (
-                <TryOnVideo replayLabel={copy.replay} framed={false} />
-              ) : (
-                <AppScreen name={current} sizes="300px" framed={false} />
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </PhoneFrame>
+      <div role="tabpanel" id={panelId} aria-labelledby={tabId(active)} className="relative flex w-[300px] flex-col items-center">
+        <span
+          className="pointer-events-none absolute -bottom-8 left-1/2 h-10 w-[78%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(closest-side,rgba(37,99,235,0.2),transparent)] blur-xl"
+          aria-hidden
+        />
+        <TiltStage trackRef={stageRef} max={9} className="w-full">
+          <PhoneFrame className="w-full">
+            <AnimatePresence initial={false}>
+              <motion.div
+                key={current ?? 'video'}
+                className={`absolute inset-0 ${scans > 0 ? 'screen-scan-in' : ''}`}
+                animate={{ zIndex: 1 }}
+                exit={{ zIndex: 0, opacity: 0, transition: { zIndex: { duration: 0 }, opacity: { delay: SCAN_S, duration: 0.01 } } }}
+              >
+                {current === null ? (
+                  <TryOnVideo replayLabel={copy.replay} framed={false} />
+                ) : (
+                  <AppScreen name={current} sizes="300px" framed={false} />
+                )}
+              </motion.div>
+            </AnimatePresence>
+            {scans > 0 && (
+              <span key={scans} className="screen-scan-beam pointer-events-none absolute inset-0 z-10" aria-hidden>
+                <span className="absolute inset-x-0 top-0 h-20 -translate-y-full bg-gradient-to-b from-transparent to-[#06B6D4]/20" />
+                <span className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#2563EB] via-[#60A5FA] to-[#06B6D4] shadow-[0_0_18px_3px_rgba(6,182,212,0.55)]" />
+              </span>
+            )}
+            <span className="tilt-glare pointer-events-none absolute inset-0 z-10" aria-hidden />
+          </PhoneFrame>
+        </TiltStage>
       </div>
     </motion.div>
   );

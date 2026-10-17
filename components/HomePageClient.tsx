@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import { AmbientGlow } from '@/components/AmbientGlow';
 import { ChannelSync } from '@/components/ChannelSync';
+import { EngineSphere } from '@/components/EngineSphere';
 import { ExperienceShowcase } from '@/components/ExperienceShowcase';
 import { FAQ } from '@/components/FAQ';
 import { Footer } from '@/components/Footer';
@@ -15,6 +15,7 @@ import { Navigation } from '@/components/Navigation';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { Section } from '@/components/Section';
 import { SectionHeader } from '@/components/SectionHeader';
+import { SilkField } from '@/components/SilkField';
 import { trackCTA } from '@/lib/analytics';
 import { copy } from '@/lib/copy';
 import { faqItems } from '@/lib/faq-data';
@@ -34,10 +35,12 @@ export default function HomePageClient() {
       <LineFlow copy={copy.home.line} />
       <ExperienceShowcase copy={copy.home.experience} />
 
-      {/* AI 引擎：首頁只留一句，完整的說明與飛輪在 /about */}
+      {/* AI 引擎：首頁只留一句，完整的說明與飛輪在 /about。
+          句子下面是一顆數據球：散開的點隨捲動收斂，每一筆試穿化成一道光飛進球面 */}
       <Section id="engine" className="py-20 md:py-28 bg-[#FAFAFA]">
         <div className="max-w-5xl mx-auto px-6 text-center">
-          <SectionHeader title={engine.title} spacing="mb-8 md:mb-10" />
+          <SectionHeader title={engine.title} spacing="mb-0" />
+          <EngineSphere className="mx-auto h-[340px] w-full max-w-2xl md:h-[480px]" />
           <ScrollReveal delay={0.1}>
             <MoreLink href="/about#engine">{engine.link}</MoreLink>
           </ScrollReveal>
@@ -56,9 +59,9 @@ export default function HomePageClient() {
         </div>
       </Section>
 
-      {/* 結尾 CTA — 首頁第二個、也是最後一個 atmosphere 出現點 */}
-      <Section id="contact" className="py-24 md:py-36 bg-[#FAFAFA] overflow-hidden">
-        <AmbientGlow />
+      {/* 結尾 CTA — 首頁第二個、也是最後一個 atmosphere 出現點：游標劃過會起漣漪的藍青緞面 */}
+      <Section id="contact" className="py-32 md:py-48 bg-[#FAFAFA] overflow-hidden">
+        <SilkField />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           <SectionHeader title={cta.title} />

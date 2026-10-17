@@ -1,11 +1,13 @@
 'use client';
 
+import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, type Variants } from 'framer-motion';
 import { AppScreen } from '@/components/AppScreen';
 import { GradientWave } from '@/components/GradientWave';
 import { Magnetic } from '@/components/Magnetic';
+import { TiltStage } from '@/components/TiltStage';
 import { clauseWrap, keepRanges } from '@/components/clauseWrap';
 import { trackCTA } from '@/lib/analytics';
 import { APP_IMAGES } from '@/lib/app-images';
@@ -56,15 +58,21 @@ interface HeroCinemaProps {
 /**
  * 定位：左文右圖。右邊是試穿結果的實機畫面，左側疊兩張「輸入」小卡
  * （全身照 + 商品平拍），讀起來是「一張全身照＋商品照 → 試穿結果」。
+ *
+ * 首屏的一段編排：小卡進場 → 一道光沿連接線送進手機 → 掃描光由上而下
+ * 掃過螢幕、霧面退去露出試穿結果（.scan-veil / .scan-beam，CSS-only）。
+ * 之後整組視覺是一個 3D 舞台：游標在 hero 內移動，手機與浮在前景的小卡
+ * 依景深轉向游標，螢幕上的反光點跟著走。
  */
 export function HeroCinema({ copy }: HeroCinemaProps) {
+  const sectionRef = useRef<HTMLElement>(null);
   // reduced motion 交給 MotionConfig（不在這裡分支，避免 SSR/client hydration mismatch）
   const enter = { variants: fadeUp, initial: 'hidden' as const, animate: 'show' as const };
   // 文字欄用 CSS 的 hero-enter（globals.css）：SSR HTML 就帶著動畫，不等 hydration，主張在第一眼就讀得到。
   // 輸入小卡、「+」與連接線排在文字後面（手機主圖不等：它是 LCP，用 phoneEnter 與 H1 一起進場）
 
   return (
-    <section className="relative min-h-[100svh] bg-[#FAFAFA] overflow-hidden">
+    <section ref={sectionRef} className="relative min-h-[100svh] bg-[#FAFAFA] overflow-hidden">
       <div className="absolute inset-0 hidden lg:block opacity-70 pointer-events-none" aria-hidden>
         <GradientWave colors={AURORA} />
       </div>
@@ -72,6 +80,8 @@ export function HeroCinema({ copy }: HeroCinemaProps) {
         <div className="absolute top-[5%] left-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(37,99,235,0.08)_0%,transparent_60%)] blur-3xl" />
         <div className="absolute bottom-[5%] right-[-15%] w-[80vw] h-[40vh] bg-[radial-gradient(circle,rgba(6,182,212,0.06)_0%,transparent_60%)] blur-3xl" />
       </div>
+      {/* 下緣淡出到畫布底色：aurora 不在 hero 底部切出一條硬邊（MASTER：一張連續的畫布） */}
+      <div className="absolute inset-x-0 bottom-0 h-40 pointer-events-none bg-gradient-to-b from-transparent to-[#FAFAFA]" aria-hidden />
       {/* 可讀性遮罩只壓左半（文字欄），右邊的手機留在 aurora 裡 */}
       <div
         className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_30%_50%,#FAFAFA_25%,rgba(250,250,250,0)_70%)]"
@@ -85,8 +95,8 @@ export function HeroCinema({ copy }: HeroCinemaProps) {
             className="hero-enter cjk-punct font-serif font-black tracking-[-0.02em] leading-[1.06] text-[#101828] mb-8 md:mb-10"
             style={{ fontSize: 'clamp(2.75rem, 1.6rem + 6vw, 6.75rem)' }}
           >
-            {copy.titleLines.map((line) => (
-              <span key={line} className="block">
+            {copy.titleLines.map((line, i) => (
+              <span key={line} className={`hero-sheen block ${i === 1 ? '[animation-delay:1.02s]' : ''}`}>
                 {line}
               </span>
             ))}
@@ -122,19 +132,26 @@ export function HeroCinema({ copy }: HeroCinemaProps) {
           </div>
         </div>
 
-        {/* 視覺欄：輸入小卡 → 試穿結果 */}
+        {/* 視覺欄：輸入小卡 → 試穿結果，整組是跟著游標轉的 3D 舞台 */}
         <div className="flex justify-center lg:justify-end">
-          <div className="relative">
-            {/* 桌機：兩張小卡直排在手機左側，中間「+」，再用一條細線接到手機。
+          <TiltStage trackRef={sectionRef} max={7} className="relative">
+            {/* 落在地面的柔影：舞台轉動時留在原地，景深更明確 */}
+            <span
+              className="pointer-events-none absolute -bottom-8 left-1/2 h-10 w-[78%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(closest-side,rgba(37,99,235,0.22),transparent)] blur-xl"
+              aria-hidden
+            />
+
+            {/* 桌機：兩張小卡直排在手機左側、浮在前景（translateZ），中間「+」，再用一條細線接到手機。
                 定位與位移放外層，進場動畫放內層（framer 的 y 會覆寫 transform class） */}
-            <div className="absolute right-full top-1/2 hidden -translate-y-1/2 lg:block">
+            <div className="absolute right-full top-1/2 hidden [transform:translate3d(0,-50%,90px)] lg:block">
               <motion.div {...enter} custom={VISUAL_START + 0.15} className="mr-8 xl:mr-12">
                 <div className="flex w-24 flex-col items-center xl:w-28">
                   <InputCard name="modelA" sizes="112px" />
-                  {/* 「+」那一列往右拉出細線接到手機：全身照＋商品照 → 試穿結果 */}
+                  {/* 「+」那一列往右拉出細線接到手機：全身照＋商品照 → 試穿結果；一道光沿線送進手機 */}
                   <span className="relative my-2 flex w-full justify-center" aria-hidden>
                     <span className="text-xl font-light leading-none text-[#2563EB]">+</span>
                     <span className="absolute left-full top-1/2 h-px w-8 bg-gradient-to-r from-[#2563EB] to-[#06B6D4] xl:w-12">
+                      <span className="hero-feed absolute -top-[2px] left-0 h-[5px] w-4 rounded-full bg-[linear-gradient(90deg,transparent,#60A5FA,#06B6D4)] shadow-[0_0_12px_2px_rgba(6,182,212,0.6)]" />
                       <span className="absolute -right-0.5 -top-[3px] h-[7px] w-[7px] rounded-full bg-[#06B6D4]" />
                     </span>
                   </span>
@@ -143,13 +160,22 @@ export function HeroCinema({ copy }: HeroCinemaProps) {
               </motion.div>
             </div>
 
-            <motion.div variants={phoneEnter} initial="hidden" animate="show">
+            <motion.div variants={phoneEnter} initial="hidden" animate="show" className="relative">
               <AppScreen
                 name="tryonSimple"
                 priority
                 sizes="(min-width: 1280px) 330px, (min-width: 1024px) 300px, min(64vw, 280px)"
                 className="w-[64vw] max-w-[280px] lg:w-[min(300px,calc((100svh_-_15rem)_*_0.46))] lg:max-w-none xl:w-[min(330px,calc((100svh_-_15rem)_*_0.46))]"
               />
+              {/* 生成中：霧面蓋住螢幕，掃描光由上往下走過、霧面跟著退去（globals.css） */}
+              <span className="pointer-events-none absolute inset-[7px] overflow-hidden rounded-[2.2rem]" aria-hidden>
+                <span className="scan-veil absolute inset-0" />
+                <span className="scan-beam absolute inset-0">
+                  <span className="absolute inset-x-0 top-0 h-24 -translate-y-full bg-gradient-to-b from-transparent to-[#06B6D4]/25" />
+                  <span className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#2563EB] via-[#60A5FA] to-[#06B6D4] shadow-[0_0_18px_3px_rgba(6,182,212,0.55)]" />
+                </span>
+                <span className="tilt-glare absolute inset-0" />
+              </span>
             </motion.div>
 
             {/* 手機版：兩張小卡縮成手機上緣左右兩側的小圓角圖，不畫連接線 */}
@@ -159,7 +185,7 @@ export function HeroCinema({ copy }: HeroCinemaProps) {
             <motion.div {...enter} custom={VISUAL_START + 0.25} className="absolute -right-9 top-10 w-[72px] lg:hidden">
               <InputCard name="productWhiteShirt" sizes="72px" />
             </motion.div>
-          </div>
+          </TiltStage>
         </div>
       </div>
     </section>
