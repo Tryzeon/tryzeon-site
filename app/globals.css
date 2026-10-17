@@ -9,6 +9,9 @@
 
 @layer base {
   :root {
+    /* 永遠以淺色呈現：瀏覽器的自動深色與 Dark Reader 都不套用（另見 layout 的 meta） */
+    color-scheme: only light;
+
     /* Neo-Tech Color System */
     --neo-white: #FAFAFA;
     --neo-ice: #F2F4F7;
@@ -138,18 +141,56 @@
     transform: translateY(-4px);
   }
 
-  /* MASTER.md 的預設表面：靜態毛玻璃卡（不帶 hover 位移）。padding 由使用處決定 */
+  /* 預設表面：靜態毛玻璃卡。指標經過時有一團珠光跟著游標（--mx/--my 由 SpotlightTracker 寫入） */
   .glass-panel {
-    @apply rounded-3xl border border-white/60 bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(16,24,40,0.06)];
+    @apply relative rounded-3xl border border-white/60 bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(16,24,40,0.06)];
+    background-image: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, -40%),
+      rgba(167, 139, 250, calc(0.16 * var(--spot))),
+      rgba(96, 165, 250, calc(0.08 * var(--spot))) 40%,
+      transparent 70%
+    );
+    transition: --spot 500ms var(--ease-out-expo), box-shadow 500ms var(--ease-out-expo), border-color 500ms var(--ease-out-expo);
+  }
+
+  .glass-panel:hover {
+    --spot: 1;
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 18px 48px rgba(16, 24, 40, 0.10), 0 2px 8px rgba(16, 24, 40, 0.04);
   }
 
   .focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2;
   }
 
-  /* 深色主按鈕；尺寸以外的外觀。gap／寬度由使用處補 */
+  /* 深色主按鈕；尺寸以外的外觀。gap／寬度由使用處補。
+     hover 時一道珠光從左掃到右（::after），按鈕本身不換色 */
   .btn-primary {
-    @apply focus-ring inline-flex items-center justify-center rounded-full bg-[#101828] px-9 py-4 font-semibold text-white transition-colors duration-300 hover:bg-[#1D2939];
+    @apply focus-ring relative isolate inline-flex items-center justify-center overflow-hidden rounded-full bg-[#101828] px-9 py-4 font-semibold text-white transition-[box-shadow,transform] duration-500;
+    box-shadow: 0 10px 30px -10px rgba(16, 24, 40, 0.55);
+  }
+
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 30%, rgba(196, 181, 253, 0.55) 45%, rgba(125, 211, 252, 0.55) 55%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 900ms var(--ease-out-expo);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 16px 40px -12px rgba(91, 69, 214, 0.55);
+  }
+
+  .btn-primary:hover::after {
+    transform: translateX(120%);
+  }
+
+  /* 淺色次要按鈕（毛玻璃）；與 btn-primary 同尺寸 */
+  .btn-glass {
+    @apply focus-ring inline-flex items-center justify-center gap-2 rounded-full border border-[#101828]/10 bg-white/70 px-9 py-4 font-semibold text-[#101828] backdrop-blur-md transition-colors duration-300 hover:border-[#101828]/25 hover:bg-white;
   }
 
   /* Neo-Tech Mesh Gradient Background */
@@ -165,6 +206,13 @@
 
 * {
   box-sizing: border-box;
+}
+
+/* 珠光聚光燈的強度（0 → 1），註冊成 <number> 才能被 transition */
+@property --spot {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
 }
 
 @layer utilities {
@@ -258,4 +306,357 @@ html[data-nav-entered='1'] .nav-enter {
   animation: heroEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* ========================================
+   Fashion-tech motion layer
+   ======================================== */
 
+/* 大標逐行從遮罩下方升起（CSS-only，SSR 第一個畫面就會跑）。
+   padding/margin 抵銷：宋體 900 的下緣不會被 overflow 裁到 */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.line-mask > span {
+  display: block;
+  animation: lineRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes lineRise {
+  from {
+    transform: translateY(110%) rotate(2deg);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+/* 首屏手機：AI 生成的掃描——模糊的畫面被一道光由上往下掃清 */
+.scan-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  backdrop-filter: blur(14px) saturate(0.2) brightness(1.08);
+  -webkit-backdrop-filter: blur(14px) saturate(0.2) brightness(1.08);
+  background: linear-gradient(180deg, rgba(237, 233, 254, 0.35), rgba(224, 242, 254, 0.35));
+  animation: scanVeil 2.4s cubic-bezier(0.65, 0, 0.35, 1) var(--scan-delay, 0.9s) both;
+}
+
+.scan-line {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: 0;
+  z-index: 3;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, #A78BFA 20%, #60A5FA 50%, #22D3EE 80%, transparent);
+  box-shadow: 0 0 18px 4px rgba(139, 92, 246, 0.45), 0 0 60px 12px rgba(96, 165, 250, 0.25);
+  animation: scanLine 2.4s cubic-bezier(0.65, 0, 0.35, 1) var(--scan-delay, 0.9s) both;
+}
+
+@keyframes scanVeil {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+
+  to {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+
+@keyframes scanLine {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 1;
+  }
+
+  92% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* 漂浮：輸入小卡的上下輕晃（ambient，僅此一處） */
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+.float-y {
+  animation: floatY 7s ease-in-out infinite;
+}
+
+/* 3D 傾斜舞台：TiltStage 寫入 --tilt-x / --tilt-y（-1..1） */
+.tilt-stage {
+  perspective: 1600px;
+}
+
+.tilt-body {
+  transform-style: preserve-3d;
+  transform: rotateY(calc(var(--tilt-x, 0) * 9deg)) rotateX(calc(var(--tilt-y, 0) * -7deg));
+  will-change: transform;
+}
+
+/* 流動的線：stroke-dasharray 由使用處給，這裡讓虛線沿路徑前進 */
+@keyframes dashFlow {
+  to {
+    stroke-dashoffset: -400;
+  }
+}
+
+.dash-flow {
+  animation: dashFlow 6s linear infinite;
+}
+
+/* 珠光的轉動光環（中樞） */
+@keyframes spinSlow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-slow {
+  animation: spinSlow 14s linear infinite;
+}
+
+/* 同步完成時從中樞往外擴散的圈 */
+@keyframes ripple {
+  from {
+    transform: scale(0.6);
+    opacity: 0.55;
+  }
+
+  to {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
+.ripple-ring {
+  animation: ripple 3.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+/* 珠光字：只給大字裝飾（數字、品牌字），不拿來強調句中的單字 */
+.text-iris {
+  background: linear-gradient(100deg, #7C6AE6 0%, #4F7BF0 45%, #1FB5D3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 空心字：數字未啟用時的狀態 */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(16, 24, 40, 0.18);
+}
+
+/* 首屏細線上的一道光：從輸入小卡往手機走 */
+@keyframes threadPulse {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(220%);
+  }
+}
+
+.thread-pulse {
+  animation: threadPulse 2.2s cubic-bezier(0.65, 0, 0.35, 1) 2s infinite;
+  transform: translateX(-100%);
+}
+
+@keyframes scrollCue {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(300%);
+  }
+}
+
+.scroll-cue {
+  animation: scrollCue 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* 四通路：光脈衝從中樞沿光束跑到卡片（pathLength=100），抵達時卡片圖示亮一下 */
+.beam-pulse {
+  stroke-dasharray: 16 100;
+  stroke-dashoffset: 16;
+  animation-name: beamPulse;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+  animation-fill-mode: both;
+}
+
+@keyframes beamPulse {
+  0% {
+    stroke-dashoffset: 16;
+    opacity: 1;
+  }
+
+  55% {
+    stroke-dashoffset: -100;
+    opacity: 1;
+  }
+
+  56%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+
+.beam-arrive {
+  animation-name: beamArrive;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+}
+
+@keyframes beamArrive {
+  0%,
+  44% {
+    box-shadow: 0 0 0 0 rgba(124, 106, 230, 0), 0 0 0 0 rgba(34, 211, 238, 0);
+  }
+
+  52% {
+    box-shadow: 0 0 0 3px rgba(124, 106, 230, 0.35), 0 0 28px 6px rgba(34, 211, 238, 0.5);
+  }
+
+  80%,
+  100% {
+    box-shadow: 0 0 0 12px rgba(124, 106, 230, 0), 0 0 28px 6px rgba(34, 211, 238, 0);
+  }
+}
+
+/* LINE 流程：夠寬也夠高的視窗才釘住（CSS sticky），外層的高度就是捲動的行程 */
+@media (min-width: 1024px) and (min-height: 680px) {
+  .pin-wrap {
+    height: 280vh;
+  }
+
+  .pin-stage {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    padding-top: 5rem;
+    padding-bottom: 2rem;
+  }
+}
+
+/* 體驗輪播：選中項左側的倒數條 */
+@keyframes tabProgress {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.tab-progress {
+  animation-name: tabProgress;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+/* 換到新畫面時，一道珠光從手機左上掃到右下 */
+.phone-sheen {
+  position: absolute;
+  inset: -20%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.55) 46%, rgba(196, 181, 253, 0.35) 50%, rgba(125, 211, 252, 0.3) 54%, transparent 65%);
+  animation: phoneSheen 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.25s both;
+}
+
+@keyframes phoneSheen {
+  from {
+    transform: translateX(-70%);
+  }
+
+  to {
+    transform: translateX(70%);
+  }
+}
+
+/* AI 引擎那一句：--p（捲動進度）由 EngineStatement 寫在外層，--i 是字的序號、--n 是總字數 */
+.scrub-char {
+  --t: clamp(0, calc(var(--p, 0) * (var(--n, 12) + 4) * 1.25 - var(--i, 0)), 1);
+  display: inline-block;
+  opacity: calc(0.1 + var(--t) * 0.9);
+  transform: translateY(calc((1 - var(--t)) * 0.14em));
+  filter: blur(calc((1 - var(--t)) * 5px));
+}
+
+.scrub-late {
+  --t: clamp(0, calc((var(--p, 0) - 0.62) * 6), 1);
+  opacity: var(--t);
+  transform: translateY(calc((1 - var(--t)) * 16px));
+}
+
+.scrub-late:focus-within {
+  opacity: 1;
+  transform: none;
+}
+
+/* 頁尾超大字標：平常是淡淡的珍珠灰，游標經過的地方亮成珠光（--mx/--my 由 SpotlightTracker 寫入） */
+.footer-wordmark {
+  font-family: var(--font-serif), 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(5rem, 24vw, 22rem);
+  line-height: 0.78;
+  letter-spacing: -0.04em;
+  text-align: center;
+  margin-bottom: -0.12em;
+  padding-top: 0.05em;
+  background:
+    radial-gradient(28vw circle at var(--mx, 50%) var(--my, 150%), rgba(124, 106, 230, calc(0.95 * var(--spot))) 0%, rgba(96, 165, 250, calc(0.8 * var(--spot))) 35%, transparent 70%),
+    linear-gradient(180deg, #D9D5E8 0%, #E9E6F2 65%, #FAFAFA 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: --spot 700ms var(--ease-out-expo);
+}
+
+.footer-wordmark:hover {
+  --spot: 1;
+}
+
+/* 子頁 H1：子句逐段從遮罩下升起（同 .line-mask，但是 inline-block） */
+.clause-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.clause-mask > span {
+  display: inline-block;
+  animation: lineRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}

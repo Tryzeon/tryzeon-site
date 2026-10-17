@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { ArrowUpRight, Camera, Lock, Shirt, ShieldCheck, Sparkles, Trash2, type LucideIcon } from 'lucide-react';
-import { AmbientGlow } from '@/components/AmbientGlow';
 import { AppScreen } from '@/components/AppScreen';
 import { Footer } from '@/components/Footer';
+import { HeroTitle } from '@/components/HeroTitle';
 import { MoreLink } from '@/components/MoreLink';
 import { Navigation } from '@/components/Navigation';
 import { SectionHeader } from '@/components/SectionHeader';
+import { SilkBackdrop } from '@/components/SilkBackdrop';
 import { StoreBadges } from '@/components/StoreBadges';
-import { clauseWrap, keepRanges, sentenceWrap } from '@/components/clauseWrap';
+import { TiltStage } from '@/components/TiltStage';
+import { keepRanges, sentenceWrap } from '@/components/clauseWrap';
 import { GET_QR_SRC, LINE_OA_QR_SRC } from '@/lib/app-images';
 import { copy } from '@/lib/copy';
 import { pageMetadata } from '@/lib/page-metadata';
@@ -38,20 +40,23 @@ export default function DownloadPage() {
       <Navigation />
 
       <section className="relative overflow-hidden pt-36 md:pt-44 pb-20 md:pb-28 text-center lg:text-left">
-        <AmbientGlow variant="hero" />
+        <SilkBackdrop />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_75%_80%_at_50%_42%,rgba(250,250,250,0.88)_0%,rgba(250,250,250,0.55)_45%,rgba(250,250,250,0)_78%)] lg:bg-[radial-gradient(ellipse_62%_85%_at_22%_50%,rgba(250,250,250,0.94)_0%,rgba(250,250,250,0.62)_48%,rgba(250,250,250,0)_80%)]" aria-hidden />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#FAFAFA]" aria-hidden />
         <div className="relative z-10 max-w-6xl mx-auto px-6 grid lg:grid-cols-[1.2fr_0.8fr] gap-14 items-center">
           <div>
-            <h1
+            <HeroTitle
+              text={download.title}
               className="cjk-punct text-balance font-serif font-black tracking-[-0.02em] leading-[1.1] text-[#101828] mb-6"
               style={{ fontSize: 'clamp(2rem, 1.3rem + 2.2vw, 3.2rem)' }}
-            >
-              {clauseWrap(download.title)}
-            </h1>
-            <p className="text-base md:text-xl text-[#475467] font-medium leading-relaxed text-balance mb-10 md:mb-12">
+            />
+            <p className="hero-enter [animation-delay:0.4s] text-base md:text-xl text-[#344054] font-medium leading-relaxed text-balance mb-10 md:mb-12">
               {sentenceWrap(download.lede)}
             </p>
-            <StoreBadges className="lg:justify-start" />
-            <p className="mt-6 mb-0 text-sm md:text-base text-[#475467]">
+            <div className="hero-enter [animation-delay:0.55s]">
+              <StoreBadges className="lg:justify-start" />
+            </div>
+            <p className="hero-enter [animation-delay:0.65s] mt-6 mb-0 text-sm md:text-base text-[#475467]">
               {download.lineOa.text}{' '}
               <a
                 href={contact.lineOa.url}
@@ -77,12 +82,20 @@ export default function DownloadPage() {
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <AppScreen
-              name="tryonOutfit"
-              sizes="(min-width: 484px) 300px, 62vw"
-              priority
-              className="w-[62vw] max-w-[300px] mx-auto"
-            />
+            <TiltStage className="relative">
+              <div
+                className="pointer-events-none absolute -inset-16 rounded-full bg-[radial-gradient(circle,rgba(167,139,250,0.35)_0%,rgba(96,165,250,0.18)_40%,transparent_70%)] blur-2xl [transform:translateZ(-140px)]"
+                aria-hidden
+              />
+              <div className="hero-enter [animation-delay:0.2s]">
+                <AppScreen
+                  name="tryonOutfit"
+                  sizes="(min-width: 484px) 300px, 62vw"
+                  priority
+                  className="w-[62vw] max-w-[300px] mx-auto"
+                />
+              </div>
+            </TiltStage>
           </div>
         </div>
       </section>
@@ -94,13 +107,14 @@ export default function DownloadPage() {
             {download.steps.items.map((step, i) => {
               const Icon = STEP_ICONS[i];
               return (
-                <li key={step.title} className={CARD}>
+                <li key={step.title} className={`${CARD} group`}>
                   <div className="flex items-center justify-between">
                     <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#2563EB]/15 bg-gradient-to-br from-[#2563EB]/10 to-[#06B6D4]/10">
                       <Icon className="h-6 w-6 text-[#2563EB]" strokeWidth={1.5} aria-hidden />
                     </span>
-                    <span className="font-mono text-sm font-semibold text-[#1D4ED8]" aria-hidden>
-                      0{i + 1}
+                    <span className="relative block font-serif text-5xl font-black leading-none lining-nums" aria-hidden>
+                      <span className="text-outline">{i + 1}</span>
+                      <span className="text-iris absolute left-0 top-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100">{i + 1}</span>
                     </span>
                   </div>
                   <h3 className="mt-6 text-lg md:text-xl font-semibold text-[#101828]">{step.title}</h3>

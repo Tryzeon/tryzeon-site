@@ -5,9 +5,13 @@ import type { ReactNode } from 'react';
 // 「…同／步。」這種孤字。用 split 而不是 match，任何字元都不會被吃掉。
 // 純函式、沒有 'use client'，server 與 client 元件都能呼叫。非字串原樣輸出。
 // lastClassName：只套在最後一個子句上（例如首頁願景的藍青漸層收尾）。
+export function splitClauses(text: string): string[] {
+  return text.split(/(?<=[，；：。])/).filter(Boolean);
+}
+
 export function clauseWrap(text: ReactNode, lastClassName = ''): ReactNode {
   if (typeof text !== 'string') return text;
-  const parts = text.split(/(?<=[，；：。])/).filter(Boolean);
+  const parts = splitClauses(text);
   if (parts.length < 2 && !lastClassName) return text;
   return parts.map((part, i) => (
     <span key={i} className={i === parts.length - 1 && lastClassName ? `inline-block ${lastClassName}` : 'inline-block'}>

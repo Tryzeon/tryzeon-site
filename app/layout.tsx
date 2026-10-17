@@ -4,6 +4,8 @@ import { NavigationProgress } from "@/components/NavigationProgress";
 import { WebVitals } from "@/components/WebVitals";
 import { SkipToContent } from "@/components/Accessibility";
 import { CustomCursor } from "@/components/CustomCursor";
+import { ScrollProgress } from "@/components/ScrollProgress";
+import { SpotlightTracker } from "@/components/SpotlightTracker";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 import { OG_ALT, OG_SIZE } from "@/lib/page-metadata";
 import "./globals.css";
@@ -118,6 +120,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   themeColor: "#FFFFFF",
+  // 全站只有淺色：不讓瀏覽器的自動深色反轉配色
+  colorScheme: "only light",
 };
 
 export default function RootLayout({
@@ -162,6 +166,8 @@ export default function RootLayout({
   return (
     <html data-scroll-behavior="smooth" lang="zh-TW" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${notoSerifTC.variable}`}>
       <head>
+        {/* Dark Reader 遇到這個 meta 會停用自己：網站只有淺色版 */}
+        <meta name="darkreader-lock" />
         {/* Consolidated JSON-LD Structured Data */}
         <script
           type="application/ld+json"
@@ -174,6 +180,8 @@ export default function RootLayout({
           <NavigationProgress />
           {process.env.NODE_ENV === 'development' && <WebVitals />}
           <CustomCursor />
+          <ScrollProgress />
+          <SpotlightTracker />
           <div className="noise-overlay" />
           <main id="main-content">
             {children}

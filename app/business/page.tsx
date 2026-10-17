@@ -1,13 +1,16 @@
 import type { Metadata } from 'next';
 import { ArrowUpRight, BarChart3, Camera, Clapperboard, FileSpreadsheet, Mail, Mic, Network, ScanLine, Shirt, Sparkles, Store, TrendingUp } from 'lucide-react';
-import { AmbientGlow } from '@/components/AmbientGlow';
 import { AppScreen } from '@/components/AppScreen';
 import { FAQ } from '@/components/FAQ';
 import { Footer } from '@/components/Footer';
+import { HeroTitle } from '@/components/HeroTitle';
 import { MoreLink } from '@/components/MoreLink';
 import { Navigation } from '@/components/Navigation';
 import { SectionHeader } from '@/components/SectionHeader';
-import { clauseWrap, keepRanges, sentenceWrap } from '@/components/clauseWrap';
+import { SilkBackdrop } from '@/components/SilkBackdrop';
+import { SilkStage } from '@/components/SilkStage';
+import { TiltStage } from '@/components/TiltStage';
+import { keepRanges, sentenceWrap } from '@/components/clauseWrap';
 import { copy } from '@/lib/copy';
 import { brandFaqGroups } from '@/lib/faq-data';
 import { pageMetadata } from '@/lib/page-metadata';
@@ -32,9 +35,13 @@ const FEATURE_ICONS = [Sparkles, ScanLine, BarChart3, Clapperboard, Network] as 
 // 五張效益卡：桌機上排三張、下排兩張等寬；平板兩欄，最後一張跨滿
 const FEATURE_SPAN = ['lg:col-span-2', 'lg:col-span-2', 'lg:col-span-2', 'lg:col-span-3', 'md:col-span-2 lg:col-span-3'] as const;
 
-const SECONDARY =
-  'focus-ring inline-flex items-center justify-center gap-2 px-9 py-4 rounded-full border border-[#101828]/15 bg-white/70 backdrop-blur-md text-[#101828] font-semibold hover:bg-white hover:border-[#101828]/30 transition-colors duration-300';
 const PHONES = ['aiTagBefore', 'aiTagAfterTags', 'voiceSizeShirt'] as const;
+// 扇形：左右兩支往後退、朝中間轉一點，中間那支往前
+const FAN = [
+  '[transform:translateZ(-40px)_rotateY(14deg)]',
+  '[transform:translate3d(0,-1rem,40px)]',
+  '[transform:translateZ(-40px)_rotateY(-14deg)]',
+] as const;
 const CARD = 'glass-panel p-7 md:p-9';
 
 function ContactButtons() {
@@ -45,7 +52,7 @@ function ContactButtons() {
         {business.hero.ctaPrimary}
         <ArrowUpRight className="h-5 w-5" aria-hidden />
       </a>
-      <a href={`mailto:${contact.email}?subject=${encodeURIComponent(business.emailSubject)}`} className={SECONDARY}>
+      <a href={`mailto:${contact.email}?subject=${encodeURIComponent(business.emailSubject)}`} className="btn-glass">
         <Mail className="h-5 w-5" aria-hidden />
         {business.hero.ctaSecondary}
       </a>
@@ -71,18 +78,21 @@ export default function BusinessPage() {
       <Navigation />
 
       <section className="relative overflow-hidden pt-36 md:pt-44 pb-20 md:pb-28 text-center">
-        <AmbientGlow variant="hero" />
+        <SilkBackdrop />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,rgba(250,250,250,0.9)_0%,rgba(250,250,250,0.5)_55%,rgba(250,250,250,0)_85%)]" aria-hidden />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#FAFAFA]" aria-hidden />
         <div className="relative z-10 max-w-4xl mx-auto px-6">
-          <h1
+          <HeroTitle
+            text={business.hero.title}
             className="max-w-3xl mx-auto cjk-punct text-balance font-serif font-black tracking-[-0.02em] leading-[1.1] text-[#101828] mb-6"
             style={{ fontSize: 'clamp(2.5rem, 1.6rem + 4vw, 5rem)' }}
-          >
-            {clauseWrap(business.hero.title)}
-          </h1>
-          <p className="text-base md:text-xl text-[#475467] font-medium leading-relaxed mb-10 md:mb-12 text-balance">
+          />
+          <p className="hero-enter [animation-delay:0.4s] text-base md:text-xl text-[#344054] font-medium leading-relaxed mb-10 md:mb-12 text-balance">
             {sentenceWrap(business.hero.lede)}
           </p>
-          <ContactButtons />
+          <div className="hero-enter [animation-delay:0.55s]">
+            <ContactButtons />
+          </div>
         </div>
       </section>
 
@@ -109,11 +119,12 @@ export default function BusinessPage() {
           <SectionHeader title={business.steps.title} />
           <ol className="grid gap-4 md:grid-cols-3">
             {business.steps.items.map((step, i) => (
-              <li key={step.title} className={`${CARD} flex flex-col`}>
-                <span className="font-mono text-sm font-semibold text-[#1D4ED8]" aria-hidden>
-                  0{i + 1}
+              <li key={step.title} className={`${CARD} group flex flex-col`}>
+                <span className="relative block font-serif text-6xl font-black leading-none lining-nums" aria-hidden>
+                  <span className="text-outline">{i + 1}</span>
+                  <span className="text-iris absolute left-0 top-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100">{i + 1}</span>
                 </span>
-                <h3 className="mt-4 text-lg md:text-xl font-semibold text-[#101828]">{step.title}</h3>
+                <h3 className="mt-6 text-lg md:text-xl font-semibold text-[#101828]">{step.title}</h3>
                 <p className="mt-2 text-balance text-sm md:text-base leading-relaxed text-[#475467]">{step.desc}</p>
                 {'link' in step && (
                   <div className="mt-auto pt-4">
@@ -150,16 +161,18 @@ export default function BusinessPage() {
               </ul>
             </div>
 
-            <div className="flex justify-center gap-3 md:gap-4">
-              {PHONES.map((name) => (
-                <AppScreen
-                  key={name}
-                  name={name}
-                  sizes="(min-width: 1024px) 168px, (min-width: 768px) 200px, 28vw"
-                  className="w-[28vw] max-w-[200px] lg:w-[168px]"
-                />
+            {/* 三支後台畫面排成扇形，中間那支在最前面；整組跟著游標傾斜 */}
+            <TiltStage bodyClassName="flex justify-center gap-3 md:gap-4">
+              {PHONES.map((name, i) => (
+                <div key={name} className={FAN[i]}>
+                  <AppScreen
+                    name={name}
+                    sizes="(min-width: 1024px) 168px, (min-width: 768px) 200px, 28vw"
+                    className="w-[28vw] max-w-[200px] lg:w-[168px]"
+                  />
+                </div>
               ))}
-            </div>
+            </TiltStage>
           </div>
         </div>
       </section>
@@ -189,10 +202,13 @@ export default function BusinessPage() {
       <section id="faq" className="py-24 md:py-32 bg-[#FAFAFA]">
         <div className="max-w-4xl mx-auto px-6">
           <SectionHeader title={business.faq.title} />
-          <div className="glass-card rounded-3xl p-6 md:p-12 space-y-10 md:space-y-12">
+          <div className="space-y-14 md:space-y-16">
             {brandFaqGroups.map((group) => (
               <div key={group.title}>
-                <h3 className="max-w-3xl mx-auto mb-4 text-sm font-semibold text-[#475467]">{group.title}</h3>
+                <h3 className="max-w-3xl mx-auto mb-5 flex items-center gap-3 text-sm font-semibold text-[#5B45D6]">
+                  <span className="h-px w-6 bg-gradient-to-r from-[#7C6AE6] to-[#22D3EE]" aria-hidden />
+                  {group.title}
+                </h3>
                 <FAQ items={group.items} />
               </div>
             ))}
@@ -200,13 +216,12 @@ export default function BusinessPage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden py-24 md:py-40 bg-[#FAFAFA]">
-        <AmbientGlow />
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <SilkStage>
+        <div className="max-w-4xl mx-auto">
           <SectionHeader title={business.cta.title} />
           <ContactButtons />
         </div>
-      </section>
+      </SilkStage>
 
       <Footer />
     </div>
