@@ -103,6 +103,20 @@ Constraints that have already cost debugging time:
    not Framer.** Framer's `initial` ships `opacity: 0` in the SSR HTML, so the headline stayed
    blank until hydration; the CSS keyframe runs on first paint. The H1 renders each line once
    (no per-character spans with an `sr-only` copy, which duplicated the H1 text in the HTML).
+   The H1 lines use the `.hero-line` clip-path curtain (also CSS-only); subpage H1s go through
+   `components/SubpageHero.tsx`, which splits where `clauseWrap` does.
+10. **Pinned scroll stages (`ChannelSync`, `LineFlow`) and the sticky phone in
+   `ExperienceShowcase` are desktop-only (`gsap.matchMedia('(min-width: 1024px)')`)** and
+   revert on unmount. They rely on `SmoothScrollProvider` pumping `ScrollTrigger.update()`
+   from Lenis; never add a second scroll listener or Lenis instance. Pin spacers shift the
+   sections below, so anything that changes layout height after mount (image load, resize)
+   must call `ScrollTrigger.refresh()`. Hot reload can leave stale pin spacers overlapping
+   the next section — a hard reload clears it; it is not a layout bug.
+11. **3D is CSS `perspective` + framer springs, never a 3D library.** `TiltCard` /
+   `TiltStage` (cursor tilt, fine pointers only), `ScanReveal` (the beam-sweep reveal of
+   a screen), `SilkField` (raw-WebGL silk light field; renders `null` without WebGL, so keep
+   a CSS glow under it) and `PhoneFan` / `StepsTrack` / `BlurReveal` / `RevealList` are the
+   shared primitives — reuse them instead of writing new ones.
 9. **On every route change `SmoothScrollProvider` stops, restarts and re-measures Lenis**
    (`stop()` → `start()` → `resize()` in a layout effect keyed on the pathname). Otherwise a
    click made while the wheel momentum is still easing lands the new page mid-way: Lenis
@@ -249,7 +263,8 @@ block**; if a feature needs a new origin, raise it rather than widening the poli
 have been deleted, as were `FabricFlow` and `BentoFeatures`, which were replaced by real App
 screenshots (`ExperienceShowcase`), and `ScrollManifesto` (the「別人做工具，我們做生態系」
 section, cut in the 2026-10 content audit as a slogan with no information for brands).
-Don't resurrect them from git history — MASTER.md bans pain-point / stats /
+`GradientWave` (the Stripe-style WebGL hero gradient) was replaced by `SilkField` in the
+2026-10 "Light Atelier" visual pass. Don't resurrect them from git history — MASTER.md bans pain-point / stats /
 market-analysis sections, and `StatsCinema` in particular hardcoded the banned
 84% / 71% figures, so re-importing it would ship a redline violation.
 
@@ -290,7 +305,7 @@ touching visuals.** Identity: Editorial Tech × Liquid Glass, light only. Hard r
 - Code splitting is decided by SEO impact, not by fold position: SEO-relevant content
   (product copy, features, FAQ) must be statically imported so it ships in the SSR HTML;
   only heavy pure-visual/interactive pieces may get `dynamic(..., { ssr: false })` (nothing
-  uses it today; `GradientWave` in `HeroCinema` is imported statically). When unsure,
+  uses it today; `SilkField` in `HeroCinema` is imported statically). When unsure,
   import statically.
 - Images via `next/image` with explicit `width`/`height`/`alt`. Nothing over 500KB in
   `public/`.

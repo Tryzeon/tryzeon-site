@@ -149,7 +149,25 @@
 
   /* 深色主按鈕；尺寸以外的外觀。gap／寬度由使用處補 */
   .btn-primary {
-    @apply focus-ring inline-flex items-center justify-center rounded-full bg-[#101828] px-9 py-4 font-semibold text-white transition-colors duration-300 hover:bg-[#1D2939];
+    @apply focus-ring relative inline-flex items-center justify-center overflow-hidden rounded-full bg-[#101828] px-9 py-4 font-semibold text-white transition-colors duration-300 hover:bg-[#1D2939];
+  }
+
+  /* 主按鈕 hover 光澤：一道斜光由左掃到右（keyframes shine 在檔尾）。
+     只有能 hover 的裝置才播；平常停在按鈕左外側、看不見 */
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 45%;
+    pointer-events: none;
+    background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.25) 50%, transparent 100%);
+    transform: translateX(-130%) skewX(-20deg);
+  }
+
+  @media (hover: hover) {
+    .btn-primary:hover::after {
+      animation: shine 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
   }
 
   /* Neo-Tech Mesh Gradient Background */
@@ -178,6 +196,12 @@
      只給 display 標題用，內文不要套。 */
   .cjk-punct {
     font-feature-settings: 'halt' 1;
+  }
+
+  /* 待機漂浮（hero 手機掃描顯影完成後）：±6px、6s。放在 utilities layer，
+     才能接 lg: / motion-safe: 等 variant */
+  .animate-float-y {
+    animation: floatY 6s ease-in-out infinite;
   }
 
   /* Avant-garde texture overlay */
@@ -258,4 +282,44 @@ html[data-nav-entered='1'] .nav-enter {
   animation: heroEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* 首頁 hero H1 的幕簾揭露（CSS-only，SSR HTML 就帶著動畫）：每一行由下往上
+   被「拉開」——clip-path 從整行藏起到完全露出，同時上移 30%。
+   結束值用負的 inset：clip-path: inset(0) 會把宋體/Playfair 超出行框的筆畫
+   （句號、descender）切掉，往外多留一圈才不會在動畫結束後被裁。 */
+@keyframes heroLine {
+  from {
+    clip-path: inset(-20% -6% 100% -6%);
+    transform: translateY(30%);
+  }
 
+  to {
+    clip-path: inset(-20% -6% -20% -6%);
+    transform: none;
+  }
+}
+
+.hero-line {
+  animation: heroLine 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* .btn-primary::after 的斜光 */
+@keyframes shine {
+  from {
+    transform: translateX(-130%) skewX(-20deg);
+  }
+
+  to {
+    transform: translateX(260%) skewX(-20deg);
+  }
+}
