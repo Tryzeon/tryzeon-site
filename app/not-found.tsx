@@ -17,7 +17,7 @@ const LINKS = [
 export default function NotFound() {
   return (
     <Notice
-      emblem={<SearchX className="h-9 w-9 text-[#2563EB]" strokeWidth={1.4} />}
+      emblem={<SearchX className="h-9 w-9 text-lilac" strokeWidth={1.4} />}
       title="找不到這個頁面"
       lede="網址可能打錯了，或這個頁面已經移除。"
       homeLink={false}
@@ -30,7 +30,7 @@ export default function NotFound() {
             className={`px-7 py-3.5 ${
               link.primary
                 ? 'btn-primary'
-                : 'focus-ring inline-flex items-center justify-center rounded-full border border-[#101828]/15 bg-white/70 font-semibold text-[#101828] transition-colors duration-300 hover:bg-white'
+                : 'focus-ring inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.06] font-semibold text-pearl transition-colors duration-300 hover:bg-white/[0.1]'
             }`}
           >
             {link.label}

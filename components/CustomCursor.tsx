@@ -68,7 +68,7 @@ export function CustomCursor() {
       <div
         ref={dotRef}
         aria-hidden
-        className={`hidden lg:block fixed top-0 left-0 -ml-[3px] -mt-[3px] w-1.5 h-1.5 rounded-full bg-[#2563EB] z-[9999] pointer-events-none transition-opacity duration-300 ${
+        className={`hidden lg:block fixed top-0 left-0 -ml-[3px] -mt-[3px] w-1.5 h-1.5 rounded-full bg-lilac z-[9999] pointer-events-none transition-opacity duration-300 ${
           hidden ? 'opacity-0' : 'opacity-100'
         }`}
       />

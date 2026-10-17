@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import { AmbientGlow } from '@/components/AmbientGlow';
 import { EngineFlywheel } from '@/components/EngineFlywheel';
 import { Footer } from '@/components/Footer';
 import { Navigation } from '@/components/Navigation';
+import { ScrubText } from '@/components/ScrubText';
 import { SectionHeader } from '@/components/SectionHeader';
-import { clauseWrap, keepRanges } from '@/components/clauseWrap';
+import { SilkBackdrop } from '@/components/SilkBackdrop';
+import { clauseWrap } from '@/components/clauseWrap';
 import { copy } from '@/lib/copy';
 import { pageMetadata } from '@/lib/page-metadata';
 
@@ -24,37 +25,46 @@ export const revalidate = 3600;
 
 export default function AboutPage() {
   const { about } = copy;
+  const heroLines = about.hero.title.split(/(?<=[，；：。])/).filter(Boolean);
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
+    <div className="min-h-screen bg-night">
       <Navigation />
 
-      <section className="relative overflow-hidden pt-36 md:pt-44 pb-20 md:pb-28 text-center">
-        <AmbientGlow variant="hero" />
-        <div className="relative z-10 max-w-4xl mx-auto px-6">
+      <section className="relative overflow-hidden">
+        <SilkBackdrop />
+        <div className="relative z-10 mx-auto flex min-h-[86svh] max-w-5xl flex-col items-center justify-center px-6 pb-24 pt-36 text-center">
           <h1
-            className="max-w-3xl mx-auto cjk-punct text-balance font-serif font-black tracking-[-0.02em] leading-[1.1] text-[#101828] mb-6"
-            style={{ fontSize: 'clamp(2.5rem, 1.6rem + 4vw, 5rem)' }}
+            className="cjk-punct mb-8 font-serif font-black leading-[1.08] tracking-[-0.02em] text-pearl"
+            style={{ fontSize: 'clamp(2.75rem, 1.3rem + 5.4vw, 6.4rem)' }}
           >
-            {clauseWrap(about.hero.title)}
+            {heroLines.map((line, i) => (
+              <span key={line} className="line-mask">
+                <span style={{ animationDelay: `${0.15 + i * 0.12}s` }}>{line}</span>
+              </span>
+            ))}
           </h1>
-          <p className="max-w-3xl mx-auto text-base md:text-xl text-[#475467] font-medium leading-relaxed mb-8 md:mb-10 text-balance">
+          <p className="hero-enter mx-auto mb-10 max-w-3xl text-balance text-base font-medium leading-relaxed text-haze [animation-delay:0.45s] md:text-xl">
             {clauseWrap(about.hero.lede)}
           </p>
           <Link
             href="/"
-            className="focus-ring rounded-full text-base md:text-lg font-medium text-[#1D4ED8] hover:text-[#2563EB] transition-colors"
+            className="hero-enter focus-ring group inline-flex items-center rounded-full text-base font-medium text-lilac transition-colors [animation-delay:0.6s] hover:text-pearl md:text-lg"
           >
             {about.hero.cta}
-            <ChevronRight className="ml-1 inline h-5 w-5 align-[-0.2em]" aria-hidden />
+            <ChevronRight className="ml-1 h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden />
           </Link>
         </div>
       </section>
 
-      <section className="bg-[#FAFAFA] py-24 md:py-32">
-        <div className="max-w-3xl mx-auto px-6">
+      {/* 起源：一段長文，捲動經過時一道「閱讀光」由段首掃到段尾 */}
+      <section className="bg-night py-24 md:py-40">
+        <div className="mx-auto max-w-4xl px-6">
           <SectionHeader align="left" title={about.origin.title} />
-          <p className="mb-0 text-base md:text-lg leading-[1.9] text-[#475467]">{keepRanges(about.origin.body)}</p>
+          <ScrubText
+            text={about.origin.body}
+            className="mb-0 font-serif text-xl font-semibold leading-[1.85] text-pearl md:text-[1.7rem]"
+          />
         </div>
       </section>
 
@@ -62,23 +72,30 @@ export default function AboutPage() {
       <EngineFlywheel copy={about.engine} />
 
       {/* 願景：頁尾「願景」連到這裡 */}
-      <section id="vision" className="bg-[#FAFAFA] py-24 md:py-32">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <SectionHeader title={about.vision.title} spacing="mb-8 md:mb-10" />
+      <section id="vision" className="relative overflow-hidden bg-night py-28 md:py-44">
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[60vh] w-[80vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(185,167,255,0.12),transparent)] blur-3xl"
+          aria-hidden
+        />
+        <div className="relative mx-auto max-w-4xl px-6 text-center">
+          <SectionHeader title={about.vision.title} spacing="mb-10 md:mb-14" />
           {/* font-semibold 明確化：Noto Serif TC 沒有 400 */}
-          <p
-            className="mb-0 mx-auto max-w-3xl text-balance font-serif font-semibold leading-[1.7] text-[#475467]"
-            style={{ fontSize: 'clamp(1.125rem, 1.6vw, 1.45rem)' }}
-          >
-            「{about.vision.quote}」
-          </p>
+          <figure className="relative mx-auto max-w-3xl">
+            <p
+              className="mb-0 text-balance font-serif font-semibold leading-[1.75] text-pearl/90"
+              style={{ fontSize: 'clamp(1.2rem, 1.7vw, 1.6rem)' }}
+            >
+              「{about.vision.quote}」
+            </p>
+          </figure>
         </div>
       </section>
 
-      <section className="bg-[#FAFAFA] py-20 md:py-28 text-center">
-        <div className="max-w-4xl mx-auto px-6">
-          <Link href="/business" className="btn-primary gap-2">
+      <section className="bg-night pb-28 pt-8 text-center md:pb-40">
+        <div className="mx-auto max-w-4xl px-6">
+          <Link href="/business" className="btn-primary gap-2 px-11 py-5 text-lg">
             {about.cta}
+            <ChevronRight className="h-5 w-5" aria-hidden />
           </Link>
         </div>
       </section>

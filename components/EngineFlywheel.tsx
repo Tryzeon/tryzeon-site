@@ -89,17 +89,21 @@ export function EngineFlywheel({ copy }: EngineFlywheelProps) {
   });
 
   return (
-    <section id="engine" className="relative bg-[#FAFAFA] py-24 md:py-36">
+    <section id="engine" className="relative overflow-hidden bg-night py-24 md:py-36">
       <div className="mx-auto max-w-7xl px-6 md:px-12">
         <SectionHeader title={copy.title} lede={copy.lede} />
 
         <div ref={wheelRef} className="relative mx-auto aspect-square w-full max-w-[540px]">
+          <div
+            className="pointer-events-none absolute inset-[10%] rounded-full bg-[radial-gradient(closest-side,rgba(185,167,255,0.16),rgba(110,231,240,0.05)_60%,transparent)] blur-2xl"
+            aria-hidden
+          />
           <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden>
             <defs>
               <linearGradient id="engine-ring" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#2563EB" />
-                <stop offset="50%" stopColor="#60A5FA" />
-                <stop offset="100%" stopColor="#06B6D4" />
+                <stop offset="0%" stopColor="#C9B8FF" />
+                <stop offset="50%" stopColor="#9CC8FF" />
+                <stop offset="100%" stopColor="#6EE7F0" />
               </linearGradient>
               {/* 尾巴從透明漸到實色：漸層釘在尾巴起點（-TAIL_DEG）到光點（12 點鐘），跟著整組一起旋轉 */}
               <linearGradient
@@ -110,17 +114,17 @@ export function EngineFlywheel({ copy }: EngineFlywheelProps) {
                 x2="50"
                 y2={50 - RING_R}
               >
-                <stop offset="0%" stopColor="#06B6D4" stopOpacity="0" />
-                <stop offset="100%" stopColor="#2563EB" stopOpacity="0.9" />
+                <stop offset="0%" stopColor="#6EE7F0" stopOpacity="0" />
+                <stop offset="100%" stopColor="#EDE7FF" stopOpacity="0.95" />
               </linearGradient>
               <radialGradient id="engine-glow">
-                <stop offset="0%" stopColor="#2563EB" stopOpacity="0.45" />
-                <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
+                <stop offset="0%" stopColor="#C9B8FF" stopOpacity="0.7" />
+                <stop offset="100%" stopColor="#C9B8FF" stopOpacity="0" />
               </radialGradient>
             </defs>
 
             {/* 底軌 */}
-            <circle cx="50" cy="50" r={RING_R} fill="none" stroke="#101828" strokeOpacity="0.07" strokeWidth="0.6" />
+            <circle cx="50" cy="50" r={RING_R} fill="none" stroke="#FFFFFF" strokeOpacity="0.08" strokeWidth="0.6" />
 
             {/* 進場：從 12 點鐘順時針畫出漸層圓環 */}
             <motion.circle
@@ -142,7 +146,7 @@ export function EngineFlywheel({ copy }: EngineFlywheelProps) {
                 key={deg}
                 d="M -1.6 -1.8 L 1.2 0 L -1.6 1.8"
                 fill="none"
-                stroke="#2563EB"
+                stroke="#B9A7FF"
                 strokeWidth="0.8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -167,7 +171,7 @@ export function EngineFlywheel({ copy }: EngineFlywheelProps) {
                 transform={`rotate(${-90 - TAIL_DEG} 50 50)`}
               />
               <circle cx="50" cy={50 - RING_R} r="5" fill="url(#engine-glow)" />
-              <circle cx="50" cy={50 - RING_R} r="1.3" fill="#2563EB" stroke="white" strokeWidth="0.5" />
+              <circle cx="50" cy={50 - RING_R} r="1.2" fill="#F4F0FF" />
             </g>
           </svg>
 
@@ -178,7 +182,7 @@ export function EngineFlywheel({ copy }: EngineFlywheelProps) {
             transition={{ duration: 0.8, ease: EASE, delay: 0.3 }}
             aria-hidden
           >
-            <span className="block font-serif text-3xl md:text-4xl font-black text-[#101828]">Tryzeon</span>
+            <span className="opal-text block font-serif text-3xl font-black md:text-4xl">Tryzeon</span>
           </motion.div>
 
           <ol aria-label={copy.title} className="absolute inset-0">
@@ -191,15 +195,15 @@ export function EngineFlywheel({ copy }: EngineFlywheelProps) {
                     custom={i}
                     initial="hidden"
                     animate={entered ? 'show' : 'hidden'}
-                    className={`flex items-center gap-2 whitespace-nowrap rounded-full border bg-white/90 px-3 py-2 md:px-4 md:py-2.5 text-xs md:text-sm font-semibold text-[#101828] backdrop-blur-xl transition-[border-color,box-shadow] duration-500 ${
+                    className={`flex items-center gap-2 whitespace-nowrap rounded-full border bg-night-2/85 px-3 py-2 text-xs font-semibold text-pearl backdrop-blur-xl transition-[border-color,box-shadow] duration-500 md:px-4 md:py-2.5 md:text-sm ${
                       isActive
-                        ? 'border-[#2563EB]/40 shadow-[0_8px_28px_rgba(37,99,235,0.22)]'
-                        : 'border-white/60 shadow-[0_8px_24px_rgba(16,24,40,0.08)]'
+                        ? 'border-lilac/50 shadow-[0_0_32px_-4px_rgba(185,167,255,0.6)]'
+                        : 'border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.4)]'
                     }`}
                   >
                     <span
                       className={`flex h-5 w-5 items-center justify-center rounded-full font-mono text-[10px] transition-colors duration-500 ${
-                        isActive ? 'bg-gradient-to-br from-[#2563EB] to-[#06B6D4] text-white' : 'text-[#1D4ED8]'
+                        isActive ? 'bg-gradient-to-br from-lilac to-aqua text-night' : 'text-lilac'
                       }`}
                     >
                       0{i + 1}

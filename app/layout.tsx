@@ -4,6 +4,7 @@ import { NavigationProgress } from "@/components/NavigationProgress";
 import { WebVitals } from "@/components/WebVitals";
 import { SkipToContent } from "@/components/Accessibility";
 import { CustomCursor } from "@/components/CustomCursor";
+import { PointerFx } from "@/components/PointerFx";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 import { OG_ALT, OG_SIZE } from "@/lib/page-metadata";
 import "./globals.css";
@@ -117,7 +118,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#FFFFFF",
+  themeColor: "#08090F",
 };
 
 export default function RootLayout({
@@ -162,6 +163,8 @@ export default function RootLayout({
   return (
     <html data-scroll-behavior="smooth" lang="zh-TW" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${notoSerifTC.variable}`}>
       <head>
+        {/* 網站本身就是深色：請 Dark Reader 之類的擴充功能不要再反轉一次配色 */}
+        <meta name="darkreader-lock" />
         {/* Consolidated JSON-LD Structured Data */}
         <script
           type="application/ld+json"
@@ -174,6 +177,7 @@ export default function RootLayout({
           <NavigationProgress />
           {process.env.NODE_ENV === 'development' && <WebVitals />}
           <CustomCursor />
+          <PointerFx />
           <div className="noise-overlay" />
           <main id="main-content">
             {children}

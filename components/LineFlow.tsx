@@ -1,92 +1,214 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { MoreLink } from '@/components/MoreLink';
 import { SectionHeader } from '@/components/SectionHeader';
 import { keepRanges } from '@/components/clauseWrap';
 import { LINE_OA_QR_SRC } from '@/lib/app-images';
 import { copy as siteCopy, type HomeCopy } from '@/lib/copy';
-import { fadeUpItem, inView, staggerList } from '@/lib/motion';
+import { MEDIA, gsap } from '@/lib/gsap';
+
+// 桌機橫向軌道的左右留白：對齊全站 1360px 內容欄
+const TRACK_PAD = 'lg:px-[max(3rem,calc((100vw_-_1360px)/2_+_3rem))]';
 
 interface LineFlowProps {
   copy: HomeCopy['line'];
 }
 
-/** LINE 試穿流程：純文字時間軸（尚無實機截圖，不放圖、不畫模擬聊天介面） */
+/**
+ * LINE 試穿流程。
+ * 桌機：整段釘住，往下捲時五個步驟由右往左滑過（GSAP pin + scrub），
+ * 經過畫面中央的那張點亮、巨大的描邊數字填上蛋白石色，底部進度軌跟著走。
+ * 手機與偏好減少動態：直排時間軸（桌機減少動態時，軌道改成可以橫向捲動）。
+ */
 export function LineFlow({ copy }: LineFlowProps) {
+  const pinRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLOListElement>(null);
+  const railRef = useRef<HTMLSpanElement>(null);
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const pin = pinRef.current;
+    const track = trackRef.current;
+    if (!pin || !track) return;
+    const mm = gsap.matchMedia(pin);
+    mm.add({ any: MEDIA.any, desktop: MEDIA.desktop, reduce: MEDIA.reduce }, (ctx) => {
+      const { desktop, reduce } = ctx.conditions as { desktop: boolean; reduce: boolean };
+      if (!desktop || reduce) return;
+      pin.dataset.pinned = '1';
+      const steps = Array.from(track.querySelectorAll<HTMLElement>('[data-step]'));
+      const cards = steps.map((step) => step.querySelector<HTMLElement>('[data-card]'));
+      const distance = () => Math.max(0, track.scrollWidth - pin.clientWidth);
+
+      const paint = (progress: number) => {
+        if (railRef.current) railRef.current.style.transform = `scaleX(${progress})`;
+        const mid = window.innerWidth / 2;
+        let best = 0;
+        let bestDist = Infinity;
+        steps.forEach((step, i) => {
+          const r = step.getBoundingClientRect();
+          const offset = (r.left + r.width / 2 - mid) / window.innerWidth;
+          const dist = Math.abs(offset);
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = i;
+          }
+          const card = cards[i];
+          if (card) {
+            card.style.transform = `perspective(1400px) rotateY(${(offset * -14).toFixed(2)}deg) scale(${(1 - Math.min(dist, 0.6) * 0.12).toFixed(3)})`;
+            card.style.opacity = (1 - Math.min(dist, 0.7) * 0.6).toFixed(3);
+          }
+        });
+        setActive((prev) => (prev === best ? prev : best));
+      };
+
+      gsap.to(track, {
+        x: () => -distance(),
+        ease: 'none',
+        // scrub 會讓軌道在捲動停下後再滑一小段：跟著 tween 每一格重畫，不跟 scroll 事件
+        onUpdate() {
+          paint(this.progress());
+        },
+        scrollTrigger: {
+          trigger: pin,
+          start: 'top top',
+          end: () => `+=${distance()}`,
+          pin: true,
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+          onRefresh: (self) => paint(self.progress),
+        },
+      });
+
+      return () => {
+        delete pin.dataset.pinned;
+        cards.forEach((card) => {
+          if (!card) return;
+          card.style.transform = '';
+          card.style.opacity = '';
+        });
+      };
+    });
+    return () => mm.revert();
+  }, []);
+
   return (
-    <section id="line" className="relative bg-[#FAFAFA] py-24 md:py-36">
-      <div className="mx-auto max-w-7xl px-6 md:px-12">
-        <SectionHeader title={copy.title} lede={copy.lede} />
-        <motion.ol
-          variants={staggerList}
-          {...inView}
-          className="relative mx-auto grid max-w-md gap-12 sm:max-w-xl lg:max-w-none lg:grid-cols-5 lg:gap-8"
-        >
-          {/* 時間軸細線——手機：左側直線；桌機：橫向，貫穿五個節點 */}
-          <span
-            className="pointer-events-none absolute bottom-2 left-[5px] top-2 w-px bg-gradient-to-b from-[#2563EB]/40 to-[#06B6D4]/40 lg:hidden"
-            aria-hidden
-          />
-          <span
-            className="pointer-events-none absolute left-0 right-[calc((100%_-_8rem)/5_-_11px)] top-[5px] hidden h-px bg-gradient-to-r from-[#2563EB]/40 to-[#06B6D4]/40 lg:block"
-            aria-hidden
-          />
-          {copy.steps.map((item, i) => (
-            <motion.li key={item.title} variants={fadeUpItem} className="relative pl-10 lg:pl-0 lg:pt-10">
-              {/* 節點：落在細線上的小圓點 */}
-              <span
-                className="absolute left-0 top-0 h-[11px] w-[11px] rounded-full border-2 border-white bg-gradient-to-br from-[#2563EB] to-[#06B6D4] shadow-[0_0_0_1px_rgba(37,99,235,0.25)]"
-                aria-hidden
-              />
-              <span
-                className="-mt-1.5 block font-serif text-4xl font-black leading-none lining-nums text-[#2563EB] lg:mt-0 lg:text-5xl"
-                aria-hidden
-              >
-                {i + 1}
-              </span>
-              <h3 className="mt-4 text-lg font-semibold text-[#101828] lg:mt-5">{item.title}</h3>
-              {item.quote && (
-                <p className="cjk-punct mb-0 mt-3 font-serif text-xl font-semibold leading-snug text-[#101828] lg:text-base xl:text-xl">
-                  {item.quote}
-                </p>
-              )}
-              <p className="mb-0 mt-2 text-balance text-sm leading-relaxed text-[#475467] md:text-base">{keepRanges(item.desc)}</p>
-            </motion.li>
-          ))}
-        </motion.ol>
+    <section id="line" className="relative bg-night">
+      <div
+        ref={pinRef}
+        className="group/pin relative py-28 md:py-40 lg:flex lg:h-[100svh] lg:flex-col lg:justify-center lg:overflow-x-auto lg:py-0 lg:data-[pinned]:overflow-hidden"
+      >
+        {/* 背景：一道很淡的對角光，讓釘住的畫面不是一片死黑 */}
+        <div
+          className="pointer-events-none absolute inset-0 hidden bg-[radial-gradient(60%_50%_at_70%_40%,rgba(185,167,255,0.08),transparent),radial-gradient(40%_40%_at_20%_80%,rgba(110,231,240,0.06),transparent)] lg:block"
+          aria-hidden
+        />
 
-        {/* 親自試試：加入 Tryzeon 的 LINE 官方帳號走一遍流程；桌機附 QR Code（電腦上點連結無法加好友） */}
-        <motion.div
-          variants={fadeUpItem}
-          {...inView}
-          className="mx-auto mt-16 md:mt-20 flex max-w-2xl flex-col items-center gap-6 rounded-3xl border border-white/60 bg-white/70 p-7 text-center shadow-[0_8px_32px_rgba(16,24,40,0.06)] backdrop-blur-xl md:p-9 lg:flex-row lg:text-left"
+        <ol
+          ref={trackRef}
+          className={`relative mx-auto grid max-w-xl gap-6 px-6 md:px-12 lg:mx-0 lg:flex lg:w-max lg:max-w-none lg:items-stretch lg:gap-6 ${TRACK_PAD}`}
         >
-          <figure className="hidden shrink-0 lg:block">
-            <Image src={LINE_OA_QR_SRC} width={112} height={112} alt={copy.tryIt.qrAlt} unoptimized />
-            <figcaption className="mt-2 text-center text-xs text-[#475467]">{copy.tryIt.qrCaption}</figcaption>
-          </figure>
-          <div className="flex-1">
-            <h3 className="text-lg md:text-xl font-semibold text-[#101828]">{copy.tryIt.title}</h3>
-            <p className="mt-2 mb-0 text-balance text-sm md:text-base leading-relaxed text-[#475467]">{copy.tryIt.desc}</p>
-            <a
-              href={siteCopy.contact.lineOa.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary mt-5 gap-2 text-base"
+          {/* 開場：標題與 lede 也在軌道上，捲動時一起滑走 */}
+          <li className="lg:flex lg:w-[min(38rem,40vw)] lg:shrink-0 lg:items-center lg:pr-10">
+            <SectionHeader align="left" title={copy.title} lede={copy.lede} spacing="mb-6 lg:mb-0" />
+          </li>
+
+          {copy.steps.map((step, i) => {
+            const isActive = active === i;
+            return (
+              <li key={step.title} data-step className="relative lg:w-[min(26rem,29vw)] lg:shrink-0">
+                <div
+                  data-card
+                  className="spotlight glass-panel relative flex h-full flex-col overflow-hidden rounded-[2rem] p-7 will-change-transform md:p-9 lg:h-[min(62vh,540px)] lg:p-10"
+                >
+                  {/* 巨大的描邊數字：經過畫面中央時填上蛋白石色 */}
+                  <span
+                    className={`pointer-events-none absolute right-5 top-1 select-none lg:right-7 lg:top-3 font-serif font-black leading-none transition-opacity duration-700 text-outline text-[9rem] lg:text-[13rem] ${
+                      isActive ? 'lg:opacity-0' : ''
+                    }`}
+                    aria-hidden
+                  >
+                    {i + 1}
+                  </span>
+                  <span
+                    className={`pointer-events-none absolute right-5 top-1 select-none lg:right-7 lg:top-3 font-serif font-black leading-none opal-text text-[9rem] transition-opacity duration-700 lg:text-[13rem] ${
+                      isActive ? 'lg:opacity-100' : 'lg:opacity-0'
+                    } opacity-0`}
+                    aria-hidden
+                  >
+                    {i + 1}
+                  </span>
+
+                  <span
+                    className={`relative mb-auto inline-flex h-2.5 w-2.5 rounded-full transition-all duration-500 ${
+                      isActive ? 'bg-aqua shadow-[0_0_14px_4px_rgba(110,231,240,0.6)]' : 'bg-white/25'
+                    }`}
+                    aria-hidden
+                  />
+                  <div className="relative mt-16 lg:mt-0">
+                    <h3 className="text-xl font-semibold text-pearl md:text-2xl">{step.title}</h3>
+                    {step.quote && (
+                      <p className="cjk-punct mb-0 mt-4 font-serif text-2xl font-semibold leading-snug text-pearl md:text-3xl">
+                        {step.quote}
+                      </p>
+                    )}
+                    <p className="mb-0 mt-3 text-balance text-sm leading-relaxed text-haze md:text-base">{keepRanges(step.desc)}</p>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+
+          {/* 收尾：親自試試（桌機附 QR Code——電腦上點連結無法加好友） */}
+          <li data-step className="relative lg:flex lg:w-[min(30rem,34vw)] lg:shrink-0 lg:items-center">
+            <div
+              data-card
+              className="opal-border relative flex w-full flex-col items-start gap-6 overflow-hidden rounded-[2rem] bg-white/[0.04] p-7 backdrop-blur-xl md:p-9 lg:h-[min(62vh,540px)] lg:justify-between lg:p-10"
             >
-              {copy.tryIt.cta}
-              <ArrowUpRight className="h-4 w-4" aria-hidden />
-            </a>
-          </div>
-        </motion.div>
+              <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[radial-gradient(closest-side,rgba(185,167,255,0.3),transparent)] blur-2xl" aria-hidden />
+              <figure className="relative hidden rounded-2xl bg-white p-3 shadow-[0_0_50px_-10px_rgba(185,167,255,0.6)] lg:block">
+                <Image src={LINE_OA_QR_SRC} width={120} height={120} alt={copy.tryIt.qrAlt} unoptimized />
+                <figcaption className="mt-2 text-center text-xs text-night/70">{copy.tryIt.qrCaption}</figcaption>
+              </figure>
+              <div className="relative">
+                <h3 className="text-2xl font-semibold text-pearl md:text-3xl">{copy.tryIt.title}</h3>
+                <p className="mb-0 mt-3 text-balance text-sm leading-relaxed text-haze md:text-base">{copy.tryIt.desc}</p>
+                <a
+                  href={siteCopy.contact.lineOa.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary mt-6 gap-2 text-base"
+                >
+                  {copy.tryIt.cta}
+                  <ArrowUpRight className="h-4 w-4" aria-hidden />
+                </a>
+              </div>
+            </div>
+          </li>
+        </ol>
 
-        {/* 從 /business 的導入步驟點過來的人，看完流程一鍵回到方案 */}
-        <div className="mt-10 md:mt-12 text-center">
-          <MoreLink href="/business">{copy.link}</MoreLink>
+        {/* 進度軌（桌機）：五站的名稱＋跟著捲動填滿的光 */}
+        <div className={`relative mt-12 hidden lg:block ${TRACK_PAD}`} aria-hidden>
+          <div className="relative h-px bg-white/10">
+            <span
+              ref={railRef}
+              className="absolute inset-0 origin-left scale-x-0 bg-gradient-to-r from-lilac via-ice to-aqua shadow-[0_0_12px_rgba(185,167,255,0.7)]"
+            />
+          </div>
+          <div className="mt-4 grid grid-cols-5 text-xs">
+            {copy.steps.map((step, i) => (
+              <span key={step.title} className={`transition-colors duration-500 ${active >= i ? 'text-pearl' : 'text-dim'}`}>
+                {step.title}
+              </span>
+            ))}
+          </div>
         </div>
+      </div>
+
+      <div className="mx-auto max-w-[1360px] px-6 pb-28 md:px-12 md:pb-36 lg:pt-16">
+        <MoreLink href="/business">{copy.link}</MoreLink>
       </div>
     </section>
   );

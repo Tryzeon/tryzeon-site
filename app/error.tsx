@@ -11,7 +11,7 @@ interface ErrorPageProps {
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (
     <Notice
-      emblem={<AlertTriangle className="h-9 w-9 text-[#2563EB]" strokeWidth={1.4} />}
+      emblem={<AlertTriangle className="h-9 w-9 text-lilac" strokeWidth={1.4} />}
       title="頁面發生錯誤"
       lede="請重新載入一次；如果問題持續，請回到首頁或來信 contact@tryzeon.com。"
     >
@@ -25,7 +25,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
       </button>
 
       {process.env.NODE_ENV === 'development' && (
-        <p className="mt-8 break-all rounded-2xl border border-[#101828]/10 bg-white/60 p-4 text-left font-mono text-xs leading-relaxed text-[#475467]">
+        <p className="mt-8 break-all rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left font-mono text-xs leading-relaxed text-haze">
           {error.message}
           {error.digest && <span className="mt-2 block">digest: {error.digest}</span>}
         </p>

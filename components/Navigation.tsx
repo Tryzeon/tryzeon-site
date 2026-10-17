@@ -89,7 +89,7 @@ export function Navigation() {
     );
   };
 
-  const CURRENT = 'text-[#101828] underline underline-offset-8 decoration-[#2563EB]/50';
+  const CURRENT = 'text-pearl underline underline-offset-8 decoration-lilac/60';
 
   return (
     <nav
@@ -100,7 +100,7 @@ export function Navigation() {
       <div
         className={`max-w-7xl mx-auto transition-all duration-300 ease-out ${
           shouldShowWhiteBackground
-            ? 'rounded-full bg-white/80 backdrop-blur-2xl shadow-neo border border-[#E4E7EC]/60 px-8 py-2.5 max-w-5xl'
+            ? 'rounded-full bg-night/70 backdrop-blur-2xl shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.06)] border border-white/10 px-8 py-2.5 max-w-5xl'
             : 'px-6 md:px-12 xl:px-24 bg-transparent border border-transparent'
         }`}
       >
@@ -108,7 +108,7 @@ export function Navigation() {
           <Link
             href="/"
             onClick={(e) => handleItemClick(e, '/')}
-            className="focus-ring inline-flex items-center gap-2 text-2xl md:text-3xl font-bold tracking-tight transition-colors duration-300 text-[#101828] hover:text-[#2563EB] rounded-md"
+            className="focus-ring inline-flex items-center gap-2 text-2xl md:text-3xl font-bold tracking-tight transition-colors duration-300 text-pearl hover:text-lilac rounded-md"
           >
             {/* 標誌是裝飾，連結名稱由旁邊的「Tryzeon」提供 */}
             <Image
@@ -127,8 +127,8 @@ export function Navigation() {
             {navigationItems.map((item) =>
               renderItem(
                 item,
-                `text-[13px] font-medium tracking-wide transition-colors duration-300 hover:text-[#101828] rounded-md focus-ring`,
-                'text-[#101828]/75',
+                `text-[13px] font-medium tracking-wide transition-colors duration-300 hover:text-pearl rounded-md focus-ring`,
+                'text-pearl/70',
                 CURRENT,
               ),
             )}
@@ -140,8 +140,8 @@ export function Navigation() {
               onClick={(e) => handleItemClick(e, '/business')}
               className={`focus-ring px-5 py-2 text-[12px] font-semibold rounded-full transition-colors duration-300 ${
                 shouldShowWhiteBackground
-                  ? 'bg-[#101828] text-white hover:bg-[#1D2939]'
-                  : 'bg-white/60 backdrop-blur-md border border-[#101828]/10 text-[#101828] hover:bg-white'
+                  ? 'bg-pearl text-night hover:shadow-[0_0_30px_-4px_rgba(185,167,255,0.7)]'
+                  : 'bg-white/[0.06] backdrop-blur-md border border-white/15 text-pearl hover:bg-white/[0.12]'
               }`}
             >
               {copy.nav.cta}
@@ -157,9 +157,9 @@ export function Navigation() {
             aria-controls="mobile-menu"
           >
             {isMobileMenuOpen ? (
-              <X className="w-6 h-6 text-[#101828]" />
+              <X className="w-6 h-6 text-pearl" />
             ) : (
-              <Menu className="w-6 h-6 text-[#101828]" />
+              <Menu className="w-6 h-6 text-pearl" />
             )}
           </button>
         </div>
@@ -172,24 +172,24 @@ export function Navigation() {
           }`}
         >
           <div className="overflow-hidden min-h-0">
-            <div className="bg-white/95 rounded-[32px] mt-2 shadow-2xl border border-black/5">
+            <div className="bg-night-2/95 backdrop-blur-2xl rounded-[32px] mt-2 shadow-2xl border border-white/10">
               <div className="py-6 px-6 space-y-1">
                 {navigationItems.map((item) =>
                   renderItem(
                     item,
-                    `block px-4 py-3.5 text-base font-semibold text-[#101828] hover:bg-[#F2F4F7] hover:text-[#2563EB] rounded-xl transition-colors focus-ring`,
+                    `block px-4 py-3.5 text-base font-semibold text-pearl hover:bg-white/[0.06] hover:text-lilac rounded-xl transition-colors focus-ring`,
                     '',
-                    'underline underline-offset-8 decoration-[#2563EB]/50',
+                    'underline underline-offset-8 decoration-lilac/60',
                   ),
                 )}
 
-                <div className="h-px bg-black/5 my-4 mx-4"></div>
+                <div className="h-px bg-white/10 my-4 mx-4"></div>
 
                 <div className="pt-4 px-2">
                   <Link
                     href="/business"
                     onClick={(e) => handleItemClick(e, '/business')}
-                    className="focus-ring block w-full py-3.5 text-center text-sm font-bold bg-[#101828] text-white rounded-full shadow-lg active:scale-95 transition-transform"
+                    className="focus-ring block w-full py-3.5 text-center text-sm font-bold bg-pearl text-night rounded-full shadow-lg active:scale-95 transition-transform"
                   >
                     {copy.nav.cta}
                   </Link>

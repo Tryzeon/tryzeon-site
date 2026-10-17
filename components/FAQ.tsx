@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { MoreLink } from '@/components/MoreLink';
 
@@ -15,58 +15,68 @@ interface FAQProps {
   items: FAQItem[];
 }
 
+/** 細線分隔的手風琴：展開時高度以 grid-rows 0fr→1fr 平滑撐開，左側亮起一道光 */
 export function FAQ({ items }: FAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggleItem = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+  const baseId = useId();
 
   return (
-    <div className="max-w-3xl mx-auto space-y-3">
+    <div className="border-t border-white/10">
       {items.map((item, index) => {
         const isOpen = openIndex === index;
+        const panelId = `${baseId}-panel-${index}`;
         return (
-          <div
-            key={index}
-            className={`group bg-white hover:bg-[#F9FAFB] rounded-2xl border border-[#101828]/8 hover:border-[#101828]/15 overflow-hidden transition-all duration-300 ${
-              isOpen ? 'bg-[#F9FAFB] border-[#101828]/15 shadow-sm' : ''
-            }`}
-          >
+          <div key={item.question} className="group relative border-b border-white/10">
+            <span
+              className={`absolute -left-px bottom-4 top-4 w-[2px] origin-top rounded-full bg-gradient-to-b from-lilac to-aqua transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isOpen ? 'scale-y-100' : 'scale-y-0'
+              }`}
+              aria-hidden
+            />
             <button
-              onClick={() => toggleItem(index)}
-              className="w-full px-6 md:px-8 py-5 md:py-6 flex items-center justify-between text-left"
+              type="button"
+              onClick={() => setOpenIndex(isOpen ? null : index)}
+              className="focus-ring flex w-full items-center justify-between gap-6 rounded-lg py-6 pl-5 pr-1 text-left md:py-7 md:pl-6"
               aria-expanded={isOpen}
+              aria-controls={panelId}
             >
-              <span className="font-semibold text-[#101828] text-base md:text-lg pr-8">
-                {item.question}
-              </span>
-              <div
-                className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  isOpen
-                    ? 'bg-[#2563EB] text-white rotate-45'
-                    : 'bg-[#F2F4F7] text-[#475467] group-hover:bg-[#101828]/10'
+              <span
+                className={`text-base font-semibold transition-colors duration-300 md:text-lg ${
+                  isOpen ? 'text-pearl' : 'text-pearl/85 group-hover:text-pearl'
                 }`}
               >
-                <Plus className="w-4 h-4" strokeWidth={2.5} />
-              </div>
+                {item.question}
+              </span>
+              <span
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  isOpen
+                    ? 'rotate-45 border-lilac/50 bg-lilac/15 text-pearl'
+                    : 'border-white/15 text-haze group-hover:border-white/30 group-hover:text-pearl'
+                }`}
+                aria-hidden
+              >
+                <Plus className="h-4 w-4" strokeWidth={2} />
+              </span>
             </button>
 
             <div
-              className={`overflow-hidden transition-all duration-300 ease-out ${
-                isOpen ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'
+              id={panelId}
+              className={`grid transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
               }`}
             >
-              <div className="px-6 md:px-8 pb-6 text-[#475467] leading-relaxed text-sm md:text-base">
-                {item.answer}
-                {item.link && (
-                  <div className="mt-3">
-                    {/* 收合時面板只是 max-h-0，連結仍在 DOM：移出 Tab 順序，免得鍵盤焦點落在看不見的地方 */}
-                    <MoreLink href={item.link.href} small tabIndex={isOpen ? undefined : -1}>
-                      {item.link.label}
-                    </MoreLink>
-                  </div>
-                )}
+              <div className="min-h-0 overflow-hidden">
+                <div className="pb-7 pl-5 pr-12 text-sm leading-relaxed text-haze md:pl-6 md:text-base">
+                  {item.answer}
+                  {item.link && (
+                    <div className="mt-4">
+                      {/* 收合時連結仍在 DOM：移出 Tab 順序，免得鍵盤焦點落在看不見的地方 */}
+                      <MoreLink href={item.link.href} small tabIndex={isOpen ? undefined : -1}>
+                        {item.link.label}
+                      </MoreLink>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

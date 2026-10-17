@@ -14,7 +14,7 @@ export const APP_FALLBACK_METADATA: Metadata = {
 export function AppDownload() {
   return (
     <Notice
-      emblem={<Smartphone className="h-9 w-9 text-[#2563EB]" strokeWidth={1.4} />}
+      emblem={<Smartphone className="h-9 w-9 text-lilac" strokeWidth={1.4} />}
       title="透過 App 開啟完整體驗"
       lede="此頁面為 Tryzeon 應用程式專屬內容。請下載 App 以享受完整的 AI 虛擬試穿體驗。"
     >

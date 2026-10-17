@@ -10,19 +10,25 @@ interface TryOnVideoProps {
   replayLabel: string;
   /** false：不包手機外框，直接填滿父層（父層已經是 PhoneFrame 時用） */
   framed?: boolean;
+  /**
+   * 由外部決定何時播放（例：疊在同一支手機裡、輪到這一格才播）。
+   * 不給就用預設行為：進入視窗播一次。
+   */
+  playing?: boolean;
   className?: string;
 }
 
 /**
- * 動態試穿短片：進入視窗才播一次、不循環，結束後顯示重播鍵。
+ * 動態試穿短片：進入視窗（或 playing 變成 true）才播一次、不循環，結束後顯示重播鍵。
  * prefers-reduced-motion 時不自動播放（只顯示 poster 與播放鍵）。
  * preload="none"：隱藏的那份（桌機上的手機版 DOM）不會先抓影片，play() 時才載入。
  */
-export function TryOnVideo({ replayLabel, framed = true, className = '' }: TryOnVideoProps) {
+export function TryOnVideo({ replayLabel, framed = true, playing, className = '' }: TryOnVideoProps) {
   const ref = useRef<HTMLVideoElement>(null);
   const [ended, setEnded] = useState(false);
-  // display:none 擋不住 poster 下載：隱藏的那份（桌機上的手機版 DOM）永遠不會相交，也就不會抓圖
+  // display:none 擋不住 poster 下載：隱藏的那份永遠不會相交，也就不會抓圖
   const [showPoster, setShowPoster] = useState(false);
+  const controlled = playing !== undefined;
 
   useEffect(() => {
     const video = ref.current;
@@ -41,6 +47,7 @@ export function TryOnVideo({ replayLabel, framed = true, className = '' }: TryOn
       setEnded(true);
       return () => posterObserver.disconnect();
     }
+    if (controlled) return () => posterObserver.disconnect();
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -55,7 +62,20 @@ export function TryOnVideo({ replayLabel, framed = true, className = '' }: TryOn
       posterObserver.disconnect();
       observer.disconnect();
     };
-  }, []);
+  }, [controlled]);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video || !controlled) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (playing) {
+      video.currentTime = 0;
+      setEnded(false);
+      void video.play().catch(() => setEnded(true));
+    } else {
+      video.pause();
+    }
+  }, [controlled, playing]);
 
   const replay = () => {
     const video = ref.current;
@@ -82,7 +102,7 @@ export function TryOnVideo({ replayLabel, framed = true, className = '' }: TryOn
         <button
           type="button"
           onClick={replay}
-          className="absolute bottom-5 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-white/85 px-4 py-2 text-sm font-semibold text-[#101828] shadow-lg backdrop-blur-xl transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]"
+          className="absolute bottom-5 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full border border-white/20 bg-night/70 px-4 py-2 text-sm font-semibold text-pearl shadow-lg backdrop-blur-xl transition-colors hover:bg-night/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lilac"
         >
           <RotateCcw className="h-4 w-4" aria-hidden />
           {replayLabel}

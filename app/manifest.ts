@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: '連結消費者與時尚品牌的時尚 AI 生態系。',
     start_url: '/',
     display: 'standalone',
-    background_color: '#FAFAFA',
-    theme_color: '#FAFAFA',
+    background_color: '#08090F',
+    theme_color: '#08090F',
     orientation: 'portrait-primary',
     icons: [
       {

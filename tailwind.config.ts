@@ -8,7 +8,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Neo-Tech Color Palette
+        // Midnight Atelier：深夜藍畫布 + 從 logo 薰衣草延伸的蛋白石光譜
+        night: {
+          DEFAULT: '#08090F',
+          2: '#0E1019',
+          3: '#161926',
+        },
+        pearl: '#F1F0F7',
+        haze: '#A9ADC4',
+        dim: '#8288A6',
+        lilac: '#B9A7FF',
+        ice: '#8FD3FF',
+        aqua: '#5CE1E6',
+        // 舊的淺色系色票：/admin 儀表板仍在用
         neo: {
           smoke: '#E4E7EC',
           mist: '#98A2B3',

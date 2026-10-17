@@ -3,34 +3,57 @@
 @tailwind utilities;
 
 /* ========================================
-   Neo-Tech Design System
-   Futuristic Lab × Digital Minimalism
+   Midnight Atelier
+   深夜藍畫布 × 蛋白石光（logo 的薰衣草 → 冰藍 → 水青）
+   唯一會發光的是「光」本身：絲綢反光、掃描光束、蛋白石描邊。
    ======================================== */
+
+/* 試穿掃描的時間軸：一個變數同時驅動遮罩、光束位置與網格帶（components/TryOnScan.tsx） */
+@property --scan {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --veil {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --beam {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
 
 @layer base {
   :root {
-    /* Neo-Tech Color System */
+    --night: #08090F;
+    --night-2: #0E1019;
+    --pearl: #F1F0F7;
+    --haze: #A9ADC4;
+    --lilac: #B9A7FF;
+    --ice: #8FD3FF;
+    --aqua: #5CE1E6;
+    --opal: linear-gradient(100deg, #C9B8FF 0%, #9CC8FF 48%, #6EE7F0 100%);
+
+    /* /admin 仍用舊的淺色字色 */
     --neo-white: #FAFAFA;
     --neo-ice: #F2F4F7;
     --neo-ink: #050505;
-
-    /* Accent: Electric Blue Spectrum */
     --neo-blue: #2563EB;
 
-    /* Typography */
     --font-outfit: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
     --system-font: var(--font-outfit);
 
-    /* Neo-Tech Transitions - Snappy & Precise */
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
-    /* Neo-Tech Shadows */
     --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.04), 0 10px 20px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.06), 0 20px 48px rgba(0, 0, 0, 0.08);
   }
 
-  /* Accessibility: reduced motion */
   @media (prefers-reduced-motion: reduce) {
 
     *,
@@ -43,7 +66,6 @@
     }
   }
 
-  /* Shimmer animation for loading states */
   @keyframes shimmer {
     0% {
       background-position: 200% 0;
@@ -61,17 +83,19 @@
   /* 不設 scroll-behavior: smooth：平滑捲動交給 Lenis，同頁連結由 SiteLink 指定 smooth。
      兩套同時開，Next 換頁時的錨點捲動會跟 Lenis 搶，偶爾停在頁首 */
   html {
+    color-scheme: dark;
+    background: var(--night);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
   body {
-    background: var(--neo-white);
+    background: var(--night);
     font-family: var(--system-font);
     margin: 0;
     padding: 0;
-    color: var(--neo-ink);
+    color: var(--pearl);
     letter-spacing: -0.011em;
     line-height: 1.6;
     font-weight: 400;
@@ -80,8 +104,8 @@
   }
 
   ::selection {
-    background-color: rgba(37, 99, 235, 0.15);
-    color: #101828;
+    background-color: rgba(185, 167, 255, 0.35);
+    color: #FFFFFF;
     text-shadow: none;
   }
 
@@ -95,7 +119,7 @@
     font-weight: 800;
     letter-spacing: -0.025em;
     line-height: 1.05;
-    color: var(--neo-ink);
+    color: inherit;
   }
 
   h1 {
@@ -122,37 +146,117 @@
 
 @layer components {
 
-  /* Neo-Tech Glass Card - Frosted Glass Effect */
+  /* 深色毛玻璃：上緣一道內光，像玻璃邊緣接到光 */
   .glass-card {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: var(--shadow-md);
-    transition: all 300ms var(--ease-out-expo);
+    background: rgba(255, 255, 255, 0.035);
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 40px 80px -40px rgba(0, 0, 0, 0.7);
+    transition: background 400ms var(--ease-out-expo), border-color 400ms var(--ease-out-expo);
   }
 
   .glass-card:hover {
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
   }
 
-  /* MASTER.md 的預設表面：靜態毛玻璃卡（不帶 hover 位移）。padding 由使用處決定 */
   .glass-panel {
-    @apply rounded-3xl border border-white/60 bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(16,24,40,0.06)];
+    @apply rounded-3xl border border-white/[0.08] bg-white/[0.035] backdrop-blur-xl;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 40px 80px -40px rgba(0, 0, 0, 0.7);
   }
 
   .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lilac focus-visible:ring-offset-2 focus-visible:ring-offset-night;
   }
 
-  /* 深色主按鈕；尺寸以外的外觀。gap／寬度由使用處補 */
+  /* 主按鈕：珍珠白膠囊，滑過時一道光掃過、外圈亮起蛋白石光暈 */
   .btn-primary {
-    @apply focus-ring inline-flex items-center justify-center rounded-full bg-[#101828] px-9 py-4 font-semibold text-white transition-colors duration-300 hover:bg-[#1D2939];
+    @apply focus-ring relative isolate inline-flex items-center justify-center overflow-hidden rounded-full bg-pearl px-9 py-4 font-semibold text-night;
+    transition: box-shadow 500ms var(--ease-out-expo), transform 500ms var(--ease-out-expo);
   }
 
-  /* Neo-Tech Mesh Gradient Background */
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(110deg, transparent 30%, rgba(185, 167, 255, 0.55) 45%, rgba(110, 231, 240, 0.55) 55%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 900ms var(--ease-out-expo);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4), 0 10px 50px -6px rgba(185, 167, 255, 0.55), 0 0 90px -10px rgba(110, 231, 240, 0.35);
+  }
+
+  .btn-primary:hover::before {
+    transform: translateX(120%);
+  }
+
+  .btn-ghost {
+    @apply focus-ring inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-9 py-4 font-semibold text-pearl backdrop-blur-md;
+    transition: background 400ms var(--ease-out-expo), border-color 400ms var(--ease-out-expo);
+  }
+
+  .btn-ghost:hover {
+    @apply border-white/30 bg-white/[0.08];
+  }
+
+  /* 游標聚光：--mx/--my 由 components/PointerFx.tsx 寫入（任何 .spotlight 元素都會被追蹤）。
+     ::before 是面上的柔光，::after 是只照亮描邊的光 */
+  .spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .spotlight::before,
+  .spotlight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 500ms var(--ease-out-expo);
+  }
+
+  .spotlight::before {
+    z-index: -1;
+    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(185, 167, 255, 0.10), transparent 45%);
+  }
+
+  .spotlight::after {
+    padding: 1px;
+    background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(201, 184, 255, 0.85), rgba(110, 231, 240, 0.35) 30%, transparent 55%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  .spotlight:hover::before,
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+
+  /* 漸層描邊：蛋白石色的 1px 外框（不吃 hover） */
+  .opal-border {
+    position: relative;
+  }
+
+  .opal-border::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(140deg, rgba(201, 184, 255, 0.7), rgba(156, 200, 255, 0.15) 40%, rgba(110, 231, 240, 0.6));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
   .gradient-mesh-bg {
     background:
       radial-gradient(at 20% 20%, rgba(37, 99, 235, 0.08) 0px, transparent 50%),
@@ -160,7 +264,6 @@
       radial-gradient(at 60% 80%, rgba(6, 182, 212, 0.05) 0px, transparent 50%),
       linear-gradient(180deg, var(--neo-white) 0%, var(--neo-ice) 100%);
   }
-
 }
 
 * {
@@ -173,14 +276,24 @@
     text-wrap: balance;
   }
 
-  /* CJK display 排印：全形標點半寬化（halt）。宋體大標結尾的「。」不再吃掉
-     整個 em box——置中標題不會被尾標點推偏，句中「，」節奏也更緊。
-     只給 display 標題用，內文不要套。 */
+  /* CJK display 排印：全形標點半寬化（halt）。只給 display 標題用 */
   .cjk-punct {
     font-feature-settings: 'halt' 1;
   }
 
-  /* Avant-garde texture overlay */
+  .opal-text {
+    background: var(--opal);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* 空心描邊字（大數字、頁尾字標） */
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(241, 240, 247, 0.22);
+  }
+
   .noise-overlay {
     position: fixed;
     top: 0;
@@ -189,20 +302,17 @@
     height: 100vh;
     pointer-events: none;
     z-index: 1;
-    opacity: 0.15;
-    mix-blend-mode: overlay;
+    opacity: 0.22;
+    mix-blend-mode: soft-light;
     background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
   }
 }
 
 /* ========================================
-   Neo-Tech Micro-Animation System
+   Motion
    ======================================== */
 
-/* Page enter fade — used by app/template.tsx route transitions. Defined here
-   (not via styled-jsx in the client template) so it ships in the SSR
-   stylesheet; the template sets opacity:0 inline, and a hard load (e.g. a
-   deep-link landing page) must fade in on first paint without waiting for JS. */
+/* app/template.tsx 的換頁淡入；寫在全域樣式表，SSR 第一個 frame 就有 keyframe */
 @keyframes pageEnter {
   from {
     opacity: 0;
@@ -213,11 +323,6 @@
   }
 }
 
-/* 載入編排第一拍：導覽列先落定（CSS-only，hydration 前就會跑）。
-   Navigation 掛在各 page client 內、template 以 pathname 為 key，
-   所以路由切換時會連同 pageEnter 一起重播——與整頁 fade 同拍，屬預期行為。
-   transform 直接落在 fixed nav 本體上，不是 fixed 元素的 wrapper，
-   所以不會踩 template.tsx 註解裡的 containing-block 陷阱。 */
 @keyframes navEnter {
   from {
     opacity: 0;
@@ -234,14 +339,10 @@
   animation: navEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
 }
 
-/* 首次進場後 Navigation 會在 <html> 標記 data-nav-entered，
-   route change 重掛載時不再重播（避免 fixed nav 消失 0.25s 再落下） */
 html[data-nav-entered='1'] .nav-enter {
   animation: none;
 }
 
-/* 首頁 hero 文字欄的進場（CSS-only，hydration 前就會跑）：主張在第一眼就讀得到，
-   不等 Framer 掛上。各元素的錯開用 [animation-delay:…] 寫在元件上。 */
 @keyframes heroEnter {
   from {
     opacity: 0;
@@ -255,7 +356,158 @@ html[data-nav-entered='1'] .nav-enter {
 }
 
 .hero-enter {
-  animation: heroEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: heroEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* 大標逐行從遮罩下升起（CSS-only，SSR HTML 就帶著，不等 hydration） */
+@keyframes lineRise {
+  from {
+    transform: translateY(110%) rotate(2deg);
+  }
 
+  to {
+    transform: none;
+  }
+}
+
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding: 0.04em 0.06em 0.12em;
+  margin: -0.04em -0.06em -0.12em;
+}
+
+.line-mask>span {
+  display: block;
+  transform-origin: 0 100%;
+  animation: lineRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* 試穿掃描：photo（全身照）蓋在試穿結果上，光束由上往下掃過、把它一路揭開。
+   0–6% 全身照淡入 → 20–60% 掃描 → 停在結果 → 91% 起全身照退場重來 */
+@keyframes tryonScan {
+  0% {
+    --scan: 0;
+    --veil: 0;
+    --beam: 0;
+  }
+
+  7% {
+    --scan: 0;
+    --veil: 1;
+    --beam: 0;
+  }
+
+  18% {
+    --scan: 0;
+    --veil: 1;
+    --beam: 0;
+  }
+
+  21% {
+    --scan: 2;
+    --veil: 1;
+    --beam: 1;
+    animation-timing-function: cubic-bezier(0.45, 0.05, 0.3, 1);
+  }
+
+  58% {
+    --scan: 100;
+    --veil: 1;
+    --beam: 1;
+  }
+
+  62% {
+    --scan: 100;
+    --veil: 1;
+    --beam: 0;
+  }
+
+  90% {
+    --scan: 100;
+    --veil: 1;
+    --beam: 0;
+  }
+
+  91% {
+    --scan: 100;
+    --veil: 0;
+    --beam: 0;
+  }
+
+  100% {
+    --scan: 0;
+    --veil: 0;
+    --beam: 0;
+  }
+}
+
+/* SVG 光束上流動的光點：path 設 pathLength=100，dasharray 決定光點長度 */
+@keyframes beamFlow {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes floatY {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes scrollCue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+@keyframes auroraSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 沿著細線來回滑的一小段光（/business 三步驟的上緣） */
+@keyframes slideX {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(400%);
+  }
+}
