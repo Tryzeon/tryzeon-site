@@ -51,7 +51,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-[#FAFAFA] py-24 md:py-32">
         <div className="max-w-3xl mx-auto px-6">
           <SectionHeader align="left" title={about.origin.title} />
           <p className="mb-0 text-base md:text-lg leading-[1.9] text-[#475467]">{keepRanges(about.origin.body)}</p>
@@ -62,7 +62,7 @@ export default function AboutPage() {
       <EngineFlywheel copy={about.engine} />
 
       {/* 願景：頁尾「願景」連到這裡 */}
-      <section id="vision" className="bg-white py-24 md:py-32">
+      <section id="vision" className="bg-[#FAFAFA] py-24 md:py-32">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <SectionHeader title={about.vision.title} spacing="mb-8 md:mb-10" />
           {/* font-semibold 明確化：Noto Serif TC 沒有 400 */}

@@ -17,7 +17,7 @@ interface LineFlowProps {
 /** LINE 試穿流程：純文字時間軸（尚無實機截圖，不放圖、不畫模擬聊天介面） */
 export function LineFlow({ copy }: LineFlowProps) {
   return (
-    <section id="line" className="relative bg-white py-24 md:py-36">
+    <section id="line" className="relative bg-[#FAFAFA] py-24 md:py-36">
       <div className="mx-auto max-w-7xl px-6 md:px-12">
         <SectionHeader title={copy.title} lede={copy.lede} />
         <motion.ol

@@ -260,6 +260,10 @@ touching visuals.** Identity: Editorial Tech × Liquid Glass, light only. Hard r
 
 - Palette is blue→cyan only (`#2563EB → #60A5FA → #06B6D4`) on `#FAFAFA`/`#FFFFFF`.
   Purple/pink/rainbow gradients are banned; the Footer is the only dark section allowed.
+- One continuous `#FAFAFA` canvas: every section sits on the same background and is separated
+  by whitespace and its heading — never alternate `#FFF` / `#FAFAFA` bands (a ~2% step reads as
+  a rendering seam on some screens). White is for surfaces (cards, glass); the Footer is the only
+  background change.
 - Default surface is frosted glass (`bg-white/70 backdrop-blur-xl border border-white/60`),
   never flat opaque colored blocks.
 - Motion is slow and fluid: 400–600ms, `cubic-bezier(0.16, 1, 0.3, 1)` ease-out,

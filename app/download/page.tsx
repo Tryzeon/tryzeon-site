@@ -87,7 +87,7 @@ export default function DownloadPage() {
         </div>
       </section>
 
-      <section className="py-24 md:py-32 bg-white">
+      <section className="py-24 md:py-32 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <SectionHeader title={download.steps.title} />
           <ol className="grid gap-4 md:grid-cols-3">

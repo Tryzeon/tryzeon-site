@@ -35,7 +35,7 @@ export default function HomePageClient() {
       <ExperienceShowcase copy={copy.home.experience} />
 
       {/* AI 引擎：首頁只留一句，完整的說明與飛輪在 /about */}
-      <Section id="engine" className="py-20 md:py-28 bg-white">
+      <Section id="engine" className="py-20 md:py-28 bg-[#FAFAFA]">
         <div className="max-w-5xl mx-auto px-6 text-center">
           <SectionHeader title={engine.title} spacing="mb-8 md:mb-10" />
           <ScrollReveal delay={0.1}>
@@ -57,7 +57,7 @@ export default function HomePageClient() {
       </Section>
 
       {/* 結尾 CTA — 首頁第二個、也是最後一個 atmosphere 出現點 */}
-      <Section id="contact" className="py-24 md:py-36 bg-white overflow-hidden">
+      <Section id="contact" className="py-24 md:py-36 bg-[#FAFAFA] overflow-hidden">
         <AmbientGlow />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">

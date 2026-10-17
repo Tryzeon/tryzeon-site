@@ -86,7 +86,7 @@ export default function BusinessPage() {
         </div>
       </section>
 
-      <section className="py-24 md:py-32 bg-white">
+      <section className="py-24 md:py-32 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <SectionHeader title={business.fit.title} />
           <ul className="grid gap-4 md:grid-cols-3">
@@ -164,7 +164,7 @@ export default function BusinessPage() {
         </div>
       </section>
 
-      <section className="py-24 md:py-32 bg-white">
+      <section className="py-24 md:py-32 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <SectionHeader title={business.features.title} />
           <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
@@ -200,7 +200,7 @@ export default function BusinessPage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden py-24 md:py-40 bg-white">
+      <section className="relative overflow-hidden py-24 md:py-40 bg-[#FAFAFA]">
         <AmbientGlow />
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <SectionHeader title={business.cta.title} />

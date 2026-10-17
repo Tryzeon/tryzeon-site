@@ -30,7 +30,7 @@ If a new element can't be expressed in this language, it does not belong.
 1. **One idea per viewport.** One headline, at most one supporting line, one visual focus.
 2. **Type leads, decoration recedes.** Atmosphere (GradientWave, aurora bloom)
    appears in exactly two places on the homepage: Hero (GradientWave) and the closing CTA
-   (aurora blooms). No `dot-grid` on the homepage. Every other section is plain `#FAFAFA` / `#FFF`.
+   (aurora blooms). No `dot-grid` on the homepage. Every other section is plain `#FAFAFA`.
 3. **Fewer, larger surfaces.** No card-in-card nesting; one glass container per idea.
 4. **Motion is a whisper.** One enter per section; hover only on interactive elements;
    never a looping animation on content (icons included).
@@ -47,9 +47,14 @@ If a new element can't be expressed in this language, it does not belong.
 | Brand Blue | `#2563EB` | Primary accent, brands side |
 | Cyan | `#06B6D4` | Secondary accent, consumer side |
 | Blue Light | `#60A5FA` | Hover, gradient mid |
-| Background | `#FAFAFA` | Base (light only) |
-| Surface white | `#FFFFFF` | Cards, glass base |
+| Background | `#FAFAFA` | The one page canvas: every section, light only |
+| Surface white | `#FFFFFF` | Cards, glass base — surfaces only, never a section band |
 | Ice | `#F2F4F7` | Subtle fills |
+
+**One canvas.** Every section sits on the same `#FAFAFA`; sections are separated by whitespace
+and their `SectionHeader`, not by background. Alternating `#FFF` / `#FAFAFA` bands are banned: a
+~2% step shows as a seam on some screens and vanishes on others, so it reads as a rendering bug
+rather than rhythm. The Footer is the only background change — one deliberate chapter contrast.
 
 **Iridescent gradient (the signature):** `#2563EB → #60A5FA → #06B6D4`.
 Used for: text gradients, shader ramps, glass edges, aurora blooms.
@@ -149,7 +154,7 @@ shadow-[0_8px_32px_rgba(16,24,40,0.10)]  rounded-3xl
 
 Subpages (`/business`, `/download`, `/about`) reuse the same parts: a hero (宋體 H1
 via `clauseWrap` + lede + CTAs, no kicker; centered on `/business` and `/about`, two-column text + phone on `/download`) over two soft aurora blooms, then `SectionHeader`
-sections of glass cards on alternating `#FFF` / `#FAFAFA`. No dark sections, no stats rows,
+sections of glass cards on the same `#FAFAFA` canvas. No dark sections, no stats rows,
 no repeated feature lists — link to the homepage instead. No page carries awards, programs or a
 team section. `/about` hosts the engine flywheel (`EngineFlywheel`, centered header + inline SVG ring + HTML nodes: ring draws in,
 nodes pop in 01→04, then a comet laps the ring every 8s lighting each node it reaches; runs only while
