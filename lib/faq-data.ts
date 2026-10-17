@@ -20,7 +20,7 @@ export const faqItems = [
   },
   {
     question: '我是消費者，要怎麼試穿？',
-    answer: '下載 Tryzeon App，或加入 Tryzeon 的 LINE 官方帳號，就能試穿各合作品牌的商品；在合作品牌的 LINE 官方帳號與門市，也能直接試穿該品牌的商品。',
+    answer: '下載 Tryzeon App，或加入 Tryzeon 的 LINE 官方帳號，就能試穿各合作品牌的商品；在合作品牌的 LINE 官方帳號、官網與門市，也能直接試穿該品牌的商品。',
     link: { label: '下載 App', href: '/download' },
   },
 ];
