@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import { ArrowUpRight, BarChart3, Camera, Clapperboard, FileSpreadsheet, Mail, Mic, Network, ScanLine, Shirt, Sparkles, Store, TrendingUp } from 'lucide-react';
-import { AmbientGlow } from '@/components/AmbientGlow';
-import { AppScreen } from '@/components/AppScreen';
 import { FAQ } from '@/components/FAQ';
 import { Footer } from '@/components/Footer';
 import { MoreLink } from '@/components/MoreLink';
 import { Navigation } from '@/components/Navigation';
+import { PhoneFan } from '@/components/PhoneFan';
+import { RevealItem, RevealList } from '@/components/Reveal';
 import { SectionHeader } from '@/components/SectionHeader';
+import { SilkField } from '@/components/SilkField';
 import { clauseWrap, keepRanges, sentenceWrap } from '@/components/clauseWrap';
 import { copy } from '@/lib/copy';
 import { brandFaqGroups } from '@/lib/faq-data';
@@ -36,6 +37,8 @@ const SECONDARY =
   'focus-ring inline-flex items-center justify-center gap-2 px-9 py-4 rounded-full border border-[#101828]/15 bg-white/70 backdrop-blur-md text-[#101828] font-semibold hover:bg-white hover:border-[#101828]/30 transition-colors duration-300';
 const PHONES = ['aiTagBefore', 'aiTagAfterTags', 'voiceSizeShirt'] as const;
 const CARD = 'glass-panel p-7 md:p-9';
+// 子頁首屏與結尾：緞面（較淡）＋中央可讀性遮罩
+const VEIL = 'pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(250,250,250,0.9)_12%,rgba(250,250,250,0)_62%)]';
 
 function ContactButtons() {
   const { business, contact } = copy;
@@ -71,7 +74,8 @@ export default function BusinessPage() {
       <Navigation />
 
       <section className="relative overflow-hidden pt-36 md:pt-44 pb-20 md:pb-28 text-center">
-        <AmbientGlow variant="hero" />
+        <SilkField tint={0.75} resolution={0.5} />
+        <div className={VEIL} aria-hidden />
         <div className="relative z-10 max-w-4xl mx-auto px-6">
           <h1
             className="max-w-3xl mx-auto cjk-punct text-balance font-serif font-black tracking-[-0.02em] leading-[1.1] text-[#101828] mb-6"
@@ -89,27 +93,27 @@ export default function BusinessPage() {
       <section className="py-24 md:py-32 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <SectionHeader title={business.fit.title} />
-          <ul className="grid gap-4 md:grid-cols-3">
+          <RevealList className="grid gap-4 md:grid-cols-3">
             {business.fit.items.map((entry, i) => {
               const Icon = FIT_ICONS[i];
               return (
-                <li key={entry.title} className={CARD}>
+                <RevealItem key={entry.title} className={CARD}>
                   <Icon className="h-6 w-6 text-[#2563EB]" strokeWidth={1.5} aria-hidden />
                   <h3 className="mt-5 text-lg md:text-xl font-semibold text-[#101828]">{entry.title}</h3>
                   <p className="mt-2 text-balance text-sm md:text-base leading-relaxed text-[#475467]">{entry.desc}</p>
-                </li>
+                </RevealItem>
               );
             })}
-          </ul>
+          </RevealList>
         </div>
       </section>
 
       <section className="py-24 md:py-32 bg-[#FAFAFA]">
         <div className="max-w-7xl mx-auto px-6">
           <SectionHeader title={business.steps.title} />
-          <ol className="grid gap-4 md:grid-cols-3">
+          <RevealList as="ol" className="grid gap-4 md:grid-cols-3">
             {business.steps.items.map((step, i) => (
-              <li key={step.title} className={`${CARD} flex flex-col`}>
+              <RevealItem key={step.title} className={`${CARD} flex flex-col`}>
                 <span className="font-mono text-sm font-semibold text-[#1D4ED8]" aria-hidden>
                   0{i + 1}
                 </span>
@@ -122,9 +126,9 @@ export default function BusinessPage() {
                     </MoreLink>
                   </div>
                 )}
-              </li>
+              </RevealItem>
             ))}
-          </ol>
+          </RevealList>
 
           {/* 上架方式（左）＋ 品牌後台實機畫面（右）；手機版畫面排在清單下方 */}
           <div className="mt-20 md:mt-28 grid items-center gap-12 lg:grid-cols-[1fr_auto] lg:gap-16">
@@ -150,16 +154,11 @@ export default function BusinessPage() {
               </ul>
             </div>
 
-            <div className="flex justify-center gap-3 md:gap-4">
-              {PHONES.map((name) => (
-                <AppScreen
-                  key={name}
-                  name={name}
-                  sizes="(min-width: 1024px) 168px, (min-width: 768px) 200px, 28vw"
-                  className="w-[28vw] max-w-[200px] lg:w-[168px]"
-                />
-              ))}
-            </div>
+            <PhoneFan
+              names={PHONES}
+              sizes="(min-width: 1024px) 168px, (min-width: 768px) 200px, 28vw"
+              phoneClassName="w-[28vw] max-w-[200px] lg:w-[168px]"
+            />
           </div>
         </div>
       </section>
@@ -167,21 +166,21 @@ export default function BusinessPage() {
       <section className="py-24 md:py-32 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <SectionHeader title={business.features.title} />
-          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+          <RevealList className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
             {business.features.items.map((entry, i) => {
               const Icon = FEATURE_ICONS[i];
               return (
-                <li key={entry.title} className={`${CARD} ${FEATURE_SPAN[i]}`}>
+                <RevealItem key={entry.title} className={`${CARD} ${FEATURE_SPAN[i]}`}>
                   <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#2563EB]/15 bg-gradient-to-br from-[#2563EB]/10 to-[#06B6D4]/10">
                     <Icon className="h-6 w-6 text-[#2563EB]" strokeWidth={1.5} aria-hidden />
                   </span>
                   <h3 className="mt-6 text-lg md:text-xl font-semibold text-[#101828]">{entry.title}</h3>
                   {/* 說明較長，不用 text-balance（會把行寬縮窄、斷在詞中間） */}
                   <p className="mt-2 text-sm md:text-base leading-relaxed text-[#475467]">{keepRanges(entry.desc)}</p>
-                </li>
+                </RevealItem>
               );
             })}
-          </ul>
+          </RevealList>
         </div>
       </section>
 
@@ -200,8 +199,9 @@ export default function BusinessPage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden py-24 md:py-40 bg-[#FAFAFA]">
-        <AmbientGlow />
+      <section className="relative overflow-hidden py-28 md:py-44 bg-[#FAFAFA]">
+        <SilkField tint={0.75} resolution={0.5} fadeTop />
+        <div className={VEIL} aria-hidden />
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <SectionHeader title={business.cta.title} />
           <ContactButtons />

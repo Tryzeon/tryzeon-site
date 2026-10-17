@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import { AmbientGlow } from '@/components/AmbientGlow';
 import { ChannelSync } from '@/components/ChannelSync';
 import { ExperienceShowcase } from '@/components/ExperienceShowcase';
 import { FAQ } from '@/components/FAQ';
@@ -15,6 +14,7 @@ import { Navigation } from '@/components/Navigation';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { Section } from '@/components/Section';
 import { SectionHeader } from '@/components/SectionHeader';
+import { SilkField } from '@/components/SilkField';
 import { trackCTA } from '@/lib/analytics';
 import { copy } from '@/lib/copy';
 import { faqItems } from '@/lib/faq-data';
@@ -34,10 +34,10 @@ export default function HomePageClient() {
       <LineFlow copy={copy.home.line} />
       <ExperienceShowcase copy={copy.home.experience} />
 
-      {/* AI 引擎：首頁只留一句，完整的說明與飛輪在 /about */}
-      <Section id="engine" className="py-20 md:py-28 bg-[#FAFAFA]">
+      {/* AI 引擎：首頁只留一句，完整的說明與飛輪在 /about。一道光帶隨捲動穿過這句話 */}
+      <Section id="engine" className="py-24 md:py-36 bg-[#FAFAFA]">
         <div className="max-w-5xl mx-auto px-6 text-center">
-          <SectionHeader title={engine.title} spacing="mb-8 md:mb-10" />
+          <SectionHeader title={engine.title} spacing="mb-8 md:mb-10" sheen />
           <ScrollReveal delay={0.1}>
             <MoreLink href="/about#engine">{engine.link}</MoreLink>
           </ScrollReveal>
@@ -56,9 +56,13 @@ export default function HomePageClient() {
         </div>
       </Section>
 
-      {/* 結尾 CTA — 首頁第二個、也是最後一個 atmosphere 出現點 */}
-      <Section id="contact" className="py-24 md:py-36 bg-[#FAFAFA] overflow-hidden">
-        <AmbientGlow />
+      {/* 結尾 CTA — 首頁第二個、也是最後一個 atmosphere 出現點：與首屏同一塊緞面，首尾呼應 */}
+      <Section id="contact" className="py-28 md:py-44 bg-[#FAFAFA] overflow-hidden">
+        <SilkField tint={0.85} resolution={0.5} fadeTop />
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(250,250,250,0.92)_10%,rgba(250,250,250,0)_60%)]"
+          aria-hidden
+        />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           <SectionHeader title={cta.title} />

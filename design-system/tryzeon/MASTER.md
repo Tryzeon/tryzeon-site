@@ -16,25 +16,40 @@ experiment. The language is:
 
 1. **Surface** = Liquid Glass — frosted translucent panels, soft backdrop blur,
    iridescent blue→cyan edges. Never flat opaque colored blocks.
-2. **Atmosphere** = Aurora/flowing mesh in blue→cyan (the GradientWave hero and the
-   closing-CTA aurora blooms are the same DNA — fluid, iridescent). It appears only in
-   those two places; see 0.1 rule 2.
+2. **Atmosphere** = white satin with a blue→cyan sheen (`SilkField`) — fashion's material
+   lit like technology. Where it appears is listed in 0.1 rule 5.
 3. **Type** = Playfair Display (editorial display moments) + Geist (tech/UI/body).
 4. **Motion** = slow, luxurious, fluid (400–600ms), ease-out enter. Never snappy.
 5. **Color discipline** = blue→cyan only. No rainbow, no purple/pink.
 
 If a new element can't be expressed in this language, it does not belong.
 
-### 0.1 Restraint rules (2026-10, Apple / Tesla / Meta reading)
+### 0.1 Depth & motion rules (2026-10-17, replaces the 2026-10 restraint rules)
 
-1. **One idea per viewport.** One headline, at most one supporting line, one visual focus.
-2. **Type leads, decoration recedes.** Atmosphere (GradientWave, aurora bloom)
-   appears in exactly two places on the homepage: Hero (GradientWave) and the closing CTA
-   (aurora blooms). No `dot-grid` on the homepage. Every other section is plain `#FAFAFA`.
-3. **Fewer, larger surfaces.** No card-in-card nesting; one glass container per idea.
-4. **Motion is a whisper.** One enter per section; hover only on interactive elements;
-   never a looping animation on content (icons included).
-5. **Every section ends with a next step** — an Apple-style `了解更多 ›` link or anchor.
+The owner asked for a site that amazes — more animation, interaction and 3D. Spectacle is
+allowed, but it keeps a hierarchy (plan reviewed with Codex):
+
+1. **Two signature scenes on the homepage.** Hero: white satin (`SilkField`) with one broad fold
+   running from the product photo to the phone; a blue→cyan light travels along it once while
+   the 3D phone settles. Channels: four silk ribbons fan out from one point to the four tiles,
+   one pulse runs down all four and the four 「上線」 lights come on together.
+2. **Every other section gets its own authored moment**, never one shared fade-up: the LINE
+   timeline draws itself with a light head, the experience phone swings toward each new screen,
+   the engine line has a light band passing through it, the CTA closes on the same satin.
+3. **One dominant moving subject per viewport; movement resolves into readable content.**
+   Text is never dimmed to make an effect work; screenshots are never covered, scanned,
+   blurred, zoomed or cropped by an effect (depth goes on the device, not the screen).
+4. **Pointer interaction enhances a complete composition.** Tilt (±3–8°) only on product
+   imagery and diagrams (phones, the flywheel) — never on informational cards, which don't
+   pretend to be interactive.
+5. **Atmosphere** = `SilkField` only: homepage hero + closing CTA (bookend), subpage heroes and
+   the `/business` closing CTA, always paler on subpages (`tint` 0.75). No `dot-grid`.
+6. Every section still ends with a next step (`了解更多 ›` link or anchor).
+
+Cut on review and not to be reintroduced: particle logo, typed chat bubbles (there are no real
+LINE screenshots), a scan line over screenshots, universal card tilt / spotlights, a four-phone
+cover-flow, a second top progress bar, a footer wordmark, the SVG-displacement "liquid glass"
+nav (WebKit drops the whole backdrop filter when the SVG reference fails).
 
 ---
 
@@ -107,19 +122,24 @@ Editorial Tech hybrid. Deliberate, documented deviation.)
 | Micro-interaction | 150–300ms (hover, color) |
 
 Rules:
-- Enter = ease-out; exit = ease-in. Never `linear` for UI.
+- Enter = ease-out; exit = ease-in. Never `linear` for UI (scroll-scrubbed tweens use `ease: 'none'`
+  because the scroll position is the easing).
 - Reveal on scroll = `whileInView` + `viewport={{ once: true, amount: 0.15 }}`
   (only `SectionHeader` keeps 0.3)
   + staggerChildren. (❌ NOT framer `useScroll({target,offset})` scrub — conflicts
   with Lenis on this site; see `feedback_lenis_useScroll_conflict` memory.)
-- Continuous animation only for ambient/atmosphere (shaders, aurora), never on
-  content icons. One requested exception: the engine flywheel's comet (slow 8s lap,
-  only while on screen, static under reduced motion).
+- Continuous animation only for ambient/atmosphere (`SilkField`), never on
+  content icons. Two requested exceptions, both only while on screen and static under reduced
+  motion: the engine flywheel's comet (slow 8s lap) and the channel ribbons' sync pulse
+  (every 6.5s).
+- Scroll-scrubbed GSAP is allowed for two desktop moments only: the hero stage leaning back as
+  it scrolls away, and the engine line's light band. Everything else plays once on enter.
 - ALWAYS honor `prefers-reduced-motion` with a static fallback.
 
-**Stack:** Framer Motion (component interaction) · GSAP+ScrollTrigger (existing
-cinema) · Lenis (smooth scroll) · raw WebGL (GradientWave shader atmosphere). 21st.dev for
-component patterns. UI/UX Pro Max for direction.
+**Stack:** Framer Motion (component interaction, layoutId tab indicator) ·
+GSAP+ScrollTrigger (ribbon choreography, hero exit, engine sheen) · Lenis (smooth scroll) ·
+raw WebGL (`SilkField` satin, `lib/webgl.ts`) · CSS 3D (`Phone3D`, `PhoneFan`, flywheel depth).
+No three.js — new dependencies need the owner's approval.
 
 ---
 
@@ -131,9 +151,14 @@ bg-white/70  backdrop-blur-xl  border border-white/60
 shadow-[0_8px_32px_rgba(16,24,40,0.10)]  rounded-3xl
 ```
 - Iridescent edge option: 1px gradient border `#2563EB→#06B6D4` at low opacity.
-- Aurora bloom backdrop: soft radial `rgba(37,99,235,0.06)` + `rgba(6,182,212,0.05)`,
-  blurred, slow drift (`animate-mesh-float`).
-- Shader atmosphere (GradientWave, Hero only): blue→cyan iridescent, slow flow.
+- Satin atmosphere (`SilkField`): near-white fabric — two directional folds with soft
+  creases, broad wrap diffuse, an anisotropic sheen along the folds, and a blue→sky→cyan ramp
+  only at grazing angles. The pointer pushes a broad damped bulge (no ripples); scroll speed
+  makes the cloth flow. A radial `#FAFAFA` veil sits over the text column. The CSS radial blooms
+  under it are the fallback while it fades in or when WebGL is unavailable.
+- 3D phone (`Phone3D` / `PhoneBody`): four opaque slices behind the `PhoneFrame` give ~8px of
+  side thickness; a 1.5px conic rim catches blue→cyan light from the pointer direction (it
+  never paints over the screenshot); the stage tilts with the pointer.
 
 ---
 
@@ -141,24 +166,23 @@ shadow-[0_8px_32px_rgba(16,24,40,0.10)]  rounded-3xl
 
 | # | id | Section | Treatment |
 |---|----|---------|-----------|
-| 01 | — | Hero | Two columns: kinetic 宋體 H1 / sub / 2 CTAs on the left, `PhoneFrame` with `tryonSimple` plus two input cards on the right, GradientWave behind |
-| 02 | `manifesto` | Manifesto | 「別人做工具，我們做生態系。」 editorial spread; beside it「看我們怎麼做」is a chapter index of the next four sections (spec section name + that section's title, smooth-scroll link) |
-| 03 | `brands` | List once, four channels | Four channel tiles only (listing methods + backend screens live on `/business`); no atmosphere |
-| 04 | `line` | LINE flow | Text-only timeline (no phone), closing link back to `/business` |
-| 05 | `experience` | For Shoppers | Desktop: selector + `PhoneFrame` crossfade; mobile: stacked; includes `TryOnVideo` |
-| 06 | `engine` | One AI Engine | One centered `SectionHeader` line + `MoreLink` to `/about#engine`; the flywheel itself lives on `/about` (see below) |
-| 07 | `vision` | Vision | Centered serif quote (no pillars) |
-| 08 | `faq` | FAQ | Light glass accordion |
-| 09 | `contact` | CTA | Aurora bloom + single `/business` primary (no email button) |
-| 10 | — | Footer | Dark (the ONLY dark section allowed) |
+| 01 | — | Hero | Two columns: 宋體 H1 / sub / 2 CTAs (CSS `.hero-enter`) on the left; on the right a 3D stage — `tryonSimple` in a `PhoneBody` that settles from a 30° turn (CSS, transform-only), the two input cards floating in front at different depths, pointer tilt ±3°, and the stage leaning back on scroll-out (desktop). `SilkField` behind with the product→phone fold and its one-time light |
+| 02 | `brands` | List once, four channels | Desktop: four twisting silk ribbons (SVG, two-tone at each twist) from one point under the lede to the four tiles; unfold, one pulse along all four (normalized path length so they arrive together), the four 上線 dots light together; repeats every 6.5s while visible; hovering a tile brightens its ribbon. Mobile: tiles only, dots light together |
+| 03 | `line` | LINE flow | Text-only timeline (no phone): desktop line draws left→right with a light head, each node lights + ripples as the head passes and its text rises; mobile each step lights as it enters. Quote gets a highlighter underline. Closing link back to `/business` |
+| 04 | `experience` | For Shoppers | Desktop: tab list with a sliding glass indicator (layoutId) + one 3D phone that swings toward each new screen, halo colour follows the tab; screens crossfade whole. Mobile: stacked, each phone stands up from a tilt as it enters. Includes `TryOnVideo` |
+| 05 | `engine` | One AI Engine | One centered `SectionHeader` line with `sheen` (light band through the glyphs) + `MoreLink` to `/about#engine` |
+| 06 | `faq` | FAQ | Light glass accordion, grid-rows height animation, rotating plus |
+| 07 | `contact` | CTA | `SilkField` bookend (top and bottom fade) + veil + single `/business` primary with the hover light sweep |
+| 08 | — | Footer | Dark (the ONLY dark section allowed) |
 
 Subpages (`/business`, `/download`, `/about`) reuse the same parts: a hero (宋體 H1
-via `clauseWrap` + lede + CTAs, no kicker; centered on `/business` and `/about`, two-column text + phone on `/download`) over two soft aurora blooms, then `SectionHeader`
-sections of glass cards on the same `#FAFAFA` canvas. No dark sections, no stats rows,
+via `clauseWrap` + lede + CTAs, no kicker; centered on `/business` and `/about`, two-column text + 3D phone on `/download`) over a pale `SilkField` and a veil, then `SectionHeader`
+sections of glass cards (they rise from a slight backward tilt, `cardRise`) on the same `#FAFAFA` canvas. The `/business` back-office screens are a `PhoneFan` (three thick phones angled ±12° toward the middle, still facing forward). No dark sections, no stats rows,
 no repeated feature lists — link to the homepage instead. No page carries awards, programs or a
 team section. `/about` hosts the engine flywheel (`EngineFlywheel`, centered header + inline SVG ring + HTML nodes: ring draws in,
 nodes pop in 01→04, then a comet laps the ring every 8s lighting each node it reaches; runs only while
-visible, static under reduced motion).
+visible, static under reduced motion). Ring, center word and nodes sit at three depths (0 / 24 / 48px)
+and the wheel tilts ±8° with the pointer.
 
 ### Real App screens
 
@@ -179,7 +203,9 @@ visible, static under reduced motion).
 - ❌ Screaming text walls / giant marquee as hero element (`feedback_no_screaming_text`)
 - ❌ Empty abstract 3D geometry with no meaning, OR AI-stock photos as the hero of a 3D
   scene (asset quality caps it). Prefer pure-shader generative beauty.
-- ❌ framer `useScroll` scroll-scrub (Lenis conflict) — use whileInView stagger
+- ❌ framer `useScroll` scroll-scrub (Lenis conflict) — use whileInView stagger, or GSAP
+  ScrollTrigger for the two scrubbed moments in §3
+- ❌ `opacity` / `filter` / `mask` / `overflow` on anything inside a 3D chain (flattens it)
 - ❌ Educational-marketing sections (pain points / stats / market analysis), and on the homepage: milestones, first-party metrics, roadmap, team, brand counts
 - ❌ Emoji icons; missing cursor-pointer; layout-shifting hovers; <4.5:1 contrast;
   instant state changes; invisible focus states

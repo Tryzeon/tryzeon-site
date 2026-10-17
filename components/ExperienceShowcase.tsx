@@ -1,20 +1,25 @@
 'use client';
 
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { AnimatePresence, motion, useAnimate } from 'framer-motion';
 import { AppScreen } from '@/components/AppScreen';
 import { MoreLink } from '@/components/MoreLink';
-import { PhoneFrame } from '@/components/PhoneFrame';
+import { PhoneBody } from '@/components/Phone3D';
 import { SectionHeader } from '@/components/SectionHeader';
 import { TryOnVideo } from '@/components/TryOnVideo';
 import type { AppImageName } from '@/lib/app-images';
 import type { HomeCopy } from '@/lib/copy';
 import { EASE, fadeUpItem, inView } from '@/lib/motion';
+import { usePointerTilt } from '@/lib/use-pointer-tilt';
 
 const FOCUS_RING = 'focus-ring focus-visible:ring-offset-[#FAFAFA]';
 
-// 滑過清單時停留這麼久才切換：游標斜著劃過其他項目去點右邊時，畫面不會一路閃過
-const HOVER_INTENT_MS = 120;
+// 滑過清單時停留這麼久才切換：游標斜著劃過其他項目去點右邊時，畫面不會一路閃過；
+// 切換時整支手機會轉一下，所以比單純換圖要更確定一點才切
+const HOVER_INTENT_MS = 220;
+
+// 手機背後的光暈，跟著選中的功能換色（只在藍青之間）
+const HALOS = ['rgba(37,99,235,0.20)', 'rgba(6,182,212,0.20)', 'rgba(96,165,250,0.24)', 'rgba(29,78,216,0.18)'] as const;
 
 // 功能 → 畫面，順序對應 copy.home.experience.items
 const SCREENS = [
@@ -39,7 +44,7 @@ interface ExperienceShowcaseProps {
  */
 export function ExperienceShowcase({ copy }: ExperienceShowcaseProps) {
   return (
-    <section id="experience" className="relative bg-[#FAFAFA] py-24 md:py-36">
+    <section id="experience" className="relative overflow-x-clip bg-[#FAFAFA] py-24 md:py-36">
       <div className="mx-auto max-w-7xl px-6 md:px-12">
         <SectionHeader title={copy.title} lede={copy.lede} />
 
@@ -55,15 +60,13 @@ export function ExperienceShowcase({ copy }: ExperienceShowcaseProps) {
                   <ItemText item={item} as="h3" />
                 </div>
                 <div className="mt-8 flex justify-center">
-                  {screen.kind === 'video' ? (
-                    <TryOnVideo replayLabel={copy.replay} className="w-[62vw] max-w-[260px]" />
-                  ) : (
-                    <AppScreen
-                      name={screen.name}
-                      sizes="(min-width: 640px) 260px, 62vw"
-                      className="w-[62vw] max-w-[260px]"
-                    />
-                  )}
+                  <PhoneReveal className="w-[62vw] max-w-[260px]">
+                    {screen.kind === 'video' ? (
+                      <TryOnVideo replayLabel={copy.replay} framed={false} />
+                    ) : (
+                      <AppScreen name={screen.name} sizes="(min-width: 640px) 260px, 62vw" framed={false} />
+                    )}
+                  </PhoneReveal>
                 </div>
               </motion.div>
             );
@@ -89,6 +92,19 @@ interface DesktopShowcaseProps {
  */
 function DesktopShowcase({ copy }: DesktopShowcaseProps) {
   const [active, setActive] = useState(0);
+  const stageRef = useRef<HTMLDivElement>(null);
+  usePointerTilt(stageRef, { max: 5, relativeTo: 'element' });
+
+  // 換功能時手機朝新的方向轉一下再回正（往下選往左轉、往上選往右轉）
+  const [swingScope, animateSwing] = useAnimate<HTMLDivElement>();
+  const previous = useRef(0);
+  useEffect(() => {
+    if (previous.current === active) return;
+    const dir = active > previous.current ? 1 : -1;
+    previous.current = active;
+    if (!swingScope.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    void animateSwing(swingScope.current, { rotateY: [dir * 16, 0], rotateX: [-3, 0] }, { duration: 1.1, ease: EASE });
+  }, [active, animateSwing, swingScope]);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const baseId = useId();
   const tabId = (i: number) => `${baseId}-tab-${i}`;
@@ -165,37 +181,56 @@ function DesktopShowcase({ copy }: DesktopShowcaseProps) {
               onKeyDown={onTabKeyDown}
               className={`group relative block w-full cursor-pointer rounded-r-2xl py-5 pl-8 pr-4 text-left transition-colors duration-300 hover:bg-white/60 ${FOCUS_RING}`}
             >
-              {/* 選中項左側 2px 藍青漸層條，壓在清單的細線上 */}
-              <span
-                className={`absolute -left-px bottom-3 top-3 w-[2px] rounded-full bg-gradient-to-b from-[#2563EB] to-[#06B6D4] transition-opacity duration-500 ${
-                  isActive ? 'opacity-100' : 'opacity-0'
-                }`}
-                aria-hidden
-              />
-              <ItemText item={item} as="span" active={isActive} titleId={titleId(i)} descId={descId(i)} />
+              {/* 選中項：一片玻璃底與左側 2px 藍青漸層條，切換時滑到新的項目 */}
+              {isActive && (
+                <motion.span
+                  layoutId={`${baseId}-active`}
+                  className="pointer-events-none absolute inset-0 rounded-r-2xl bg-white/80 shadow-[0_8px_28px_rgba(16,24,40,0.07)]"
+                  transition={{ type: 'spring', stiffness: 260, damping: 32 }}
+                  aria-hidden
+                >
+                  <span className="absolute -left-px bottom-3 top-3 w-[2px] rounded-full bg-gradient-to-b from-[#2563EB] to-[#06B6D4]" />
+                </motion.span>
+              )}
+              <span className="relative block">
+                <ItemText item={item} as="span" active={isActive} titleId={titleId(i)} descId={descId(i)} />
+              </span>
             </button>
           );
         })}
       </div>
 
-      <div role="tabpanel" id={panelId} aria-labelledby={tabId(active)} className="flex w-[300px] flex-col items-center">
-        <PhoneFrame className="w-full">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={current ?? 'video'}
-              className="absolute inset-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { duration: 0.5, ease: EASE } }}
-              exit={{ opacity: 0, transition: { duration: 0.25, ease: 'easeIn' } }}
-            >
-              {current === null ? (
-                <TryOnVideo replayLabel={copy.replay} framed={false} />
-              ) : (
-                <AppScreen name={current} sizes="300px" framed={false} />
-              )}
+      <div role="tabpanel" id={panelId} aria-labelledby={tabId(active)} className="relative isolate flex w-[300px] flex-col items-center">
+        {/* 背後的光暈：跟著選中的功能換色 */}
+        <motion.span
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+          animate={{ backgroundColor: HALOS[active] }}
+          transition={{ duration: 0.9, ease: EASE }}
+          aria-hidden
+        />
+        <div ref={stageRef} className="phone3d w-full" style={{ ['--yaw' as string]: '-7deg' }}>
+          <div className="phone3d-pose">
+            <motion.div ref={swingScope} style={{ transformStyle: 'preserve-3d' }}>
+              <PhoneBody className="w-full">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={current ?? 'video'}
+                    className="absolute inset-0"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1, transition: { duration: 0.5, ease: EASE } }}
+                    exit={{ opacity: 0, transition: { duration: 0.25, ease: 'easeIn' } }}
+                  >
+                    {current === null ? (
+                      <TryOnVideo replayLabel={copy.replay} framed={false} />
+                    ) : (
+                      <AppScreen name={current} sizes="300px" framed={false} />
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </PhoneBody>
             </motion.div>
-          </AnimatePresence>
-        </PhoneFrame>
+          </div>
+        </div>
       </div>
     </motion.div>
   );
@@ -241,5 +276,27 @@ function ItemText({ item, as: Title, active = true, titleId, descId }: ItemTextP
         {item.desc}
       </Body>
     </>
+  );
+}
+
+interface PhoneRevealProps {
+  children: ReactNode;
+  className?: string;
+}
+
+/** 手機與平板：有厚度的手機捲進視窗時從後仰的角度立起來（只動 transform） */
+function PhoneReveal({ children, className = '' }: PhoneRevealProps) {
+  return (
+    <div className={`phone3d ${className}`}>
+      <motion.div
+        style={{ transformStyle: 'preserve-3d' }}
+        initial={{ rotateX: 22, rotateY: -10, y: 24 }}
+        whileInView={{ rotateX: 0, rotateY: -4, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 1.2, ease: EASE }}
+      >
+        <PhoneBody className="w-full">{children}</PhoneBody>
+      </motion.div>
+    </div>
   );
 }

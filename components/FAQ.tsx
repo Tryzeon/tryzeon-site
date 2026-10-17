@@ -42,31 +42,38 @@ export function FAQ({ items }: FAQProps) {
                 {item.question}
               </span>
               <div
-                className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+                className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-[transform,background-color,color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   isOpen
-                    ? 'bg-[#2563EB] text-white rotate-45'
-                    : 'bg-[#F2F4F7] text-[#475467] group-hover:bg-[#101828]/10'
+                    ? 'bg-gradient-to-br from-[#2563EB] to-[#0891B2] text-white rotate-[135deg] shadow-[0_6px_16px_rgba(37,99,235,0.3)]'
+                    : 'bg-[#F2F4F7] text-[#475467] group-hover:bg-[#101828]/10 group-hover:rotate-90'
                 }`}
               >
                 <Plus className="w-4 h-4" strokeWidth={2.5} />
               </div>
             </button>
 
+            {/* grid-rows 0fr→1fr：依內容實際高度展開，不受 max-height 上限影響 */}
             <div
-              className={`overflow-hidden transition-all duration-300 ease-out ${
-                isOpen ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'
+              className={`grid transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
               }`}
             >
-              <div className="px-6 md:px-8 pb-6 text-[#475467] leading-relaxed text-sm md:text-base">
-                {item.answer}
-                {item.link && (
-                  <div className="mt-3">
-                    {/* 收合時面板只是 max-h-0，連結仍在 DOM：移出 Tab 順序，免得鍵盤焦點落在看不見的地方 */}
-                    <MoreLink href={item.link.href} small tabIndex={isOpen ? undefined : -1}>
-                      {item.link.label}
-                    </MoreLink>
-                  </div>
-                )}
+              <div className="min-h-0 overflow-hidden">
+                <div
+                  className={`px-6 md:px-8 pb-6 text-[#475467] leading-relaxed text-sm md:text-base transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                    isOpen ? 'translate-y-0' : '-translate-y-2'
+                  }`}
+                >
+                  {item.answer}
+                  {item.link && (
+                    <div className="mt-3">
+                      {/* 收合時面板只是 0fr 高，連結仍在 DOM：移出 Tab 順序，免得鍵盤焦點落在看不見的地方 */}
+                      <MoreLink href={item.link.href} small tabIndex={isOpen ? undefined : -1}>
+                        {item.link.label}
+                      </MoreLink>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

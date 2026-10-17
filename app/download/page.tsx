@@ -1,13 +1,16 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { ArrowUpRight, Camera, Lock, Shirt, ShieldCheck, Sparkles, Trash2, type LucideIcon } from 'lucide-react';
-import { AmbientGlow } from '@/components/AmbientGlow';
 import { AppScreen } from '@/components/AppScreen';
 import { Footer } from '@/components/Footer';
 import { MoreLink } from '@/components/MoreLink';
 import { Navigation } from '@/components/Navigation';
+import { Phone3D } from '@/components/Phone3D';
+import { RevealItem, RevealList } from '@/components/Reveal';
 import { SectionHeader } from '@/components/SectionHeader';
+import { SilkField } from '@/components/SilkField';
 import { StoreBadges } from '@/components/StoreBadges';
+import { TiltStage } from '@/components/TiltStage';
 import { clauseWrap, keepRanges, sentenceWrap } from '@/components/clauseWrap';
 import { GET_QR_SRC, LINE_OA_QR_SRC } from '@/lib/app-images';
 import { copy } from '@/lib/copy';
@@ -38,7 +41,11 @@ export default function DownloadPage() {
       <Navigation />
 
       <section className="relative overflow-hidden pt-36 md:pt-44 pb-20 md:pb-28 text-center lg:text-left">
-        <AmbientGlow variant="hero" />
+        <SilkField tint={0.75} resolution={0.5} />
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,rgba(250,250,250,0.9)_12%,rgba(250,250,250,0)_62%)] lg:bg-[radial-gradient(ellipse_at_32%_50%,rgba(250,250,250,0.9)_12%,rgba(250,250,250,0)_58%)]"
+          aria-hidden
+        />
         <div className="relative z-10 max-w-6xl mx-auto px-6 grid lg:grid-cols-[1.2fr_0.8fr] gap-14 items-center">
           <div>
             <h1
@@ -76,25 +83,22 @@ export default function DownloadPage() {
               ))}
             </div>
           </div>
-          <div className="flex flex-col items-center">
-            <AppScreen
-              name="tryonOutfit"
-              sizes="(min-width: 484px) 300px, 62vw"
-              priority
-              className="w-[62vw] max-w-[300px] mx-auto"
-            />
-          </div>
+          <TiltStage className="flex flex-col items-center" max={5} relativeTo="window">
+            <Phone3D yaw={-8} settle className="w-[62vw] max-w-[300px] mx-auto">
+              <AppScreen name="tryonOutfit" sizes="(min-width: 484px) 300px, 62vw" priority framed={false} />
+            </Phone3D>
+          </TiltStage>
         </div>
       </section>
 
       <section className="py-24 md:py-32 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <SectionHeader title={download.steps.title} />
-          <ol className="grid gap-4 md:grid-cols-3">
+          <RevealList as="ol" className="grid gap-4 md:grid-cols-3">
             {download.steps.items.map((step, i) => {
               const Icon = STEP_ICONS[i];
               return (
-                <li key={step.title} className={CARD}>
+                <RevealItem key={step.title} className={CARD}>
                   <div className="flex items-center justify-between">
                     <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#2563EB]/15 bg-gradient-to-br from-[#2563EB]/10 to-[#06B6D4]/10">
                       <Icon className="h-6 w-6 text-[#2563EB]" strokeWidth={1.5} aria-hidden />
@@ -105,28 +109,28 @@ export default function DownloadPage() {
                   </div>
                   <h3 className="mt-6 text-lg md:text-xl font-semibold text-[#101828]">{step.title}</h3>
                   <p className="mt-2 text-balance text-sm md:text-base leading-relaxed text-[#475467]">{keepRanges(step.desc)}</p>
-                </li>
+                </RevealItem>
               );
             })}
-          </ol>
+          </RevealList>
         </div>
       </section>
 
       <section className="py-24 md:py-32 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <SectionHeader title={download.privacy.title} />
-          <ul className="grid gap-4 md:grid-cols-3">
+          <RevealList className="grid gap-4 md:grid-cols-3">
             {download.privacy.items.map((point, i) => {
               const Icon = PRIVACY_ICONS[i];
               return (
-                <li key={point.title} className={CARD}>
+                <RevealItem key={point.title} className={CARD}>
                   <Icon className="h-6 w-6 text-[#2563EB]" strokeWidth={1.5} aria-hidden />
                   <h3 className="mt-5 text-lg font-semibold text-[#101828]">{point.title}</h3>
                   <p className="mt-2 text-balance text-sm md:text-base leading-relaxed text-[#475467]">{point.desc}</p>
-                </li>
+                </RevealItem>
               );
             })}
-          </ul>
+          </RevealList>
           <ul className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3">
             {download.privacy.links.map((link) => (
               <li key={link.href}>

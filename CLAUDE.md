@@ -109,21 +109,40 @@ Constraints that have already cost debugging time:
    pulls the scroll back to its old target. Don't swap this for
    `scrollTo(scrollY, { immediate })` — Lenis clamps to the old page's height and returns
    early when the target equals its current one.
+10. **3D chains (`Phone3D`, the hero stage, `PhoneFan`, the `/about` flywheel) break if any
+    element between the `perspective` owner and the faces gets `opacity < 1`, `filter`,
+    `mask` or `overflow` other than visible** — the browser flattens `preserve-3d` there. Put
+    fades on leaf elements (the hero plates use `.plate-enter` on the inner card) and keep the
+    LCP phone's settle transform-only (`.phone3d-settle`, CSS, first paint). Each transform has
+    one owner: pointer tilt writes `--tilt-x`/`--tilt-y` (`lib/use-pointer-tilt.ts`), Framer or
+    GSAP get their own wrapper, CSS hover another (`.fan-hover`).
+11. **WebGL lives in `components/SilkField.tsx` only**, on the small helpers in `lib/webgl.ts`.
+    Every instance owns its context and resources, renders only while on screen and the tab is
+    visible (`runVisibleLoop`), draws one still frame under reduced motion, deletes its GL
+    objects on unmount and leaves the CSS background showing when WebGL is unavailable.
+    GSAP timelines are created in `gsap.context()` / `gsap.matchMedia()` and reverted on
+    unmount; `MotionConfig` and the global reduced-motion CSS don't stop rAF, GSAP or shader
+    loops, so each of them checks `prefers-reduced-motion` itself.
 
 ### Styling layers
 
 Three sources, in order of preference: Tailwind utilities → the `neo` design tokens in
 `tailwind.config.ts` → the `@layer components` / `@layer utilities` classes in
 `app/globals.css` (`glass-panel` — the default static glass surface, `glass-card` — the
-hover-lift variant, `btn-primary`, `focus-ring`, `noise-overlay`, `cjk-punct`, `text-balance`,
-…). `animate-mesh-float` comes from `tailwind.config.ts`; `components/AmbientGlow.tsx` is the
-two-orb background and `components/MoreLink.tsx` the blue chevron link. Reach for an existing
-`globals.css` class before writing new CSS; no inline `style` blocks or CSS modules.
+hover-lift variant, `btn-primary` (with its hover light sweep), `focus-ring`, `noise-overlay`,
+`cjk-punct`, `text-balance`, the `phone3d` / `phone3d-pose` / `phone3d-settle` / `phone-rim` 3D
+phone stage, `clause-mask` and `sheen-text` for `SectionHeader`, `iridescent-hover`,
+`quote-underline`, the `cursor-*` states…). `animate-mesh-float` comes from `tailwind.config.ts`
+(used by `Notice`); `components/SilkField.tsx` is the white-satin WebGL atmosphere and
+`components/MoreLink.tsx` the blue chevron link. Reach for an existing `globals.css` class
+before writing new CSS; no inline `style` blocks or CSS modules.
 
 `components/SectionHeader.tsx` is the single section-title pattern (宋體 display
 heading + lede, with locked sizes and enter animation; no kicker). Every homepage section title
 goes through it; string titles are split after CJK punctuation so narrow screens only wrap
-at 「，」-type breaks.
+at 「，」-type breaks, and each clause rises from its own `.clause-mask`. The `sheen` prop (used
+only by the homepage engine line) sweeps a blue→cyan band through the glyphs — scroll-scrubbed
+on desktop, once on mobile — while the text stays ink everywhere else.
 
 ### App download / deep-link subsystem
 
@@ -247,8 +266,10 @@ block**; if a feature needs a new origin, raise it rather than widening the poli
 `FeaturesCinema`, `PainCinema`, `StatsCinema`, `ProcessScroll`, `ScrollLinkedAnimations`,
 `VisionManifesto`, `WireframeMagic` were unreferenced leftovers from earlier designs and
 have been deleted, as were `FabricFlow` and `BentoFeatures`, which were replaced by real App
-screenshots (`ExperienceShowcase`), and `ScrollManifesto` (the「別人做工具，我們做生態系」
-section, cut in the 2026-10 content audit as a slogan with no information for brands).
+screenshots (`ExperienceShowcase`), `ScrollManifesto` (the「別人做工具，我們做生態系」
+section, cut in the 2026-10 content audit as a slogan with no information for brands), and
+`GradientWave` / `AmbientGlow`, replaced by `SilkField` in the 2026-10-17 motion redesign
+(`GradientWave`'s WebGL helper shared static context references between instances).
 Don't resurrect them from git history — MASTER.md bans pain-point / stats /
 market-analysis sections, and `StatsCinema` in particular hardcoded the banned
 84% / 71% figures, so re-importing it would ship a redline violation.
@@ -267,8 +288,10 @@ touching visuals.** Identity: Editorial Tech × Liquid Glass, light only. Hard r
 - Default surface is frosted glass (`bg-white/70 backdrop-blur-xl border border-white/60`),
   never flat opaque colored blocks.
 - Motion is slow and fluid: 400–600ms, `cubic-bezier(0.16, 1, 0.3, 1)` ease-out,
-  0.06–0.15s stagger; continuous animation only for ambient shader/aurora layers (exception: the
-  engine flywheel's comet, at the owner's request).
+  0.06–0.15s stagger; continuous animation only for ambient layers (`SilkField`) and two requested
+  exceptions that run only while on screen: the engine flywheel's comet and the homepage
+  channel ribbons' periodic sync pulse. Since 2026-10-17 the owner wants more spectacle: each
+  section has its own authored moment (MASTER.md §0.1), not one shared fade-up.
 - CJK typography: display headings are `font-black` + `.cjk-punct` (halt punctuation trim);
   serif quotes declare `font-semibold` explicitly (Noto Serif TC has no 400); no italic on
   Chinese.
@@ -290,7 +313,7 @@ touching visuals.** Identity: Editorial Tech × Liquid Glass, light only. Hard r
 - Code splitting is decided by SEO impact, not by fold position: SEO-relevant content
   (product copy, features, FAQ) must be statically imported so it ships in the SSR HTML;
   only heavy pure-visual/interactive pieces may get `dynamic(..., { ssr: false })` (nothing
-  uses it today; `GradientWave` in `HeroCinema` is imported statically). When unsure,
+  uses it today; `SilkField` in `HeroCinema` is imported statically). When unsure,
   import statically.
 - Images via `next/image` with explicit `width`/`height`/`alt`. Nothing over 500KB in
   `public/`.

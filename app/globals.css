@@ -147,9 +147,167 @@
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2;
   }
 
-  /* 深色主按鈕；尺寸以外的外觀。gap／寬度由使用處補 */
+  /* 深色主按鈕；尺寸以外的外觀。gap／寬度由使用處補。
+     hover 時一道藍青光從左掃到右（::after 在背景之上、文字之下）；移開時瞬間歸位，看不到倒帶 */
   .btn-primary {
-    @apply focus-ring inline-flex items-center justify-center rounded-full bg-[#101828] px-9 py-4 font-semibold text-white transition-colors duration-300 hover:bg-[#1D2939];
+    @apply focus-ring relative isolate inline-flex items-center justify-center overflow-hidden rounded-full bg-[#101828] px-9 py-4 font-semibold text-white transition-[background-color,box-shadow] duration-300 hover:bg-[#1D2939] hover:shadow-[0_12px_32px_rgba(37,99,235,0.25)];
+  }
+
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 28%, rgba(96, 165, 250, 0.42) 45%, rgba(6, 182, 212, 0.48) 53%, transparent 70%);
+    transform: translateX(-115%);
+    pointer-events: none;
+  }
+
+  .btn-primary:hover::after {
+    transform: translateX(115%);
+    transition: transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* CustomCursor：狀態寫在 data 屬性上（visible／pointer／down），尺寸變化由 CSS 過場 */
+  .cursor-dot,
+  .cursor-ring {
+    opacity: 0;
+    transition: opacity 300ms ease-out;
+  }
+
+  .cursor-dot[data-visible='1'],
+  .cursor-ring[data-visible='1'] {
+    opacity: 1;
+  }
+
+  .cursor-ring {
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
+    transition: opacity 300ms ease-out, width 300ms ease-out, height 300ms ease-out, margin 300ms ease-out;
+  }
+
+  .cursor-ring[data-pointer='1'] {
+    width: 64px;
+    height: 64px;
+    margin: -32px 0 0 -32px;
+  }
+
+  .cursor-ring[data-down='1'] {
+    width: 24px;
+    height: 24px;
+    margin: -12px 0 0 -12px;
+  }
+
+  /* SectionHeader：每個子句一個遮罩，字從遮罩下緣升起。padding／負 margin 留給宋體的字身與標點 */
+  .clause-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding: 0.08em 0.04em 0.18em;
+    margin: -0.08em -0.04em -0.18em;
+  }
+
+  /* 光帶穿過標題：背景寬度＝整個標題（--sheen-w），位置扣掉子句自己的偏移（--sheen-x），
+     --sheen 是光帶中心。光帶用 blue-700／cyan-600，大字對白底仍 ≥3:1；其餘都是墨色 */
+  .sheen-text {
+    background-image: linear-gradient(
+      90deg,
+      #101828 0%,
+      #101828 calc(var(--sheen, -40%) - 10%),
+      #1d4ed8 calc(var(--sheen, -40%) - 3%),
+      #0891b2 calc(var(--sheen, -40%) + 3%),
+      #101828 calc(var(--sheen, -40%) + 10%),
+      #101828 100%
+    );
+    background-size: var(--sheen-w, 100%) 100%;
+    background-position: calc(var(--sheen-x, 0px) * -1) 0;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* 引言下的螢光筆底線：藍青漸層、壓在字的下緣 */
+  .quote-underline {
+    background-image: linear-gradient(90deg, rgba(37, 99, 235, 0.22), rgba(6, 182, 212, 0.26));
+    background-repeat: no-repeat;
+    background-position: 0 90%;
+    background-size: 100% 0.34em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* 玻璃卡 hover 時亮起的虹彩外框（1px，mask 挖空內部）；父層要 relative */
+  .iridescent-hover {
+    position: relative;
+  }
+
+  .iridescent-hover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: conic-gradient(from 200deg, rgba(37, 99, 235, 0.55), rgba(96, 165, 250, 0.15), rgba(6, 182, 212, 0.6), rgba(96, 165, 250, 0.15), rgba(37, 99, 235, 0.55));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 500ms var(--ease-out-expo);
+    pointer-events: none;
+  }
+
+  .iridescent-hover:hover::before,
+  .iridescent-hover:focus-within::before {
+    opacity: 1;
+  }
+
+  /* ---- 3D 手機（Phone3D）：perspective 在最外層，往內每層都要 preserve-3d ---- */
+  .phone3d {
+    perspective: 1600px;
+  }
+
+  .phone3d-pose,
+  .phone3d-still,
+  .phone3d-settle {
+    transform-style: preserve-3d;
+  }
+
+  /* --tilt-x／--tilt-y 由 usePointerTilt 寫在祖先上；--yaw 是靜止偏擺 */
+  .phone3d-pose {
+    transform: rotateX(var(--tilt-x, 0deg)) rotateY(calc(var(--yaw, 0deg) + var(--tilt-y, 0deg)));
+  }
+
+  .fan-hover {
+    transform-style: preserve-3d;
+    transition: transform 700ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (min-width: 1024px) {
+    .fan-hover:hover {
+      transform: translateZ(48px);
+    }
+  }
+
+  .phone3d-settle {
+    animation: phoneSettle 1.9s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+  }
+
+  /* 機身外緣的虹彩光：只畫 1.5px 外框（mask 挖空內部），角度跟著游標的打光位置 */
+  .phone-rim {
+    padding: 1.5px;
+    background: conic-gradient(
+      from calc(190deg + var(--light-x, 0.5) * 140deg),
+      rgba(37, 99, 235, 0) 0deg,
+      rgba(37, 99, 235, 0.5) 46deg,
+      rgba(6, 182, 212, 0.75) 92deg,
+      rgba(96, 165, 250, 0) 150deg,
+      rgba(96, 165, 250, 0) 360deg
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
   }
 
   /* Neo-Tech Mesh Gradient Background */
@@ -256,6 +414,35 @@ html[data-nav-entered='1'] .nav-enter {
 
 .hero-enter {
   animation: heroEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* 首屏手機從斜後方轉進來、落定成正面可讀的角度。只動 transform、不動 opacity：
+   手機截圖是 LCP，第一次繪製就要看得到；opacity 也會把 preserve-3d 壓平 */
+@keyframes phoneSettle {
+  from {
+    transform: translate3d(56px, 28px, -180px) rotateY(-30deg) rotateX(10deg);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+/* 首屏兩張輸入小卡：從深處浮到各自的景深位置（葉節點，可以用 opacity） */
+@keyframes plateEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(-24px, 18px, -140px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.plate-enter {
+  animation: plateEnter 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 

@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import { AmbientGlow } from '@/components/AmbientGlow';
 import { EngineFlywheel } from '@/components/EngineFlywheel';
 import { Footer } from '@/components/Footer';
 import { Navigation } from '@/components/Navigation';
+import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionHeader } from '@/components/SectionHeader';
+import { SilkField } from '@/components/SilkField';
 import { clauseWrap, keepRanges } from '@/components/clauseWrap';
 import { copy } from '@/lib/copy';
 import { pageMetadata } from '@/lib/page-metadata';
@@ -30,7 +31,11 @@ export default function AboutPage() {
       <Navigation />
 
       <section className="relative overflow-hidden pt-36 md:pt-44 pb-20 md:pb-28 text-center">
-        <AmbientGlow variant="hero" />
+        <SilkField tint={0.75} resolution={0.5} />
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(250,250,250,0.9)_12%,rgba(250,250,250,0)_62%)]"
+          aria-hidden
+        />
         <div className="relative z-10 max-w-4xl mx-auto px-6">
           <h1
             className="max-w-3xl mx-auto cjk-punct text-balance font-serif font-black tracking-[-0.02em] leading-[1.1] text-[#101828] mb-6"
@@ -54,7 +59,9 @@ export default function AboutPage() {
       <section className="bg-[#FAFAFA] py-24 md:py-32">
         <div className="max-w-3xl mx-auto px-6">
           <SectionHeader align="left" title={about.origin.title} />
-          <p className="mb-0 text-base md:text-lg leading-[1.9] text-[#475467]">{keepRanges(about.origin.body)}</p>
+          <ScrollReveal delay={0.15}>
+            <p className="mb-0 text-base md:text-lg leading-[1.9] text-[#475467]">{keepRanges(about.origin.body)}</p>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -66,12 +73,14 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto px-6 text-center">
           <SectionHeader title={about.vision.title} spacing="mb-8 md:mb-10" />
           {/* font-semibold 明確化：Noto Serif TC 沒有 400 */}
-          <p
-            className="mb-0 mx-auto max-w-3xl text-balance font-serif font-semibold leading-[1.7] text-[#475467]"
-            style={{ fontSize: 'clamp(1.125rem, 1.6vw, 1.45rem)' }}
-          >
-            「{about.vision.quote}」
-          </p>
+          <ScrollReveal delay={0.2}>
+            <p
+              className="mb-0 mx-auto max-w-3xl text-balance font-serif font-semibold leading-[1.7] text-[#475467]"
+              style={{ fontSize: 'clamp(1.125rem, 1.6vw, 1.45rem)' }}
+            >
+              「{about.vision.quote}」
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 

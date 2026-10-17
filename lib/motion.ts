@@ -22,3 +22,9 @@ export const fadeUpItem: Variants = {
   hidden: { opacity: 0, y: 16 },
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
 };
+
+// 卡片：從微微後仰的角度立起來（帶 perspective 的 rotateX），比單純上移多一層景深
+export const cardRise: Variants = {
+  hidden: { opacity: 0, y: 28, rotateX: 12, transformPerspective: 900 },
+  show: { opacity: 1, y: 0, rotateX: 0, transformPerspective: 900, transition: { duration: 0.95, ease: EASE } },
+};
