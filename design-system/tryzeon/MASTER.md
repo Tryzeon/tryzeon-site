@@ -143,8 +143,8 @@ shadow-[0_8px_32px_rgba(16,24,40,0.10)]  rounded-3xl
 |---|----|---------|-----------|
 | 01 | — | Hero | Two columns: kinetic 宋體 H1 / sub / 2 CTAs on the left, `PhoneFrame` with `tryonSimple` plus two input cards on the right, GradientWave behind |
 | 02 | `manifesto` | Manifesto | 「別人做工具，我們做生態系。」 editorial spread; beside it「看我們怎麼做」is a chapter index of the next four sections (spec section name + that section's title, smooth-scroll link) |
-| 03 | `brands` | List once, four channels | Four channel tiles only (listing methods + backend screens live on `/business`); no atmosphere |
-| 04 | `line` | LINE flow | Text-only timeline (no phone), closing link back to `/business` |
+| 03 | `brands` | List once, four channels | Four channel tiles, each with its real screen: App home, LINE chat, brand-site embed (screenshots) and a real photo of the in-store QR stand (listing methods + backend screens live on `/business`); no atmosphere |
+| 04 | `line` | LINE flow | Five-step timeline, each step paired with its real LINE screenshot in `PhoneFrame`; closing link back to `/business` |
 | 05 | `experience` | For Shoppers | Desktop: selector + `PhoneFrame` crossfade; mobile: stacked; includes `TryOnVideo` |
 | 06 | `engine` | One AI Engine | One centered `SectionHeader` line + `MoreLink` to `/about#engine`; the flywheel itself lives on `/about` (see below) |
 | 07 | `vision` | Vision | Centered serif quote (no pillars) |
@@ -153,8 +153,8 @@ shadow-[0_8px_32px_rgba(16,24,40,0.10)]  rounded-3xl
 | 10 | — | Footer | Dark (the ONLY dark section allowed) |
 
 Subpages (`/business`, `/download`, `/about`) reuse the same parts: a hero (宋體 H1
-via `clauseWrap` + lede + CTAs, no kicker; centered on `/business` and `/about`, two-column text + phone on `/download`) over two soft aurora blooms, then `SectionHeader`
-sections of glass cards on the same `#FAFAFA` canvas. No dark sections, no stats rows,
+via `clauseWrap` + lede + CTAs, no kicker; centered on `/about`; on `/business` paired with a real screenshot of the brand-site embed; two-column text + phone on `/download`) over two soft aurora blooms, then `SectionHeader`
+sections of glass cards on the same `#FAFAFA` canvas. On `/business` the benefit cards may carry their real screen (same garment on two body types, Agent wardrobe outfit, try-on-rate ranking from the demo store, try-on video). No dark sections, no stats rows,
 no repeated feature lists — link to the homepage instead. No page carries awards, programs or a
 team section. `/about` hosts the engine flywheel (`EngineFlywheel`, centered header + inline SVG ring + HTML nodes: ring draws in,
 nodes pop in 01→04, then a comet laps the ring every 8s lighting each node it reaches; runs only while
