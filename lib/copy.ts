@@ -23,9 +23,9 @@ export const copy = {
     voiceSizeShirt: 'Tryzeon 品牌後台：尺寸資訊頁，右上角的麥克風可語音建檔；白襯衫的四個尺寸已填好',
     dashboardRanking: 'Tryzeon 品牌後台：依試穿次數排列的熱門商品（示範店數據）',
     line1Ask: 'Tryzeon LINE 官方帳號：在聊天室輸入「幫我配一套週末穿搭」',
-    line2Recommend: 'Tryzeon LINE 官方帳號：AI 推薦的整套穿搭卡片，全是示範店的商品',
+    line2Recommend: 'Tryzeon LINE 官方帳號：AI 推薦的整套穿搭卡片，卡片上可以直接試穿整套',
     line3FittingRoom: 'LINE 裡的試衣間：瀏覽示範店的商品',
-    line4Result: 'LINE 聊天室裡的試穿結果：針織開衫、白襯衫與亞麻寬褲（AI 生成的示意人像）',
+    line4Result: 'LINE 聊天室裡的整套試穿結果：針織開衫、白襯衫與亞麻寬褲，下方列出每件單品（AI 生成的示意人像）',
     line5Product: 'LINE 裡的商品頁：開始試穿或前往購買',
     storePage: 'Tryzeon App 裡的示範店頁面：上架的商品同步出現在 App',
     lineChatEntry: 'Tryzeon LINE 官方帳號的聊天室與選單',
@@ -72,13 +72,18 @@ export const copy = {
     line: {
       title: '在聊天室裡，從一句話走到試穿。',
       lede: '消費者加入品牌的 LINE 官方帳號，不必另外下載 App，就能在聊天室完成對話、推薦、選品、試穿與導購。',
+      // 聊天室裡的主流程；順序對應 LineFlow 的 STEP_SCREENS
       steps: [
         { title: '說出需求', quote: '「幫我配一套週末穿搭」', desc: '用聊天的方式描述想要的風格。' },
-        { title: '推薦真實商品', quote: '', desc: 'AI Fashion Agent 推薦的每一件，都是真實上架、可直接購買的商品。' },
-        { title: '挑選單品', quote: '', desc: '在 LINE 裡開啟試衣間，瀏覽品牌商品。' },
-        { title: '看見上身', quote: '', desc: '以一張全身照，約 15–20 秒生成試穿結果。' },
-        { title: '前往購買', quote: '', desc: '喜歡就直接前往購買。' },
+        { title: '推薦整套穿搭', quote: '', desc: 'AI Fashion Agent 搭好整套，每一件都是真實上架、可直接購買的商品。' },
+        { title: '一鍵試穿整套', quote: '', desc: '點「試穿整套」，以一張全身照，約 15–20 秒就在聊天室看見上身。' },
+        { title: '前往購買', quote: '', desc: '從試穿結果點進單品，喜歡就直接前往購買。' },
       ],
+      // 和聊天平行的另一條路：LINE 裡的試衣間（LIFF）
+      browse: {
+        title: '不想聊天，也能自己逛',
+        desc: '在 LINE 裡開啟試衣間，瀏覽品牌商品、挑單件試穿，或問 AI 顧問怎麼搭。',
+      },
       link: '了解品牌合作',
       tryIt: {
         title: '親自試試',

@@ -144,7 +144,7 @@ shadow-[0_8px_32px_rgba(16,24,40,0.10)]  rounded-3xl
 | 01 | — | Hero | Two columns: kinetic 宋體 H1 / sub / 2 CTAs on the left, `PhoneFrame` with `tryonHero` plus two input cards on the right, GradientWave behind |
 | 02 | `manifesto` | Manifesto | 「別人做工具，我們做生態系。」 editorial spread; beside it「看我們怎麼做」is a chapter index of the next four sections (spec section name + that section's title, smooth-scroll link) |
 | 03 | `brands` | List once, four channels | Four channel tiles, each with its screen: the demo store in the App and the LINE chat (real screenshots), the brand-site embed and the in-store QR stand (labelled mockups) (listing methods + backend screens live on `/business`); no atmosphere |
-| 04 | `line` | LINE flow | Five-step timeline, each step paired with its real LINE screenshot in `PhoneFrame`; closing link back to `/business` |
+| 04 | `line` | LINE flow | Four chat steps (ask → outfit card → one-tap outfit try-on → buy), each with its real LINE screenshot in `PhoneFrame`; below a hairline, the parallel LIFF fitting-room path (one phone + text); closing link back to `/business` |
 | 05 | `experience` | For Shoppers | Desktop: selector + `PhoneFrame` crossfade; mobile: stacked; includes `TryOnVideo` |
 | 06 | `engine` | One AI Engine | One centered `SectionHeader` line + `MoreLink` to `/about#engine`; the flywheel itself lives on `/about` (see below) |
 | 07 | `vision` | Vision | Centered serif quote (no pillars) |
