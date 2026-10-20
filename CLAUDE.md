@@ -63,8 +63,9 @@ Playfair must keep weight `900` loaded or mixed-script `font-black` headings ren
 Latin a weight lighter than the adjacent 宋體.
 
 The layout also mounts the global chrome: `SmoothScrollProvider`, `NavigationProgress`,
-`WebVitals` (development only), `CustomCursor`, `SkipToContent`, the `noise-overlay` div, and the
-Organization/WebSite JSON-LD graph.
+`WebVitals` (development only), `CustomCursor`, `SkipToContent`, and the
+Organization/WebSite JSON-LD graph. There is no grain/noise overlay: a fixed full-viewport noise layer was removed because it
+blended over every photo and screenshot (effectively recoloring them) and didn't move on scroll.
 
 ### Scroll + motion stack (the fragile part)
 
@@ -115,7 +116,7 @@ Constraints that have already cost debugging time:
 Three sources, in order of preference: Tailwind utilities → the `neo` design tokens in
 `tailwind.config.ts` → the `@layer components` / `@layer utilities` classes in
 `app/globals.css` (`glass-panel` — the default static glass surface, `glass-card` — the
-hover-lift variant, `btn-primary`, `focus-ring`, `noise-overlay`, `cjk-punct`, `text-balance`,
+hover-lift variant, `btn-primary`, `focus-ring`, `cjk-punct`, `text-balance`,
 …). `animate-mesh-float` comes from `tailwind.config.ts`; `components/AmbientGlow.tsx` is the
 two-orb background and `components/MoreLink.tsx` the blue chevron link. Reach for an existing
 `globals.css` class before writing new CSS; no inline `style` blocks or CSS modules.

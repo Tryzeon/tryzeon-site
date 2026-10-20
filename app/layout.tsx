@@ -174,7 +174,6 @@ export default function RootLayout({
           <NavigationProgress />
           {process.env.NODE_ENV === 'development' && <WebVitals />}
           <CustomCursor />
-          <div className="noise-overlay" />
           <main id="main-content">
             {children}
           </main>
