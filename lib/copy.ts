@@ -16,7 +16,6 @@ export const copy = {
     tryonCurvy: 'Tryzeon App 試穿結果：曲線身形穿上同一件鈷藍洋裝（AI 生成的示意人像）',
     fitGreen: 'Tryzeon App 商品頁：依身形判斷建議尺寸 M，身高、肩寬、胸圍、腰圍、臀圍皆符合',
     fitCurvy: 'Tryzeon App 商品頁：曲線身形的建議尺寸為 XL，身高、肩寬、胸圍、腰圍、臀圍皆符合',
-    wardrobeGrid: 'Tryzeon App 雲端衣櫃：九件已數位化的衣物',
     agentCommute: 'Tryzeon App 穿搭顧問：依「見客戶的俐落穿搭」推薦整套示範店商品',
     agentWardrobe: 'Tryzeon App 穿搭顧問：以衣櫃裡的牛仔外套，搭配示範店的條紋針織與寬褲',
     aiTagBefore: 'Tryzeon 品牌後台：上傳商品照片，AI 分析中',

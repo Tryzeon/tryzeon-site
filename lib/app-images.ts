@@ -7,7 +7,6 @@ export const APP_IMAGES = {
   tryonCurvy: { src: '/images/app/tryon-curvy.webp', width: 900, height: 1957 },
   fitGreen: { src: '/images/app/fit-green.webp', width: 900, height: 1957 },
   fitCurvy: { src: '/images/app/fit-curvy.webp', width: 900, height: 1957 },
-  wardrobeGrid: { src: '/images/app/wardrobe-grid.webp', width: 900, height: 1957 },
   agentCommute: { src: '/images/app/agent-commute.webp', width: 900, height: 1957 },
   agentWardrobe: { src: '/images/app/agent-wardrobe.webp', width: 900, height: 1957 },
   aiTagBefore: { src: '/images/app/ai-tag-before.webp', width: 900, height: 1957 },
