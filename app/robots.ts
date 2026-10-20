@@ -17,7 +17,7 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: 'Googlebot-Image',
-        allow: ['/opengraph-image', '/twitter-image'],
+        allow: ['/opengraph-image'],
       },
       {
         userAgent: 'Bingbot',

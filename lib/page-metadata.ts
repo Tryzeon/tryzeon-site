@@ -19,8 +19,9 @@ interface PageMetadataInput {
 }
 
 /**
- * 子頁的 metadata。Next 的 openGraph／twitter 是整塊覆寫而不是合併 —— 子頁只要寫了
+ * 子頁的 metadata。Next 的 openGraph 是整塊覆寫而不是合併 —— 子頁只要寫了
  * openGraph，就會丟掉 layout 的分享圖與 locale，所以一律從這裡補齊。
+ * twitter:* 不另外寫：Next 會從 openGraph 自動補上標題、描述與圖片，有圖時 card 預設為 summary_large_image。
  */
 export function pageMetadata({ path, title, absoluteTitle, description, shareTitle, shareDescription }: PageMetadataInput): Metadata {
   const ogTitle = shareTitle ?? `${title} — Tryzeon`;
@@ -37,12 +38,6 @@ export function pageMetadata({ path, title, absoluteTitle, description, shareTit
       title: ogTitle,
       description: ogDescription,
       images: [{ url: '/opengraph-image', ...OG_SIZE, alt: OG_ALT }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: ogTitle,
-      description: ogDescription,
-      images: ['/twitter-image'],
     },
   };
 }

@@ -94,15 +94,6 @@ export const metadata: Metadata = {
     ],
 
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Tryzeon - 為時尚產業而生的 AI",
-    description: "連結消費者與時尚品牌的時尚 AI 生態系——上架一次，四個通路同步。",
-    images: {
-      url: '/twitter-image',
-      alt: OG_ALT,
-    },
-  },
   other: {
     'apple-mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-status-bar-style': 'default',

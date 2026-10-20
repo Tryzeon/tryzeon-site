@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { OG_SIZE } from '@/lib/page-metadata';
 
-// opengraph-image 與 twitter-image 共用的分享卡。淺色 Liquid Glass：#FAFAFA 底、
+// opengraph-image 的分享卡（twitter:image 由 Next 從 openGraph 自動帶入）。淺色 Liquid Glass：#FAFAFA 底、
 // blue→cyan 光暈與細線；沒有載入宋體，標題交給預設字型。
 
 export function renderOgCard() {
