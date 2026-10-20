@@ -1,15 +1,21 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Globe, MessageCircle, QrCode, Smartphone, type LucideIcon } from 'lucide-react';
+import { AppScreen } from '@/components/AppScreen';
 import { MoreLink } from '@/components/MoreLink';
 import { SectionHeader } from '@/components/SectionHeader';
 import { clauseWrap } from '@/components/clauseWrap';
-import type { HomeCopy } from '@/lib/copy';
+import { APP_IMAGES, type AppImageName } from '@/lib/app-images';
+import { copy as siteCopy, type HomeCopy } from '@/lib/copy';
 import { fadeUpItem as item, inView, staggerList as list } from '@/lib/motion';
 
 // 順序對應 copy.home.brands.channels
 const CHANNEL_ICONS: readonly LucideIcon[] = [Smartphone, MessageCircle, Globe, QrCode];
+// 每個通路的畫面，順序同上：前三個是螢幕畫面（放手機框），門市是店內照片（白邊相框，不假裝是螢幕）
+const CHANNEL_VISUALS = ['storePage', 'lineChatEntry', 'embedMobile', 'storeQr'] as const satisfies readonly AppImageName[];
+const VISUAL_W = 'w-[150px]';
 
 interface ChannelSyncProps {
   copy: HomeCopy['brands'];
@@ -34,6 +40,22 @@ export function ChannelSync({ copy }: ChannelSyncProps) {
                 variants={item}
                 className="flex flex-col rounded-3xl border border-white/60 bg-white/80 backdrop-blur-xl p-6 md:p-7 shadow-[0_8px_32px_rgba(16,24,40,0.10)]"
               >
+                <div className="mb-6 flex justify-center rounded-2xl bg-gradient-to-b from-[#EEF2FF] to-[#ECFEFF]/50 py-6">
+                  {CHANNEL_VISUALS[i] === 'storeQr' ? (
+                    <div className={`${VISUAL_W} rounded-[1.6rem] bg-white p-[7px] shadow-[0_32px_80px_rgba(16,24,40,0.16),0_8px_24px_rgba(16,24,40,0.08)]`}>
+                      <Image
+                        src={APP_IMAGES.storeQr.src}
+                        alt={siteCopy.images.storeQr}
+                        width={APP_IMAGES.storeQr.width}
+                        height={APP_IMAGES.storeQr.height}
+                        sizes="150px"
+                        className="aspect-[900/1957] w-full rounded-[1.2rem] object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <AppScreen name={CHANNEL_VISUALS[i]} sizes="150px" className={VISUAL_W} />
+                  )}
+                </div>
                 <div className="flex items-center justify-between">
                   <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#101828] text-white">
                     <Icon className="h-5 w-5" strokeWidth={1.5} aria-hidden />

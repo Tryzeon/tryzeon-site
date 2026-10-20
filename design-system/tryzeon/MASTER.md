@@ -143,7 +143,7 @@ shadow-[0_8px_32px_rgba(16,24,40,0.10)]  rounded-3xl
 |---|----|---------|-----------|
 | 01 | — | Hero | Two columns: kinetic 宋體 H1 / sub / 2 CTAs on the left, `PhoneFrame` with `tryonHero` plus two input cards on the right, GradientWave behind |
 | 02 | `manifesto` | Manifesto | 「別人做工具，我們做生態系。」 editorial spread; beside it「看我們怎麼做」is a chapter index of the next four sections (spec section name + that section's title, smooth-scroll link) |
-| 03 | `brands` | List once, four channels | Four channel tiles, each with its real screen: App home, LINE chat, brand-site embed (screenshots) and a real photo of the in-store QR stand (listing methods + backend screens live on `/business`); no atmosphere |
+| 03 | `brands` | List once, four channels | Four channel tiles, each with its screen: the demo store in the App and the LINE chat (real screenshots), the brand-site embed and the in-store QR stand (labelled mockups) (listing methods + backend screens live on `/business`); no atmosphere |
 | 04 | `line` | LINE flow | Five-step timeline, each step paired with its real LINE screenshot in `PhoneFrame`; closing link back to `/business` |
 | 05 | `experience` | For Shoppers | Desktop: selector + `PhoneFrame` crossfade; mobile: stacked; includes `TryOnVideo` |
 | 06 | `engine` | One AI Engine | One centered `SectionHeader` line + `MoreLink` to `/about#engine`; the flywheel itself lives on `/about` (see below) |
@@ -165,6 +165,10 @@ visible, static under reduced motion).
 - Real screenshots (`lib/app-images.ts`, 900×1957) sit in `PhoneFrame`: pure-CSS frame,
   content locked to `aspect-[900/1957]`, no notch (the screenshot already has a status bar).
 - Never retouch, crop or recolor a screenshot, and never draw a mock UI in its place.
+- Exception, approved by the owner: the brand-site embed and the in-store QR stand have no capturable
+  real screen yet, so they use mockups — a demo storefront page rendered in a browser (its try-on result
+  is a real App output) and an AI-generated store scene with the real print artwork and QR composited in.
+  Their alt text says 示意. Replace them with real captures once a partner site / store exists.
 - No caption under images with AI-generated people; their alt text says so.
 - Alt text comes from `copy.images`; every asset stays under 500KB.
 

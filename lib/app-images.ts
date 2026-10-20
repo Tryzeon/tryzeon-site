@@ -16,6 +16,11 @@ export const APP_IMAGES = {
   line3FittingRoom: { src: '/images/app/line-3-fitting-room.webp', width: 900, height: 1951 },
   line4Result: { src: '/images/app/line-4-result.webp', width: 900, height: 1951 },
   line5Product: { src: '/images/app/line-5-product.webp', width: 900, height: 1951 },
+  // 四通路：App 與 LINE 是實機截圖；官網嵌入與門市 QR 是示意圖（示範官網頁面以瀏覽器渲染、門市場景為 AI 生成再貼上真實印刷稿）
+  storePage: { src: '/images/app/store-page.webp', width: 900, height: 1957 },
+  lineChatEntry: { src: '/images/app/line-chat-entry.webp', width: 900, height: 1951 },
+  embedMobile: { src: '/images/app/embed-mobile.webp', width: 900, height: 1957 },
+  storeQr: { src: '/images/app/store-qr.webp', width: 720, height: 1290 },
   modelA: { src: '/images/app/model-a.webp', width: 640, height: 954 },
   productHero: { src: '/images/app/product-cobalt-dress.webp', width: 480, height: 480 },
 } as const;

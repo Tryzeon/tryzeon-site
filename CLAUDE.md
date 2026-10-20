@@ -209,7 +209,9 @@ URL Configuration → Redirect URLs.
 - Real App screenshots: paths and dimensions live in `lib/app-images.ts` (`APP_IMAGES`,
   `TRYON_VIDEOS`, `GET_QR_SRC`), alt text in `copy.images`. Every referenced file must exist and nothing in
   `public/` may be 500KB or larger. Screenshots go
-  in `PhoneFrame` unedited (no drawn mock UIs). No visible 「AI 生成」 caption under images
+  in `PhoneFrame` unedited (no drawn mock UIs). The one exception is the brand-site embed and the in-store
+  QR stand (`embedMobile`, `embedDesktop`, `storeQr`): labelled mockups, approved by the owner, sources in
+  `tryzeon-demo-kit-v2/06-captures/mockups/`. No visible 「AI 生成」 caption under images
   with AI-generated people (removed on request); the alt text still says so.
 - The site has no programs/accelerators, awards, sustainability / SDG copy, MOU count or team
   section anywhere (all removed on request); those stay in the pitch deck.
