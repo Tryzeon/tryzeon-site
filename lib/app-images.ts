@@ -10,6 +10,12 @@ export const APP_IMAGES = {
   aiTagBefore: { src: '/images/app/ai-tag-before.webp', width: 900, height: 1957 },
   aiTagAfterTags: { src: '/images/app/ai-tag-after-tags.webp', width: 900, height: 1957 },
   voiceSizeShirt: { src: '/images/app/voice-size-result-shirt.webp', width: 900, height: 1957 },
+  // LINE 截圖是 iPhone 實機（1179×2556），比例和 App 截圖差不到 0.3%，PhoneFrame 以 object-cover 填滿
+  line1Ask: { src: '/images/app/line-1-ask.webp', width: 900, height: 1951 },
+  line2Recommend: { src: '/images/app/line-2-recommend.webp', width: 900, height: 1951 },
+  line3FittingRoom: { src: '/images/app/line-3-fitting-room.webp', width: 900, height: 1951 },
+  line4Result: { src: '/images/app/line-4-result.webp', width: 900, height: 1951 },
+  line5Product: { src: '/images/app/line-5-product.webp', width: 900, height: 1951 },
   modelA: { src: '/images/app/model-a.webp', width: 640, height: 954 },
   productHero: { src: '/images/app/product-cobalt-dress.webp', width: 480, height: 480 },
 } as const;

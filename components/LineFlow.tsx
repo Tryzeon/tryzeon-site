@@ -3,10 +3,11 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { AppScreen } from '@/components/AppScreen';
 import { MoreLink } from '@/components/MoreLink';
 import { SectionHeader } from '@/components/SectionHeader';
 import { keepRanges } from '@/components/clauseWrap';
-import { LINE_OA_QR_SRC } from '@/lib/app-images';
+import { LINE_OA_QR_SRC, type AppImageName } from '@/lib/app-images';
 import { copy as siteCopy, type HomeCopy } from '@/lib/copy';
 import { fadeUpItem, inView, staggerList } from '@/lib/motion';
 
@@ -14,42 +15,36 @@ interface LineFlowProps {
   copy: HomeCopy['line'];
 }
 
-/** LINE 試穿流程：純文字時間軸（尚無實機截圖，不放圖、不畫模擬聊天介面） */
+// 五步驟各配一張 LINE 實機截圖，順序對應 copy.home.line.steps
+const STEP_SCREENS = ['line1Ask', 'line2Recommend', 'line3FittingRoom', 'line4Result', 'line5Product'] as const satisfies readonly AppImageName[];
+
+/** LINE 試穿流程：五個步驟，每一步配 Tryzeon LINE 官方帳號的實機截圖（不畫模擬聊天介面） */
 export function LineFlow({ copy }: LineFlowProps) {
   return (
     <section id="line" className="relative bg-[#FAFAFA] py-24 md:py-36">
       <div className="mx-auto max-w-7xl px-6 md:px-12">
         <SectionHeader title={copy.title} lede={copy.lede} />
+        {/* 桌機：五支手機並排；手機與平板：橫向滑動（容器內捲動，不讓整頁橫向捲） */}
         <motion.ol
           variants={staggerList}
           {...inView}
-          className="relative mx-auto grid max-w-md gap-12 sm:max-w-xl lg:max-w-none lg:grid-cols-5 lg:gap-8"
+          className="-mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-4 [scrollbar-width:none] md:-mx-12 md:px-12 lg:mx-0 lg:grid lg:grid-cols-5 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0"
         >
-          {/* 時間軸細線——手機：左側直線；桌機：橫向，貫穿五個節點 */}
-          <span
-            className="pointer-events-none absolute bottom-2 left-[5px] top-2 w-px bg-gradient-to-b from-[#2563EB]/40 to-[#06B6D4]/40 lg:hidden"
-            aria-hidden
-          />
-          <span
-            className="pointer-events-none absolute left-0 right-[calc((100%_-_8rem)/5_-_11px)] top-[5px] hidden h-px bg-gradient-to-r from-[#2563EB]/40 to-[#06B6D4]/40 lg:block"
-            aria-hidden
-          />
           {copy.steps.map((item, i) => (
-            <motion.li key={item.title} variants={fadeUpItem} className="relative pl-10 lg:pl-0 lg:pt-10">
-              {/* 節點：落在細線上的小圓點 */}
-              <span
-                className="absolute left-0 top-0 h-[11px] w-[11px] rounded-full border-2 border-white bg-gradient-to-br from-[#2563EB] to-[#06B6D4] shadow-[0_0_0_1px_rgba(37,99,235,0.25)]"
-                aria-hidden
-              />
-              <span
-                className="-mt-1.5 block font-serif text-4xl font-black leading-none lining-nums text-[#2563EB] lg:mt-0 lg:text-5xl"
-                aria-hidden
-              >
-                {i + 1}
-              </span>
-              <h3 className="mt-4 text-lg font-semibold text-[#101828] lg:mt-5">{item.title}</h3>
+            <motion.li
+              key={item.title}
+              variants={fadeUpItem}
+              className="w-[62vw] max-w-[240px] shrink-0 snap-center lg:w-auto lg:max-w-none"
+            >
+              <AppScreen name={STEP_SCREENS[i]} sizes="(min-width: 1280px) 224px, (min-width: 1024px) 18vw, 62vw" />
+              <div className="mt-6 flex items-baseline gap-3">
+                <span className="font-serif text-3xl font-black leading-none lining-nums text-[#2563EB]" aria-hidden>
+                  {i + 1}
+                </span>
+                <h3 className="text-lg font-semibold text-[#101828]">{item.title}</h3>
+              </div>
               {item.quote && (
-                <p className="cjk-punct mb-0 mt-3 font-serif text-xl font-semibold leading-snug text-[#101828] lg:text-base xl:text-xl">
+                <p className="cjk-punct mb-0 mt-3 font-serif text-lg font-semibold leading-snug text-[#101828]">
                   {item.quote}
                 </p>
               )}
