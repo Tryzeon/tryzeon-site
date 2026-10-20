@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { ArrowUpRight, BarChart3, Camera, Clapperboard, FileSpreadsheet, Mail, Mic, Network, ScanLine, Shirt, Sparkles, Store, TrendingUp } from 'lucide-react';
 import { AmbientGlow } from '@/components/AmbientGlow';
 import { AppScreen } from '@/components/AppScreen';
@@ -7,7 +8,9 @@ import { Footer } from '@/components/Footer';
 import { MoreLink } from '@/components/MoreLink';
 import { Navigation } from '@/components/Navigation';
 import { SectionHeader } from '@/components/SectionHeader';
+import { TryOnVideo } from '@/components/TryOnVideo';
 import { clauseWrap, keepRanges, sentenceWrap } from '@/components/clauseWrap';
+import { APP_IMAGES, type AppImageName, type TryOnVideoName } from '@/lib/app-images';
 import { copy } from '@/lib/copy';
 import { brandFaqGroups } from '@/lib/faq-data';
 import { pageMetadata } from '@/lib/page-metadata';
@@ -29,8 +32,15 @@ const LISTING_ICONS = [FileSpreadsheet, Mic, Camera] as const;
 const FIT_ICONS = [Shirt, Store, TrendingUp] as const;
 // 順序對應 copy.business.features.items
 const FEATURE_ICONS = [Sparkles, ScanLine, BarChart3, Clapperboard, Network] as const;
-// 五張效益卡：桌機上排三張、下排兩張等寬；平板兩欄，最後一張跨滿
-const FEATURE_SPAN = ['lg:col-span-2', 'lg:col-span-2', 'lg:col-span-2', 'lg:col-span-3', 'md:col-span-2 lg:col-span-3'] as const;
+// 效益前四項各配實機畫面（順序對應 copy.business.features.items）；第五項「四個通路」只有文字
+const FEATURE_VISUALS = [
+  { kind: 'images', names: ['tryonHero', 'tryonCurvy'] },
+  { kind: 'images', names: ['agentWardrobe'] },
+  { kind: 'images', names: ['dashboardRanking'] },
+  { kind: 'video', video: 'office' },
+] as const satisfies readonly ({ kind: 'images'; names: readonly AppImageName[] } | { kind: 'video'; video: TryOnVideoName })[];
+const FEATURE_PHONE = 'w-[40vw] max-w-[220px] lg:w-[240px] lg:max-w-none';
+const FEATURE_PHONE_SIZES = '(min-width: 1024px) 240px, 40vw';
 
 const SECONDARY =
   'focus-ring inline-flex items-center justify-center gap-2 px-9 py-4 rounded-full border border-[#101828]/15 bg-white/70 backdrop-blur-md text-[#101828] font-semibold hover:bg-white hover:border-[#101828]/30 transition-colors duration-300';
@@ -84,6 +94,25 @@ export default function BusinessPage() {
           </p>
           <ContactButtons />
         </div>
+        {/* 品牌官網嵌入的示意畫面（瀏覽器外框只是相框，畫面是示範官網實際渲染的頁面） */}
+        <figure className="relative z-10 mx-auto mt-16 md:mt-20 max-w-5xl px-6">
+          <div className="overflow-hidden rounded-2xl border border-[#101828]/10 bg-white shadow-[0_32px_80px_rgba(16,24,40,0.16),0_8px_24px_rgba(16,24,40,0.08)]">
+            <div className="flex gap-1.5 border-b border-[#101828]/10 bg-[#F2F4F7] px-4 py-3" aria-hidden>
+              <span className="h-2.5 w-2.5 rounded-full bg-[#101828]/15" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#101828]/15" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#101828]/15" />
+            </div>
+            <Image
+              src={APP_IMAGES.embedDesktop.src}
+              alt={copy.images.embedDesktop}
+              width={APP_IMAGES.embedDesktop.width}
+              height={APP_IMAGES.embedDesktop.height}
+              sizes="(min-width: 1072px) 1024px, calc(100vw - 48px)"
+              priority
+              className="h-auto w-full"
+            />
+          </div>
+        </figure>
       </section>
 
       <section className="py-24 md:py-32 bg-[#FAFAFA]">
@@ -167,17 +196,50 @@ export default function BusinessPage() {
       <section className="py-24 md:py-32 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <SectionHeader title={business.features.title} />
-          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+          {/* 前四項：左文右圖、逐列交錯；手機版文字在上、畫面在下 */}
+          <ul className="space-y-4 md:space-y-6">
             {business.features.items.map((entry, i) => {
               const Icon = FEATURE_ICONS[i];
-              return (
-                <li key={entry.title} className={`${CARD} ${FEATURE_SPAN[i]}`}>
+              const visual = FEATURE_VISUALS[i];
+              const text = (
+                <>
                   <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#2563EB]/15 bg-gradient-to-br from-[#2563EB]/10 to-[#06B6D4]/10">
                     <Icon className="h-6 w-6 text-[#2563EB]" strokeWidth={1.5} aria-hidden />
                   </span>
                   <h3 className="mt-6 text-lg md:text-xl font-semibold text-[#101828]">{entry.title}</h3>
                   {/* 說明較長，不用 text-balance（會把行寬縮窄、斷在詞中間） */}
-                  <p className="mt-2 text-sm md:text-base leading-relaxed text-[#475467]">{keepRanges(entry.desc)}</p>
+                  <p className="mb-0 mt-2 text-sm md:text-base leading-relaxed text-[#475467]">{keepRanges(entry.desc)}</p>
+                </>
+              );
+              if (!visual) {
+                return (
+                  <li key={entry.title} className={CARD}>
+                    {text}
+                  </li>
+                );
+              }
+              return (
+                <li
+                  key={entry.title}
+                  className={`${CARD} grid items-center gap-10 lg:grid-cols-2 lg:gap-16 lg:py-14 lg:px-16`}
+                >
+                  <div className={`max-w-md ${i % 2 === 1 ? 'lg:order-2 lg:justify-self-end' : ''}`}>{text}</div>
+                  <div className="flex justify-center gap-4 md:gap-6">
+                    {visual.kind === 'video' ? (
+                      <TryOnVideo video={visual.video} replayLabel={copy.home.experience.replay} className={FEATURE_PHONE} />
+                    ) : (
+                      visual.names.map((name, j) => (
+                        <figure key={name} className="m-0">
+                          <AppScreen name={name} sizes={FEATURE_PHONE_SIZES} className={FEATURE_PHONE} />
+                          {visual.names.length > 1 && (
+                            <figcaption className="mt-3 text-center text-sm font-semibold text-[#475467]">
+                              {business.features.fitNotes[j]}
+                            </figcaption>
+                          )}
+                        </figure>
+                      ))
+                    )}
+                  </div>
                 </li>
               );
             })}

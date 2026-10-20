@@ -4,12 +4,16 @@ export const APP_IMAGES = {
   tryonHero: { src: '/images/app/tryon-hero.webp', width: 900, height: 1957 },
   tryonOutfit: { src: '/images/app/tryon-outfit.webp', width: 900, height: 1957 },
   tryonTweed: { src: '/images/app/tryon-tweed.webp', width: 900, height: 1957 },
+  tryonCurvy: { src: '/images/app/tryon-curvy.webp', width: 900, height: 1957 },
   fitGreen: { src: '/images/app/fit-green.webp', width: 900, height: 1957 },
+  fitCurvy: { src: '/images/app/fit-curvy.webp', width: 900, height: 1957 },
   wardrobeGrid: { src: '/images/app/wardrobe-grid.webp', width: 900, height: 1957 },
   agentCommute: { src: '/images/app/agent-commute.webp', width: 900, height: 1957 },
+  agentWardrobe: { src: '/images/app/agent-wardrobe.webp', width: 900, height: 1957 },
   aiTagBefore: { src: '/images/app/ai-tag-before.webp', width: 900, height: 1957 },
   aiTagAfterTags: { src: '/images/app/ai-tag-after-tags.webp', width: 900, height: 1957 },
   voiceSizeShirt: { src: '/images/app/voice-size-result-shirt.webp', width: 900, height: 1957 },
+  dashboardRanking: { src: '/images/app/dashboard-ranking.webp', width: 900, height: 1957 },
   // LINE 截圖是 iPhone 實機（1179×2556），比例和 App 截圖差不到 0.3%，PhoneFrame 以 object-cover 填滿
   line1Ask: { src: '/images/app/line-1-ask.webp', width: 900, height: 1951 },
   line2Recommend: { src: '/images/app/line-2-recommend.webp', width: 900, height: 1951 },
@@ -20,6 +24,7 @@ export const APP_IMAGES = {
   storePage: { src: '/images/app/store-page.webp', width: 900, height: 1957 },
   lineChatEntry: { src: '/images/app/line-chat-entry.webp', width: 900, height: 1951 },
   embedMobile: { src: '/images/app/embed-mobile.webp', width: 900, height: 1957 },
+  embedDesktop: { src: '/images/app/embed-desktop.webp', width: 1600, height: 1000 },
   storeQr: { src: '/images/app/store-qr.webp', width: 720, height: 1290 },
   modelA: { src: '/images/app/model-a.webp', width: 640, height: 954 },
   productHero: { src: '/images/app/product-cobalt-dress.webp', width: 480, height: 480 },
@@ -31,6 +36,7 @@ export type AppImageName = keyof typeof APP_IMAGES;
 // aria-label 在 copy.videos 的同名 key。
 export const TRYON_VIDEOS = {
   street: { src: '/images/app/tryon-video.mp4', poster: '/images/app/tryon-video-poster.webp' },
+  office: { src: '/images/app/tryon-video-office.mp4', poster: '/images/app/tryon-video-office-poster.webp' },
 } as const;
 
 export type TryOnVideoName = keyof typeof TRYON_VIDEOS;

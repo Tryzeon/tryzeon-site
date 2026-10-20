@@ -13,12 +13,16 @@ export const copy = {
     tryonHero: 'Tryzeon App 試穿結果：穿上鈷藍緞面綁帶襯衫洋裝（AI 生成的示意人像）',
     tryonOutfit: 'Tryzeon App 整套試穿：海軍藍西裝外套、白襯衫與象牙白寬褲（AI 生成的示意人像）',
     tryonTweed: 'Tryzeon App 整套試穿：藍色粗花呢短外套與象牙白寬褲（AI 生成的示意人像）',
+    tryonCurvy: 'Tryzeon App 試穿結果：曲線身形穿上同一件鈷藍洋裝（AI 生成的示意人像）',
     fitGreen: 'Tryzeon App 商品頁：依身形判斷建議尺寸 M，身高、肩寬、胸圍、腰圍、臀圍皆符合',
+    fitCurvy: 'Tryzeon App 商品頁：曲線身形的建議尺寸為 XL，身高、肩寬、胸圍、腰圍、臀圍皆符合',
     wardrobeGrid: 'Tryzeon App 雲端衣櫃：九件已數位化的衣物',
     agentCommute: 'Tryzeon App 穿搭顧問：依「見客戶的俐落穿搭」推薦整套示範店商品',
+    agentWardrobe: 'Tryzeon App 穿搭顧問：以衣櫃裡的牛仔外套，搭配示範店的條紋針織與寬褲',
     aiTagBefore: 'Tryzeon 品牌後台：上傳商品照片，AI 分析中',
     aiTagAfterTags: 'Tryzeon 品牌後台：AI 自動標註風格、季節、材質與版型',
     voiceSizeShirt: 'Tryzeon 品牌後台：以語音輸入的尺寸表',
+    dashboardRanking: 'Tryzeon 品牌後台：依試穿次數排列的熱門商品（示範店數據）',
     line1Ask: 'Tryzeon LINE 官方帳號：在聊天室輸入「幫我配一套週末穿搭」',
     line2Recommend: 'Tryzeon LINE 官方帳號：AI 推薦的整套穿搭卡片，全是示範店的商品',
     line3FittingRoom: 'LINE 裡的試衣間：瀏覽示範店的商品',
@@ -27,6 +31,7 @@ export const copy = {
     storePage: 'Tryzeon App 裡的示範店頁面：上架的商品同步出現在 App',
     lineChatEntry: 'Tryzeon LINE 官方帳號的聊天室與選單',
     embedMobile: '品牌官網嵌入的示意畫面：在手機版商品頁開啟 Tryzeon 虛擬試穿',
+    embedDesktop: '品牌官網嵌入的示意畫面：在商品頁開啟 Tryzeon 虛擬試穿，看見試穿結果與建議尺寸',
     storeQr: '門市 QR Code 的示意畫面：店內的壓克力立牌，掃碼就能試穿（AI 生成的示意場景）',
     modelA: '試穿用的全身照（AI 生成的示意人像）',
     productHero: '示範商品：鈷藍緞面綁帶襯衫洋裝平拍圖',
@@ -34,6 +39,7 @@ export const copy = {
   // 動態試穿影片的 aria-label；key 對應 lib/app-images.ts 的 TRYON_VIDEOS
   videos: {
     street: 'Tryzeon App 動態試穿影片：穿著鈷藍洋裝在街頭走動、轉身（AI 生成的示意人像）',
+    office: 'Tryzeon App 動態試穿影片：穿著西裝外套與寬褲在辦公室走動（AI 生成的示意人像）',
   },
   nav: {
     product: '產品',
@@ -149,6 +155,8 @@ export const copy = {
         { title: '試穿影片就是素材', desc: '動態試穿影片可以直接當 IG 的行銷素材，新品上架不必每次都安排模特兒與棚拍。' },
         { title: '四個通路一次接上', desc: '品牌官網、LINE 官方帳號與門市 QR Code 由我們協助串接，顧客在哪個通路都能試穿。' },
       ],
+      // 「顧客先看見上身」兩張試穿結果下的圖說，順序對應同一件洋裝的兩種身形
+      fitNotes: ['建議尺寸 M', '建議尺寸 XL'],
     },
     // 適合導入的品牌；順序對應 FIT_ICONS
     fit: {

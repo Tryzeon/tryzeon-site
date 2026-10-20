@@ -153,7 +153,7 @@ shadow-[0_8px_32px_rgba(16,24,40,0.10)]  rounded-3xl
 | 10 | — | Footer | Dark (the ONLY dark section allowed) |
 
 Subpages (`/business`, `/download`, `/about`) reuse the same parts: a hero (宋體 H1
-via `clauseWrap` + lede + CTAs, no kicker; centered on `/about`; on `/business` paired with a real screenshot of the brand-site embed; two-column text + phone on `/download`) over two soft aurora blooms, then `SectionHeader`
+via `clauseWrap` + lede + CTAs, no kicker; centered on `/about`; on `/business` paired with the brand-site embed mockup in a browser frame; two-column text + phone on `/download`) over two soft aurora blooms, then `SectionHeader`
 sections of glass cards on the same `#FAFAFA` canvas. On `/business` the benefit cards may carry their real screen (same garment on two body types, Agent wardrobe outfit, try-on-rate ranking from the demo store, try-on video). No dark sections, no stats rows,
 no repeated feature lists — link to the homepage instead. No page carries awards, programs or a
 team section. `/about` hosts the engine flywheel (`EngineFlywheel`, centered header + inline SVG ring + HTML nodes: ring draws in,
