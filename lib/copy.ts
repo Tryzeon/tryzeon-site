@@ -145,8 +145,8 @@ export const copy = {
       label: '三種上架方式',
       items: [
         { title: 'Excel 批次上傳', desc: '既有的商品表直接匯入。' },
-        { title: '語音建檔', desc: '說出商品資訊，就能完成建檔。' },
         { title: '拍照上傳', desc: 'AI 自動標註季節、風格、版型與適合族群。' },
+        { title: '語音建檔', desc: '說出商品資訊，就能完成建檔。' },
       ],
     },
     // 品牌拿到的效益；網站不寫費用與優惠。順序對應 FEATURE_ICONS

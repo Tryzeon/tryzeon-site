@@ -27,7 +27,7 @@ export const metadata: Metadata = pageMetadata({
 export const revalidate = 3600;
 
 // 順序對應 copy.business.listing.items
-const LISTING_ICONS = [FileSpreadsheet, Mic, Camera] as const;
+const LISTING_ICONS = [FileSpreadsheet, Camera, Mic] as const;
 // 順序對應 copy.business.fit.items
 const FIT_ICONS = [Shirt, Store, TrendingUp] as const;
 // 順序對應 copy.business.features.items
