@@ -21,7 +21,7 @@ const SCREENS = [
   { kind: 'image', name: 'tryonOutfit' },
   { kind: 'video' },
   { kind: 'image', name: 'fitGreen' },
-  { kind: 'image', name: 'agentShirt' },
+  { kind: 'image', name: 'agentCommute' },
 ] as const satisfies readonly ({ kind: 'image'; name: AppImageName } | { kind: 'video' })[];
 
 type ExperienceItem = HomeCopy['experience']['items'][number];

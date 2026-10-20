@@ -141,7 +141,7 @@ shadow-[0_8px_32px_rgba(16,24,40,0.10)]  rounded-3xl
 
 | # | id | Section | Treatment |
 |---|----|---------|-----------|
-| 01 | — | Hero | Two columns: kinetic 宋體 H1 / sub / 2 CTAs on the left, `PhoneFrame` with `tryonSimple` plus two input cards on the right, GradientWave behind |
+| 01 | — | Hero | Two columns: kinetic 宋體 H1 / sub / 2 CTAs on the left, `PhoneFrame` with `tryonHero` plus two input cards on the right, GradientWave behind |
 | 02 | `manifesto` | Manifesto | 「別人做工具，我們做生態系。」 editorial spread; beside it「看我們怎麼做」is a chapter index of the next four sections (spec section name + that section's title, smooth-scroll link) |
 | 03 | `brands` | List once, four channels | Four channel tiles, each with its real screen: App home, LINE chat, brand-site embed (screenshots) and a real photo of the in-store QR stand (listing methods + backend screens live on `/business`); no atmosphere |
 | 04 | `line` | LINE flow | Five-step timeline, each step paired with its real LINE screenshot in `PhoneFrame`; closing link back to `/business` |

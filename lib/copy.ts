@@ -8,19 +8,20 @@ const LINE_OA_URL = 'https://line.me/R/ti/p/@tryzeon';
 const ENGINE_TITLE = '每一次試穿，都讓推薦更準。';
 
 export const copy = {
-  // 實機圖的 alt；key 對應 lib/app-images.ts 的 APP_IMAGES
+  // 實機圖的 alt；key 對應 lib/app-images.ts 的 APP_IMAGES。人像皆為 AI 生成，圖下不加說明，在 alt 註明
   images: {
-    tryonSimple: 'Tryzeon App 試穿結果：模特穿上白色寬鬆棉質襯衫',
-    tryonOutfit: 'Tryzeon App 整套試穿：白襯衫、亞麻寬褲與針織開衫',
+    tryonHero: 'Tryzeon App 試穿結果：穿上鈷藍緞面綁帶襯衫洋裝（AI 生成的示意人像）',
+    tryonOutfit: 'Tryzeon App 整套試穿：海軍藍西裝外套、白襯衫與象牙白寬褲（AI 生成的示意人像）',
     tryonVideoFrame: 'Tryzeon App 動態試穿影片：模特穿著百褶長裙',
-    fitGreen: 'Tryzeon App 商品頁：依身形判斷建議尺寸 M，身高與胸圍皆符合',
+    tryonTweed: 'Tryzeon App 整套試穿：藍色粗花呢短外套與象牙白寬褲（AI 生成的示意人像）',
+    fitGreen: 'Tryzeon App 商品頁：依身形判斷建議尺寸 M，身高、肩寬、胸圍、腰圍、臀圍皆符合',
     wardrobeGrid: 'Tryzeon App 雲端衣櫃：九件已數位化的衣物',
-    agentShirt: 'Tryzeon App 穿搭顧問：依「幫我搭一件白襯衫」推薦品牌上架的商品',
+    agentCommute: 'Tryzeon App 穿搭顧問：依「見客戶的俐落穿搭」推薦整套示範店商品',
     aiTagBefore: 'Tryzeon 品牌後台：上傳商品照片，AI 分析中',
     aiTagAfterTags: 'Tryzeon 品牌後台：AI 自動標註風格、季節、材質與版型',
-    voiceSizeShirt: 'Tryzeon 品牌後台：以語音輸入完成的尺寸表',
+    voiceSizeShirt: 'Tryzeon 品牌後台：以語音輸入的尺寸表',
     modelA: '試穿用的全身照（AI 生成的示意人像）',
-    productWhiteShirt: '示範商品：白色寬鬆棉質襯衫平拍圖',
+    productHero: '示範商品：鈷藍緞面綁帶襯衫洋裝平拍圖',
   },
   nav: {
     product: '產品',

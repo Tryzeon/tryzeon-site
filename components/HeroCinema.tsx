@@ -15,7 +15,7 @@ import { EASE } from '@/lib/motion';
 const AURORA = ['#FAFAFA', '#E0E7FF', '#E0F2FE', '#CFFAFE', '#FAFAFA'];
 
 // 「輸入」小卡：白框、圓角、柔和陰影（模特全身照與商品平拍共用），寬度跟著父層
-function InputCard({ name, sizes }: { name: 'modelA' | 'productWhiteShirt'; sizes: string }) {
+function InputCard({ name, sizes }: { name: 'modelA' | 'productHero'; sizes: string }) {
   const image = APP_IMAGES[name];
   return (
     <div className="w-full overflow-hidden rounded-2xl border-[3px] border-white bg-white shadow-[0_12px_32px_rgba(16,24,40,0.14)]">
@@ -138,14 +138,14 @@ export function HeroCinema({ copy }: HeroCinemaProps) {
                       <span className="absolute -right-0.5 -top-[3px] h-[7px] w-[7px] rounded-full bg-[#06B6D4]" />
                     </span>
                   </span>
-                  <InputCard name="productWhiteShirt" sizes="112px" />
+                  <InputCard name="productHero" sizes="112px" />
                 </div>
               </motion.div>
             </div>
 
             <motion.div variants={phoneEnter} initial="hidden" animate="show">
               <AppScreen
-                name="tryonSimple"
+                name="tryonHero"
                 priority
                 sizes="(min-width: 1280px) 330px, (min-width: 1024px) 300px, min(64vw, 280px)"
                 className="w-[64vw] max-w-[280px] lg:w-[min(300px,calc((100svh_-_15rem)_*_0.46))] lg:max-w-none xl:w-[min(330px,calc((100svh_-_15rem)_*_0.46))]"
@@ -157,7 +157,7 @@ export function HeroCinema({ copy }: HeroCinemaProps) {
               <InputCard name="modelA" sizes="72px" />
             </motion.div>
             <motion.div {...enter} custom={VISUAL_START + 0.25} className="absolute -right-9 top-10 w-[72px] lg:hidden">
-              <InputCard name="productWhiteShirt" sizes="72px" />
+              <InputCard name="productHero" sizes="72px" />
             </motion.div>
           </div>
         </div>

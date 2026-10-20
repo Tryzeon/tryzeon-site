@@ -78,7 +78,7 @@ export default function DownloadPage() {
           </div>
           <div className="flex flex-col items-center">
             <AppScreen
-              name="tryonOutfit"
+              name="tryonTweed"
               sizes="(min-width: 484px) 300px, 62vw"
               priority
               className="w-[62vw] max-w-[300px] mx-auto"
