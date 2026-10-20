@@ -20,7 +20,7 @@ export const copy = {
     agentWardrobe: 'Tryzeon App 穿搭顧問：以衣櫃裡的牛仔外套，搭配示範店的條紋針織與寬褲',
     aiTagBefore: 'Tryzeon 品牌後台：上傳商品照片，AI 分析中',
     aiTagAfterTags: 'Tryzeon 品牌後台：AI 自動標註風格、季節、材質與版型',
-    voiceSizeShirt: 'Tryzeon 品牌後台：以語音輸入的尺寸表',
+    voiceSizeShirt: 'Tryzeon 品牌後台：尺寸資訊頁，右上角的麥克風可語音建檔；白襯衫的四個尺寸已填好',
     dashboardRanking: 'Tryzeon 品牌後台：依試穿次數排列的熱門商品（示範店數據）',
     line1Ask: 'Tryzeon LINE 官方帳號：在聊天室輸入「幫我配一套週末穿搭」',
     line2Recommend: 'Tryzeon LINE 官方帳號：AI 推薦的整套穿搭卡片，全是示範店的商品',

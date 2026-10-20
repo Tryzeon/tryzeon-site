@@ -11,7 +11,7 @@ export const APP_IMAGES = {
   agentWardrobe: { src: '/images/app/agent-wardrobe.webp', width: 900, height: 1957 },
   aiTagBefore: { src: '/images/app/ai-tag-before.webp', width: 900, height: 1957 },
   aiTagAfterTags: { src: '/images/app/ai-tag-after-tags.webp', width: 900, height: 1957 },
-  voiceSizeShirt: { src: '/images/app/voice-size-result-shirt.webp', width: 900, height: 1957 },
+  voiceSizeShirt: { src: '/images/app/voice-size-result.webp', width: 900, height: 1957 },
   dashboardRanking: { src: '/images/app/dashboard-ranking.webp', width: 900, height: 1957 },
   // LINE 截圖是 iPhone 實機（1179×2556），比例和 App 截圖差不到 0.3%，PhoneFrame 以 object-cover 填滿
   line1Ask: { src: '/images/app/line-1-ask.webp', width: 900, height: 1951 },
