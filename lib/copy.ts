@@ -12,7 +12,6 @@ export const copy = {
   images: {
     tryonHero: 'Tryzeon App 試穿結果：穿上鈷藍緞面綁帶襯衫洋裝（AI 生成的示意人像）',
     tryonOutfit: 'Tryzeon App 整套試穿：海軍藍西裝外套、白襯衫與象牙白寬褲（AI 生成的示意人像）',
-    tryonVideoFrame: 'Tryzeon App 動態試穿影片：模特穿著百褶長裙',
     tryonTweed: 'Tryzeon App 整套試穿：藍色粗花呢短外套與象牙白寬褲（AI 生成的示意人像）',
     fitGreen: 'Tryzeon App 商品頁：依身形判斷建議尺寸 M，身高、肩寬、胸圍、腰圍、臀圍皆符合',
     wardrobeGrid: 'Tryzeon App 雲端衣櫃：九件已數位化的衣物',
@@ -22,6 +21,10 @@ export const copy = {
     voiceSizeShirt: 'Tryzeon 品牌後台：以語音輸入的尺寸表',
     modelA: '試穿用的全身照（AI 生成的示意人像）',
     productHero: '示範商品：鈷藍緞面綁帶襯衫洋裝平拍圖',
+  },
+  // 動態試穿影片的 aria-label；key 對應 lib/app-images.ts 的 TRYON_VIDEOS
+  videos: {
+    street: 'Tryzeon App 動態試穿影片：穿著鈷藍洋裝在街頭走動、轉身（AI 生成的示意人像）',
   },
   nav: {
     product: '產品',

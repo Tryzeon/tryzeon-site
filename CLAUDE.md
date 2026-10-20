@@ -207,7 +207,7 @@ URL Configuration → Redirect URLs.
   `SectionHeader`) so CJK lines only break after 「，；：。」.
   Long ledes use its `sentenceWrap`, which splits at 「。」 only.
 - Real App screenshots: paths and dimensions live in `lib/app-images.ts` (`APP_IMAGES`,
-  `TRYON_VIDEO`, `GET_QR_SRC`), alt text in `copy.images`. Every referenced file must exist and nothing in
+  `TRYON_VIDEOS`, `GET_QR_SRC`), alt text in `copy.images`. Every referenced file must exist and nothing in
   `public/` may be 500KB or larger. Screenshots go
   in `PhoneFrame` unedited (no drawn mock UIs). No visible 「AI 生成」 caption under images
   with AI-generated people (removed on request); the alt text still says so.

@@ -3,10 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { RotateCcw } from 'lucide-react';
 import { PhoneFrame } from '@/components/PhoneFrame';
-import { APP_IMAGES, TRYON_VIDEO } from '@/lib/app-images';
+import { TRYON_VIDEOS, type TryOnVideoName } from '@/lib/app-images';
 import { copy } from '@/lib/copy';
 
 interface TryOnVideoProps {
+  /** 哪一支影片：TRYON_VIDEOS 的 key */
+  video?: TryOnVideoName;
   replayLabel: string;
   /** false：不包手機外框，直接填滿父層（父層已經是 PhoneFrame 時用） */
   framed?: boolean;
@@ -18,7 +20,8 @@ interface TryOnVideoProps {
  * prefers-reduced-motion 時不自動播放（只顯示 poster 與播放鍵）。
  * preload="none"：隱藏的那份（桌機上的手機版 DOM）不會先抓影片，play() 時才載入。
  */
-export function TryOnVideo({ replayLabel, framed = true, className = '' }: TryOnVideoProps) {
+export function TryOnVideo({ video: name = 'street', replayLabel, framed = true, className = '' }: TryOnVideoProps) {
+  const source = TRYON_VIDEOS[name];
   const ref = useRef<HTMLVideoElement>(null);
   const [ended, setEnded] = useState(false);
   // display:none 擋不住 poster 下載：隱藏的那份（桌機上的手機版 DOM）永遠不會相交，也就不會抓圖
@@ -69,12 +72,12 @@ export function TryOnVideo({ replayLabel, framed = true, className = '' }: TryOn
     <>
       <video
         ref={ref}
-        src={TRYON_VIDEO.src}
-        poster={showPoster ? APP_IMAGES[TRYON_VIDEO.poster].src : undefined}
+        src={source.src}
+        poster={showPoster ? source.poster : undefined}
         muted
         playsInline
         preload="none"
-        aria-label={copy.images[TRYON_VIDEO.poster]}
+        aria-label={copy.videos[name]}
         onEnded={() => setEnded(true)}
         className="h-full w-full object-cover"
       />

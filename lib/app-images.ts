@@ -3,7 +3,6 @@
 export const APP_IMAGES = {
   tryonHero: { src: '/images/app/tryon-hero.webp', width: 900, height: 1957 },
   tryonOutfit: { src: '/images/app/tryon-outfit.webp', width: 900, height: 1957 },
-  tryonVideoFrame: { src: '/images/app/tryon-video-frame.webp', width: 900, height: 1957 },
   tryonTweed: { src: '/images/app/tryon-tweed.webp', width: 900, height: 1957 },
   fitGreen: { src: '/images/app/fit-green.webp', width: 900, height: 1957 },
   wardrobeGrid: { src: '/images/app/wardrobe-grid.webp', width: 900, height: 1957 },
@@ -17,10 +16,13 @@ export const APP_IMAGES = {
 
 export type AppImageName = keyof typeof APP_IMAGES;
 
-export const TRYON_VIDEO = {
-  src: '/images/app/tryon-video.mp4',
-  poster: 'tryonVideoFrame',
+// 動態試穿影片：App 生成的原檔（不是螢幕錄影），poster 取自同一支影片的第一格，播放前後畫面接得上。
+// aria-label 在 copy.videos 的同名 key。
+export const TRYON_VIDEOS = {
+  street: { src: '/images/app/tryon-video.mp4', poster: '/images/app/tryon-video-poster.webp' },
 } as const;
+
+export type TryOnVideoName = keyof typeof TRYON_VIDEOS;
 
 export const GET_QR_SRC = '/images/get-qr.svg';
 // 加入 Tryzeon LINE 官方帳號（https://line.me/R/ti/p/@tryzeon）
