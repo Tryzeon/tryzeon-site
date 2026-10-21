@@ -198,14 +198,28 @@ export default function BusinessPage() {
               </ul>
             </div>
 
-            <div className="flex justify-center gap-3 md:gap-4">
-              {PHONES.map((name) => (
-                <AppScreen
+            {/* 桌機的畫面偏小：滑過哪一支就放大到可以看清楚上面的字，其他兩支退後變淡。
+                最右邊那支往左放大，不推出版心造成橫向捲動 */}
+            <div className="group/phones flex justify-center gap-3 md:gap-4">
+              {PHONES.map((name, i) => (
+                <div
                   key={name}
-                  name={name}
-                  sizes="(min-width: 1024px) 168px, (min-width: 768px) 200px, 28vw"
-                  className="w-[28vw] max-w-[200px] lg:w-[168px]"
-                />
+                  className={`relative transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hover:z-10 lg:hover:scale-[1.75] lg:group-hover/phones:opacity-40 lg:hover:!opacity-100 ${
+                    i === PHONES.length - 1 ? 'origin-right' : 'origin-center'
+                  }`}
+                >
+                  {/* 細框：PhoneFrame 的 7px 白邊與大圓角放大後會壓到截圖的邊角，這裡收成 3px、小圓角 */}
+                  <div className="w-[28vw] max-w-[200px] rounded-[1.4rem] border border-[#101828]/10 bg-white p-[3px] shadow-[0_24px_60px_rgba(16,24,40,0.14),0_6px_18px_rgba(16,24,40,0.08)] lg:w-[168px]">
+                    <Image
+                      src={APP_IMAGES[name].src}
+                      alt={copy.images[name]}
+                      width={APP_IMAGES[name].width}
+                      height={APP_IMAGES[name].height}
+                      sizes="(min-width: 1024px) 300px, (min-width: 768px) 200px, 28vw"
+                      className="aspect-[900/1957] w-full rounded-[1.2rem] object-cover"
+                    />
+                  </div>
+                </div>
               ))}
             </div>
           </div>
