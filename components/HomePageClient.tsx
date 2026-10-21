@@ -34,10 +34,10 @@ export default function HomePageClient() {
       <LineFlow copy={copy.home.line} />
       <ExperienceShowcase copy={copy.home.experience} />
 
-      {/* AI 引擎：首頁只留一句，完整的說明與飛輪在 /about */}
-      <Section id="engine" className="py-20 md:py-28 bg-[#FAFAFA]">
+      {/* AI 引擎：首頁只留一句，完整的說明與飛輪在 /about。一道光帶隨捲動穿過這句話 */}
+      <Section id="engine" className="py-24 md:py-36 bg-[#FAFAFA]">
         <div className="max-w-5xl mx-auto px-6 text-center">
-          <SectionHeader title={engine.title} spacing="mb-8 md:mb-10" />
+          <SectionHeader title={engine.title} spacing="mb-8 md:mb-10" sheen />
           <ScrollReveal delay={0.1}>
             <MoreLink href="/about#engine">{engine.link}</MoreLink>
           </ScrollReveal>

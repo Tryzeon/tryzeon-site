@@ -328,6 +328,33 @@ html[data-nav-entered='1'] .nav-enter {
   animation-fill-mode: both;
 }
 
+/* SectionHeader sheen：每個子句一個遮罩，字從遮罩下緣升起。padding／負 margin 留給宋體的字身與標點 */
+.clause-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.08em 0.04em 0.18em;
+  margin: -0.08em -0.04em -0.18em;
+}
+
+/* 光帶穿過標題：背景寬度＝整個標題（--sheen-w），位置扣掉子句自己的偏移（--sheen-x），
+   --sheen 是光帶中心。光帶用 blue-700／cyan-600，大字對白底仍 ≥3:1；其餘都是墨色 */
+.sheen-text {
+  background-image: linear-gradient(90deg,
+      #101828 0%,
+      #101828 calc(var(--sheen, -40%) - 10%),
+      #1d4ed8 calc(var(--sheen, -40%) - 3%),
+      #0891b2 calc(var(--sheen, -40%) + 3%),
+      #101828 calc(var(--sheen, -40%) + 10%),
+      #101828 100%);
+  background-size: var(--sheen-w, 100%) 100%;
+  background-position: calc(var(--sheen-x, 0px) * -1) 0;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 /* TiltStage 的反光點：位置與強度由 --glare-x / --glare-y / --glare-o 驅動 */
 .tilt-glare {
   background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 55%);
