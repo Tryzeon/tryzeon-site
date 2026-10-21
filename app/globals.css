@@ -291,6 +291,26 @@ html[data-nav-entered='1'] .nav-enter {
   }
 }
 
+/* 四通路（ChannelSync）：光點沿光束往下流（stroke-dash 走完 pathLength 100），
+   商品外圈的光環向外擴散淡出 */
+@keyframes beamFlow {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
 /* TiltStage 的反光點：位置與強度由 --glare-x / --glare-y / --glare-o 驅動 */
 .tilt-glare {
   background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 55%);
