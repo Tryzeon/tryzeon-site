@@ -1,3 +1,4 @@
+import { FooterWordmark } from '@/components/FooterWordmark';
 import { SiteLink } from '@/components/SiteLink';
 import { copy } from '@/lib/copy';
 
@@ -44,6 +45,9 @@ export function Footer() {
           ))}
         </div>
       </div>
+
+      {/* 巨大字標：佔滿螢幕寬度，游標經過的地方被照亮 */}
+      <FooterWordmark />
 
       <div className="border-t border-white/5 bg-[#161617]">
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#98A2B3]">

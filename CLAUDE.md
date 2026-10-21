@@ -263,6 +263,8 @@ touching visuals.** Identity: Editorial Tech × Liquid Glass, light only. Hard r
 
 - Palette is blue→cyan only (`#2563EB → #60A5FA → #06B6D4`) on `#FAFAFA`/`#FFFFFF`.
   Purple/pink/rainbow gradients are banned; the Footer is the only dark section allowed.
+  (Exception, at the owner's request: the Footer's full-width wordmark, `FooterWordmark`, lights
+  up in the logo's lavender under the cursor.)
 - One continuous `#FAFAFA` canvas: every section sits on the same background and is separated
   by whitespace and its heading — never alternate `#FFF` / `#FAFAFA` bands (a ~2% step reads as
   a rendering seam on some screens). White is for surfaces (cards, glass); the Footer is the only
