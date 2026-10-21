@@ -8,6 +8,7 @@ import { MoreLink } from '@/components/MoreLink';
 import { Navigation } from '@/components/Navigation';
 import { SectionHeader } from '@/components/SectionHeader';
 import { StoreBadges } from '@/components/StoreBadges';
+import { TiltStage } from '@/components/TiltStage';
 import { clauseWrap, keepRanges, sentenceWrap } from '@/components/clauseWrap';
 import { GET_QR_SRC, LINE_OA_QR_SRC } from '@/lib/app-images';
 import { copy } from '@/lib/copy';
@@ -76,13 +77,26 @@ export default function DownloadPage() {
               ))}
             </div>
           </div>
+          {/* 與首頁 hero 同一個 3D 舞台：游標在這一區移動，手機就轉向游標，螢幕上的反光點跟著走 */}
           <div className="flex flex-col items-center">
-            <AppScreen
-              name="tryonTweed"
-              sizes="(min-width: 484px) 300px, 62vw"
-              priority
-              className="w-[62vw] max-w-[300px] mx-auto"
-            />
+            <TiltStage trackSection max={7} className="relative mx-auto">
+              {/* 落在地面的柔影：舞台轉動時留在原地，景深更明確 */}
+              <span
+                className="pointer-events-none absolute -bottom-8 left-1/2 h-10 w-[78%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(closest-side,rgba(37,99,235,0.22),transparent)] blur-xl"
+                aria-hidden
+              />
+              <div className="relative">
+                <AppScreen
+                  name="tryonTweed"
+                  sizes="(min-width: 484px) 300px, 62vw"
+                  priority
+                  className="w-[62vw] max-w-[300px]"
+                />
+                <span className="pointer-events-none absolute inset-[7px] overflow-hidden rounded-[2.2rem]" aria-hidden>
+                  <span className="tilt-glare absolute inset-0" />
+                </span>
+              </div>
+            </TiltStage>
           </div>
         </div>
       </section>

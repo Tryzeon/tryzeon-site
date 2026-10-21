@@ -12,6 +12,8 @@ interface TiltStageProps {
   max?: number;
   /** 偵測游標的範圍；省略時以元件本身為範圍 */
   trackRef?: RefObject<HTMLElement | null>;
+  /** 以最近的 <section> 為偵測範圍（server component 頁面拿不到 ref 時用） */
+  trackSection?: boolean;
   className?: string;
 }
 
@@ -21,7 +23,7 @@ interface TiltStageProps {
  * --glare-x / --glare-y 兩個 CSS 變數讓 .tilt-glare 的反光點跟著游標走。
  * 只在有滑鼠的裝置啟用；觸控裝置維持靜止、不掛監聽。
  */
-export function TiltStage({ children, max = 8, trackRef, className = '' }: TiltStageProps) {
+export function TiltStage({ children, max = 8, trackRef, trackSection = false, className = '' }: TiltStageProps) {
   const ref = useRef<HTMLDivElement>(null);
   const nx = useMotionValue(0);
   const ny = useMotionValue(0);
@@ -36,7 +38,8 @@ export function TiltStage({ children, max = 8, trackRef, className = '' }: TiltS
   const glareO = useTransform([sx, sy], ([x, y]: number[]) => String(Math.min(1, Math.hypot(x, y))));
 
   useEffect(() => {
-    const target = trackRef?.current ?? ref.current;
+    const own = ref.current;
+    const target = trackRef?.current ?? (trackSection ? own?.closest('section') : own);
     if (!target) return;
     const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     if (!finePointer) return;
@@ -57,7 +60,7 @@ export function TiltStage({ children, max = 8, trackRef, className = '' }: TiltS
       target.removeEventListener('pointermove', onMove);
       target.removeEventListener('pointerleave', onLeave);
     };
-  }, [trackRef, nx, ny]);
+  }, [trackRef, trackSection, nx, ny]);
 
   // framer 會把 motion value 寫進 CSS 變數，但 MotionStyle 的型別沒列自訂屬性
   const style: MotionStyle & Record<`--${string}`, MotionValue<string>> = {
