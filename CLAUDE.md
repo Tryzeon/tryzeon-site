@@ -37,7 +37,7 @@ Public content pages (keep this list in sync with `app/sitemap.ts`):
 | Route | Content |
 |---|---|
 | `/` | Product overview — hero, four channels, LINE flow, customer experience (written to the brand), AI engine as one line linking to `/about#engine`, FAQ, CTA |
-| `/business` | Brand partnership — hero CTAs, who it's for, three onboarding steps, the three listing methods + brand-backend screens, what a brand gets (try-on, recommendation, per-product try-on rate, try-on video as IG material, channel integration), brand FAQ, consultation form + email |
+| `/business` | Brand partnership — hero CTAs, who it's for, three onboarding steps, the three listing methods + brand-backend screens, what a brand gets (try-on, recommendation, per-product try-on rate, try-on video as IG material), brand FAQ, consultation form + email |
 | `/about` | Company — origin, AI engine flywheel (`#engine`), vision (`#vision`); no team section |
 | `/download` | Shopper entry — store badges, three-step how-to, privacy points |
 | `/privacy`, `/terms`, `/delete-account` | Legal / app-store requirement |
