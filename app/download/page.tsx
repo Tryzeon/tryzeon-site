@@ -4,6 +4,7 @@ import { ArrowUpRight, Lock, ShieldCheck, Trash2, type LucideIcon } from 'lucide
 import { AmbientGlow } from '@/components/AmbientGlow';
 import { AppScreen } from '@/components/AppScreen';
 import { Footer } from '@/components/Footer';
+import { IconCardGrid } from '@/components/IconCardGrid';
 import { MoreLink } from '@/components/MoreLink';
 import { Navigation } from '@/components/Navigation';
 import { SectionHeader } from '@/components/SectionHeader';
@@ -28,8 +29,6 @@ export const revalidate = 3600;
 
 // 順序對應 copy.download.privacy.items
 const PRIVACY_ICONS: readonly LucideIcon[] = [Lock, ShieldCheck, Trash2];
-
-const CARD = 'glass-panel p-7 md:p-9';
 
 export default function DownloadPage() {
   const { download, contact } = copy;
@@ -111,18 +110,7 @@ export default function DownloadPage() {
       <section className="py-24 md:py-32 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <SectionHeader title={download.privacy.title} />
-          <ul className="grid gap-4 md:grid-cols-3">
-            {download.privacy.items.map((point, i) => {
-              const Icon = PRIVACY_ICONS[i];
-              return (
-                <li key={point.title} className={CARD}>
-                  <Icon className="h-6 w-6 text-[#2563EB]" strokeWidth={1.5} aria-hidden />
-                  <h3 className="mt-5 text-lg font-semibold text-[#101828]">{point.title}</h3>
-                  <p className="mt-2 text-balance text-sm md:text-base leading-relaxed text-[#475467]">{point.desc}</p>
-                </li>
-              );
-            })}
-          </ul>
+          <IconCardGrid items={download.privacy.items} icons={PRIVACY_ICONS} />
           <ul className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3">
             {download.privacy.links.map((link) => (
               <li key={link.href}>
