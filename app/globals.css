@@ -244,4 +244,64 @@ html[data-nav-entered='1'] .nav-enter {
   animation: heroEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* 大標逐行從遮罩下升起（CSS-only，SSR HTML 就帶著，不等 hydration）。
+   padding/margin 互抵：遮罩比字框大一點，宋體的下伸部與標點不被切掉 */
+@keyframes lineRise {
+  from {
+    transform: translateY(110%) rotate(2deg);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding: 0.04em 0.06em 0.12em;
+  margin: -0.04em -0.06em -0.12em;
+}
+
+.line-mask>span {
+  display: block;
+  transform-origin: 0 100%;
+  animation: lineRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* 輸入小卡 → 手機：一道光沿連接線送進手機 */
+.hero-feed {
+  opacity: 0;
+  animation: heroFeed 0.7s cubic-bezier(0.45, 0, 0.2, 1) 1.2s both;
+}
+
+@keyframes heroFeed {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(calc(2rem + 100%));
+  }
+}
+
+/* TiltStage 的反光點：位置與強度由 --glare-x / --glare-y / --glare-o 驅動 */
+.tilt-glare {
+  background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 55%);
+  opacity: calc(var(--glare-o, 0) * 0.7);
+  mix-blend-mode: soft-light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-feed {
+    display: none;
+  }
+}
+
 
