@@ -19,7 +19,7 @@ interface TiltStageProps {
  * TiltStage — 跟著游標轉動的 3D 舞台。
  * 子層可用 translateZ 排出前後景深（舞台本身是 preserve-3d），並透過
  * --glare-x / --glare-y 兩個 CSS 變數讓 .tilt-glare 的反光點跟著游標走。
- * 只在有滑鼠的裝置啟用；觸控與偏好減少動態時維持靜止、不掛監聽。
+ * 只在有滑鼠的裝置啟用；觸控裝置維持靜止、不掛監聽。
  */
 export function TiltStage({ children, max = 8, trackRef, className = '' }: TiltStageProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -39,8 +39,7 @@ export function TiltStage({ children, max = 8, trackRef, className = '' }: TiltS
     const target = trackRef?.current ?? ref.current;
     if (!target) return;
     const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!finePointer || reduced) return;
+    if (!finePointer) return;
 
     const clamp = (v: number) => Math.max(-1, Math.min(1, v));
     const onMove = (e: PointerEvent) => {

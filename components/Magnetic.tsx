@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface MagneticProps {
   children: ReactNode;
@@ -12,16 +12,15 @@ interface MagneticProps {
 
 /**
  * Magnetic — wraps any element so it gently follows the cursor on hover
- * (signature premium micro-interaction). Spring-eased, respects
- * prefers-reduced-motion. Pointer-only; touch devices never trigger it.
+ * (signature premium micro-interaction). Spring-eased. Pointer-only;
+ * touch devices never trigger it.
  */
 export function Magnetic({ children, strength = 0.35, className }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
-  const reduced = useReducedMotion();
 
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (reduced || !ref.current) return;
+    if (!ref.current) return;
     const r = ref.current.getBoundingClientRect();
     setPos({
       x: (e.clientX - (r.left + r.width / 2)) * strength,
@@ -37,7 +36,7 @@ export function Magnetic({ children, strength = 0.35, className }: MagneticProps
       className={className}
       onMouseMove={handleMove}
       onMouseLeave={reset}
-      animate={{ x: reduced ? 0 : pos.x, y: reduced ? 0 : pos.y }}
+      animate={{ x: pos.x, y: pos.y }}
       transition={{ type: 'spring', stiffness: 150, damping: 15, mass: 0.1 }}
     >
       {children}

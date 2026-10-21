@@ -123,11 +123,6 @@ function useSheen(ref: RefObject<HTMLHeadingElement | null>, enabled: boolean) {
     const observer = new ResizeObserver(measure);
     observer.observe(heading);
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      heading.style.setProperty('--sheen', '-40%');
-      return () => observer.disconnect();
-    }
-
     const mm = gsap.matchMedia();
     mm.add('(min-width: 1024px)', () => {
       gsap.fromTo(

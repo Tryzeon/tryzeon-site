@@ -34,9 +34,8 @@ export function ChannelSync({ copy }: ChannelSyncProps) {
     const stage = stageRef.current;
     if (!stage) return;
     const mm = gsap.matchMedia(stage);
-    mm.add({ any: MEDIA.any, desktop: MEDIA.desktop, reduce: MEDIA.reduce }, (ctx) => {
-      const { desktop, reduce } = ctx.conditions as { desktop: boolean; reduce: boolean };
-      if (reduce) return;
+    mm.add({ any: MEDIA.any, desktop: MEDIA.desktop }, (ctx) => {
+      const { desktop } = ctx.conditions as { desktop: boolean };
       const tl = gsap.timeline({
         scrollTrigger: { trigger: stage, start: 'top 80%', end: 'center 55%', scrub: 0.8 },
       });
@@ -64,7 +63,7 @@ export function ChannelSync({ copy }: ChannelSyncProps) {
             {[0, 1, 2].map((i) => (
               <span
                 key={i}
-                className="absolute inset-[18%] rounded-full border border-[#2563EB]/25 motion-safe:animate-[pulseRing_3.6s_cubic-bezier(0.16,1,0.3,1)_infinite]"
+                className="absolute inset-[18%] rounded-full border border-[#2563EB]/25 animate-[pulseRing_3.6s_cubic-bezier(0.16,1,0.3,1)_infinite]"
                 style={{ animationDelay: `${i * 1.2}s` }}
                 aria-hidden
               />
@@ -112,7 +111,7 @@ export function ChannelSync({ copy }: ChannelSyncProps) {
                   vectorEffect="non-scaling-stroke"
                   pathLength={100}
                   strokeDasharray="6 94"
-                  className="motion-safe:animate-[beamFlow_2.8s_linear_infinite]"
+                  className="animate-[beamFlow_2.8s_linear_infinite]"
                   style={{ animationDelay: `${i * -0.7}s`, filter: 'drop-shadow(0 0 4px rgba(6,182,212,0.8))' }}
                 />
               </g>
@@ -154,7 +153,7 @@ export function ChannelSync({ copy }: ChannelSyncProps) {
                       <h3 className="text-lg font-semibold text-[#101828]">{channel.name}</h3>
                       <span className="inline-flex items-center gap-1.5 rounded-full border border-[#06B6D4]/30 bg-[#06B6D4]/[0.08] px-2.5 py-1 text-[11px] font-semibold text-[#0E7490]">
                         <span className="relative flex h-1.5 w-1.5" aria-hidden>
-                          <span className="absolute inset-0 rounded-full bg-[#06B6D4] motion-safe:animate-ping" />
+                          <span className="absolute inset-0 rounded-full bg-[#06B6D4] animate-ping" />
                           <span className="relative h-1.5 w-1.5 rounded-full bg-[#06B6D4]" />
                         </span>
                         {copy.status}

@@ -56,7 +56,7 @@ interface EngineFlywheelProps {
  * AI 引擎（/about）：置中標題＋飛輪圖。
  * 進場時圓環順時針畫出、四個節點依序出現；之後一個光點沿圓環慢慢繞行，
  * 經過哪一站就點亮哪一站，表達「通路整合 → 真實數據 → 引擎優化 → 精準推薦」的循環。
- * 光點只在區塊可見時跑；偏好減少動態的使用者看到的是靜態圖。
+ * 光點只在區塊可見時跑。
  * 節點是 HTML <ol>，螢幕閱讀器依序讀出循環。
  */
 export function EngineFlywheel({ copy }: EngineFlywheelProps) {
@@ -68,10 +68,9 @@ export function EngineFlywheel({ copy }: EngineFlywheelProps) {
   const [active, setActive] = useState<number | null>(null);
   const lapStart = useRef<number | null>(null);
 
-  // 進場動畫跑完才開始繞圈；減少動態時不繞
+  // 進場動畫跑完才開始繞圈
   useEffect(() => {
     if (!entered) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const timer = setTimeout(() => setLooping(true), LOOP_DELAY_MS);
     return () => clearTimeout(timer);
   }, [entered]);

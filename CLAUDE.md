@@ -70,9 +70,12 @@ blended over every photo and screenshot (effectively recoloring them) and didn't
 ### Scroll + motion stack (the fragile part)
 
 `components/SmoothScrollProvider.tsx` registers GSAP `ScrollTrigger`, creates the Lenis
-instance (exposed as `window.__lenis`), pumps `ScrollTrigger.update()` from Lenis's scroll
-event, bails out entirely under `prefers-reduced-motion`, and wraps children in
-`<MotionConfig reducedMotion="user">` so Framer enters degrade to opacity-only globally.
+instance (exposed as `window.__lenis`) and pumps `ScrollTrigger.update()` from Lenis's scroll
+event.
+
+**The site deliberately ignores `prefers-reduced-motion`** (owner's decision, 2026-10-22): every
+visitor gets the same motion, smooth scroll and looping videos. Don't add reduced-motion branches,
+`motion-safe:` variants or a `MotionConfig reducedMotion` wrapper back.
 
 Constraints that have already cost debugging time:
 
@@ -86,10 +89,9 @@ Constraints that have already cost debugging time:
 3. **`@keyframes pageEnter` lives in `app/globals.css`, not styled-jsx.** A client
    component's styled-jsx is absent from SSR HTML, so the `opacity: 0` wrapper would stay
    blank until hydration.
-4. **Never branch Framer `initial` on `useReducedMotion()`.** It returns `null` on the
-   server and `true` on a reduced-motion client, so `initial={reduced ? false : 'hidden'}`
-   hydrates with mismatched styles. Always pass `initial="hidden"`; the `MotionConfig` above
-   already degrades enters to opacity-only.
+4. **Never branch Framer `initial` on a client-only value** (a media query, `useReducedMotion()`
+   …). It is `null` on the server, so `initial={x ? false : 'hidden'}` hydrates with mismatched
+   styles. Always pass `initial="hidden"`.
 5. **No root `app/loading.tsx`.** Next looks up a `/#section` hash once, when the new page
    mounts; behind a loading boundary it mounts the skeleton first, finds no section and
    scrolls to the top. Public pages rely on `NavigationProgress` instead (`/admin` has its

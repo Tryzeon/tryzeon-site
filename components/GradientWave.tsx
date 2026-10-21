@@ -12,7 +12,6 @@
  * Performance notes:
  *  - WebGL shader runs at 60fps (or 15fps cap during animation)
  *  - resize listener cleans up on unmount
- *  - Respects prefers-reduced-motion (stops animation)
  */
 
 import { useEffect, useRef } from 'react';
@@ -566,7 +565,6 @@ export function GradientWave({
 
   useEffect(() => {
     if (!containerRef.current) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const canvas = document.createElement('canvas');
     Object.assign(canvas.style, {

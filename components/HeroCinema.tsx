@@ -65,7 +65,6 @@ interface HeroCinemaProps {
  */
 export function HeroCinema({ copy }: HeroCinemaProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  // reduced motion 交給 MotionConfig（不在這裡分支，避免 SSR/client hydration mismatch）
   const enter = { variants: fadeUp, initial: 'hidden' as const, animate: 'show' as const };
   // 文字欄用 CSS 的 hero-enter（globals.css）：SSR HTML 就帶著動畫，不等 hydration，主張在第一眼就讀得到。
   // 輸入小卡、「+」與連接線排在文字後面（手機主圖不等：它是 LCP，用 phoneEnter 與 H1 一起進場）

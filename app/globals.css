@@ -30,19 +30,6 @@
     --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.06), 0 20px 48px rgba(0, 0, 0, 0.08);
   }
 
-  /* Accessibility: reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
-
   /* Shimmer animation for loading states */
   @keyframes shimmer {
     0% {
@@ -362,10 +349,5 @@ html[data-nav-entered='1'] .nav-enter {
   mix-blend-mode: soft-light;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-feed {
-    display: none;
-  }
-}
 
 

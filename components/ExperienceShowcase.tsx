@@ -100,7 +100,6 @@ function DesktopShowcase({ copy }: DesktopShowcaseProps) {
   const [active, setActive] = useState(0);
   const [hovering, setHovering] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [auto, setAuto] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const visible = useInView(rootRef, { amount: 0.4 });
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -110,11 +109,6 @@ function DesktopShowcase({ copy }: DesktopShowcaseProps) {
   const descId = (i: number) => `${baseId}-desc-${i}`;
   const panelId = `${baseId}-panel`;
   const count = copy.items.length;
-
-  // 減少動態時不自動輪播（在 client 判斷，SSR 一律先不顯示進度條）
-  useEffect(() => {
-    setAuto(!window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  }, []);
 
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cancelHover = () => {
@@ -191,17 +185,14 @@ function DesktopShowcase({ copy }: DesktopShowcaseProps) {
               {/* 選中項左側的藍青漸層條；自動輪播時它就是倒數的進度條 */}
               <span className="absolute -left-px bottom-3 top-3 w-[2px] overflow-hidden rounded-full" aria-hidden>
                 <span className={`absolute inset-0 bg-[#101828]/10 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
-                {isActive &&
-                  (auto ? (
-                    <span
-                      key={`progress-${active}`}
-                      className="tab-progress absolute inset-0 origin-top bg-gradient-to-b from-[#2563EB] to-[#06B6D4]"
-                      style={{ animationDuration: `${AUTO_MS}ms`, animationPlayState: paused ? 'paused' : 'running' }}
-                      onAnimationEnd={() => setActive((prev) => (prev + 1) % count)}
-                    />
-                  ) : (
-                    <span className="absolute inset-0 bg-gradient-to-b from-[#2563EB] to-[#06B6D4]" />
-                  ))}
+                {isActive && (
+                  <span
+                    key={`progress-${active}`}
+                    className="tab-progress absolute inset-0 origin-top bg-gradient-to-b from-[#2563EB] to-[#06B6D4]"
+                    style={{ animationDuration: `${AUTO_MS}ms`, animationPlayState: paused ? 'paused' : 'running' }}
+                    onAnimationEnd={() => setActive((prev) => (prev + 1) % count)}
+                  />
+                )}
               </span>
               <ItemText item={item} as="span" active={isActive} titleId={titleId(i)} descId={descId(i)} />
             </button>

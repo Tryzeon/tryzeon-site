@@ -3,8 +3,7 @@ import type { Variants } from 'framer-motion';
 // MASTER.md 的 ease-out，與 globals.css 的 --ease-out-expo 同一條曲線
 export const EASE = [0.16, 1, 0.3, 1] as const;
 
-// 捲到才進場、只播一次。reduced motion 交給 SmoothScrollProvider 的 MotionConfig
-// 統一降級；這裡不分支，否則 SSR(null) 與 client(true) 的 initial 不同會 hydration mismatch
+// 捲到才進場、只播一次
 export const inView = {
   initial: 'hidden',
   whileInView: 'show',

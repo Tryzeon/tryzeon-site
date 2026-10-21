@@ -114,8 +114,9 @@ Rules:
   with Lenis on this site; see `feedback_lenis_useScroll_conflict` memory.)
 - Continuous animation only for ambient/atmosphere (shaders, aurora), never on
   content icons. One requested exception: the engine flywheel's comet (slow 8s lap,
-  only while on screen, static under reduced motion).
-- ALWAYS honor `prefers-reduced-motion` with a static fallback.
+  only while on screen).
+- The site does not honor `prefers-reduced-motion` (owner's decision, 2026-10-22): everyone
+  gets the same motion. Don't add reduced-motion fallbacks.
 
 **Stack:** Framer Motion (component interaction) · GSAP+ScrollTrigger (existing
 cinema) · Lenis (smooth scroll) · raw WebGL (GradientWave shader atmosphere). 21st.dev for
@@ -158,7 +159,7 @@ sections of glass cards on the same `#FAFAFA` canvas. On `/business` the benefit
 no repeated feature lists — link to the homepage instead. No page carries awards, programs or a
 team section. `/about` hosts the engine flywheel (`EngineFlywheel`, centered header + inline SVG ring + HTML nodes: ring draws in,
 nodes pop in 01→04, then a comet laps the ring every 8s lighting each node it reaches; runs only while
-visible, static under reduced motion).
+visible).
 
 ### Real App screens
 
@@ -193,7 +194,7 @@ visible, static under reduced motion).
 ## 7. Pre-Delivery Checklist
 
 - [ ] Speaks the Liquid-Glass language (surface + aurora + motion + type + blue/cyan)
-- [ ] Motion is slow/fluid (400–600ms), ease-out, staggered, reduced-motion fallback
+- [ ] Motion is slow/fluid (400–600ms), ease-out, staggered
 - [ ] No purple/pink; no dark (except footer); no screaming text
 - [ ] SVG icons (Lucide); cursor-pointer; visible focus; 4.5:1 contrast
 - [ ] Responsive 375 / 768 / 1024 / 1440; no horizontal scroll
