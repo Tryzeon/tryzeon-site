@@ -1,15 +1,16 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { ArrowUpRight, Camera, Lock, Shirt, ShieldCheck, Sparkles, Trash2, type LucideIcon } from 'lucide-react';
+import { ArrowUpRight, Lock, ShieldCheck, Trash2, type LucideIcon } from 'lucide-react';
 import { AmbientGlow } from '@/components/AmbientGlow';
 import { AppScreen } from '@/components/AppScreen';
 import { Footer } from '@/components/Footer';
 import { MoreLink } from '@/components/MoreLink';
 import { Navigation } from '@/components/Navigation';
 import { SectionHeader } from '@/components/SectionHeader';
+import { StepsPanel } from '@/components/StepsPanel';
 import { StoreBadges } from '@/components/StoreBadges';
 import { TiltStage } from '@/components/TiltStage';
-import { clauseWrap, keepRanges, sentenceWrap } from '@/components/clauseWrap';
+import { clauseWrap, sentenceWrap } from '@/components/clauseWrap';
 import { GET_QR_SRC, LINE_OA_QR_SRC } from '@/lib/app-images';
 import { copy } from '@/lib/copy';
 import { pageMetadata } from '@/lib/page-metadata';
@@ -25,8 +26,7 @@ export const metadata: Metadata = pageMetadata({
 
 export const revalidate = 3600;
 
-// 順序對應 copy.download.steps.items / privacy.items
-const STEP_ICONS: readonly LucideIcon[] = [Camera, Shirt, Sparkles];
+// 順序對應 copy.download.privacy.items
 const PRIVACY_ICONS: readonly LucideIcon[] = [Lock, ShieldCheck, Trash2];
 
 const CARD = 'glass-panel p-7 md:p-9';
@@ -104,25 +104,7 @@ export default function DownloadPage() {
       <section className="py-24 md:py-32 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-6">
           <SectionHeader title={download.steps.title} />
-          <ol className="grid gap-4 md:grid-cols-3">
-            {download.steps.items.map((step, i) => {
-              const Icon = STEP_ICONS[i];
-              return (
-                <li key={step.title} className={CARD}>
-                  <div className="flex items-center justify-between">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#2563EB]/15 bg-gradient-to-br from-[#2563EB]/10 to-[#06B6D4]/10">
-                      <Icon className="h-6 w-6 text-[#2563EB]" strokeWidth={1.5} aria-hidden />
-                    </span>
-                    <span className="font-mono text-sm font-semibold text-[#1D4ED8]" aria-hidden>
-                      0{i + 1}
-                    </span>
-                  </div>
-                  <h3 className="mt-6 text-lg md:text-xl font-semibold text-[#101828]">{step.title}</h3>
-                  <p className="mt-2 text-balance text-sm md:text-base leading-relaxed text-[#475467]">{keepRanges(step.desc)}</p>
-                </li>
-              );
-            })}
-          </ol>
+          <StepsPanel items={download.steps.items} />
         </div>
       </section>
 
