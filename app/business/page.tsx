@@ -46,6 +46,10 @@ const SECONDARY =
   'focus-ring inline-flex items-center justify-center gap-2 px-9 py-4 rounded-full border border-[#101828]/15 bg-white/70 backdrop-blur-md text-[#101828] font-semibold hover:bg-white hover:border-[#101828]/30 transition-colors duration-300';
 const PHONES = ['aiTagBefore', 'aiTagAfterTags', 'voiceSizeShirt'] as const;
 const CARD = 'glass-panel p-7 md:p-9';
+// 「適合這樣的品牌」的卡片：右下角壓一枚放大的淡色圖示當浮水印，左上是漸層底的圖示框
+const FIT_CARD = 'glass-panel relative overflow-hidden p-7 md:p-9';
+const FIT_ICON_BOX =
+  'flex h-12 w-12 items-center justify-center rounded-2xl border border-white/80 bg-gradient-to-br from-[#2563EB]/15 to-[#06B6D4]/10 text-[#1D4ED8]';
 
 function ContactButtons() {
   const { business, contact } = copy;
@@ -130,10 +134,13 @@ export default function BusinessPage() {
             {business.fit.items.map((entry, i) => {
               const Icon = FIT_ICONS[i];
               return (
-                <li key={entry.title} className={CARD}>
-                  <Icon className="h-6 w-6 text-[#2563EB]" strokeWidth={1.5} aria-hidden />
-                  <h3 className="mt-5 text-lg md:text-xl font-semibold text-[#101828]">{entry.title}</h3>
-                  <p className="mt-2 text-balance text-sm md:text-base leading-relaxed text-[#475467]">{entry.desc}</p>
+                <li key={entry.title} className={FIT_CARD}>
+                  <Icon className="pointer-events-none absolute -bottom-6 -right-6 h-40 w-40 text-[#2563EB]/[0.06]" strokeWidth={1} aria-hidden />
+                  <span className={FIT_ICON_BOX}>
+                    <Icon className="h-5 w-5" strokeWidth={1.5} aria-hidden />
+                  </span>
+                  <h3 className="relative mt-6 text-lg md:text-xl font-semibold text-[#101828]">{entry.title}</h3>
+                  <p className="relative mb-0 mt-2 text-balance text-sm md:text-base leading-relaxed text-[#475467]">{entry.desc}</p>
                 </li>
               );
             })}
