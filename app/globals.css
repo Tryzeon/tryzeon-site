@@ -311,6 +311,23 @@ html[data-nav-entered='1'] .nav-enter {
   }
 }
 
+/* 體驗輪播（ExperienceShowcase）：選中項左側的倒數條，走完就換下一項 */
+@keyframes tabProgress {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.tab-progress {
+  animation-name: tabProgress;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
 /* TiltStage 的反光點：位置與強度由 --glare-x / --glare-y / --glare-o 驅動 */
 .tilt-glare {
   background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 55%);
