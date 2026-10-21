@@ -67,7 +67,7 @@ export function ExperienceShowcase({ copy }: ExperienceShowcaseProps) {
                 <div className="mt-8 flex justify-center [perspective:1200px]">
                   <motion.div variants={phoneRise} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="origin-bottom">
                     {screen.kind === 'video' ? (
-                      <TryOnVideo replayLabel={copy.replay} className="w-[62vw] max-w-[260px]" />
+                      <TryOnVideo className="w-[62vw] max-w-[260px]" />
                     ) : (
                       <AppScreen name={screen.name} sizes="(min-width: 640px) 260px, 62vw" className="w-[62vw] max-w-[260px]" />
                     )}
@@ -242,7 +242,7 @@ function DesktopShowcase({ copy }: DesktopShowcaseProps) {
               >
                 <PhoneFrame className="w-full">
                   {screen.kind === 'video' ? (
-                    <TryOnVideo replayLabel={copy.replay} framed={false} active={isActive} />
+                    <TryOnVideo framed={false} />
                   ) : (
                     <AppScreen name={screen.name} sizes="300px" framed={false} />
                   )}

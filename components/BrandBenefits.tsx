@@ -70,7 +70,7 @@ export function BrandBenefits() {
       <li className={TILE}>
         <TileText index={3} />
         <div className="mt-8 flex flex-1 items-end justify-center">
-          <TryOnVideo video="office" replayLabel={copy.home.experience.replay} className={PHONE} />
+          <TryOnVideo video="office" className={PHONE} />
         </div>
       </li>
 
