@@ -9,7 +9,7 @@ import { MoreLink } from '@/components/MoreLink';
 import { Navigation } from '@/components/Navigation';
 import { SectionHeader } from '@/components/SectionHeader';
 import { TryOnVideo } from '@/components/TryOnVideo';
-import { clauseWrap, keepRanges, sentenceWrap } from '@/components/clauseWrap';
+import { keepRanges, sentenceWrap, splitClauses } from '@/components/clauseWrap';
 import { APP_IMAGES, type AppImageName, type TryOnVideoName } from '@/lib/app-images';
 import { copy } from '@/lib/copy';
 import { brandFaqGroups } from '@/lib/faq-data';
@@ -83,19 +83,27 @@ export default function BusinessPage() {
       <section className="relative overflow-hidden pt-36 md:pt-44 pb-20 md:pb-28 text-center">
         <AmbientGlow variant="hero" />
         <div className="relative z-10 max-w-4xl mx-auto px-6">
+          {/* 與首頁 hero 同一套進場（CSS-only，SSR HTML 就帶著）：大標逐子句從遮罩下升起（.line-mask），
+              其餘依序淡入上移（.hero-enter）。標題在每個寬度都斷在「，」，一個子句一行 */}
           <h1
             className="max-w-3xl mx-auto cjk-punct text-balance font-serif font-black tracking-[-0.02em] leading-[1.1] text-[#101828] mb-6"
             style={{ fontSize: 'clamp(2.5rem, 1.6rem + 4vw, 5rem)' }}
           >
-            {clauseWrap(business.hero.title)}
+            {splitClauses(business.hero.title).map((clause, i) => (
+              <span key={clause} className="line-mask">
+                <span style={{ animationDelay: `${0.15 + i * 0.12}s` }}>{keepRanges(clause)}</span>
+              </span>
+            ))}
           </h1>
-          <p className="text-base md:text-xl text-[#475467] font-medium leading-relaxed mb-10 md:mb-12 text-balance">
+          <p className="hero-enter [animation-delay:0.45s] text-base md:text-xl text-[#475467] font-medium leading-relaxed mb-10 md:mb-12 text-balance">
             {sentenceWrap(business.hero.lede)}
           </p>
-          <ContactButtons />
+          <div className="hero-enter [animation-delay:0.55s]">
+            <ContactButtons />
+          </div>
         </div>
         {/* 品牌官網嵌入的示意畫面（瀏覽器外框只是相框，畫面是示範官網實際渲染的頁面） */}
-        <figure className="relative z-10 mx-auto mt-16 md:mt-20 max-w-5xl px-6">
+        <figure className="hero-enter [animation-delay:0.7s] relative z-10 mx-auto mt-16 md:mt-20 max-w-5xl px-6">
           <div className="overflow-hidden rounded-2xl border border-[#101828]/10 bg-white shadow-[0_32px_80px_rgba(16,24,40,0.16),0_8px_24px_rgba(16,24,40,0.08)]">
             <div className="flex gap-1.5 border-b border-[#101828]/10 bg-[#F2F4F7] px-4 py-3" aria-hidden>
               <span className="h-2.5 w-2.5 rounded-full bg-[#101828]/15" />

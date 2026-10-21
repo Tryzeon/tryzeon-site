@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type ReactNode, type RefObject } from 'react';
 import { motion, type Variants } from 'framer-motion';
-import { clauseWrap, keepRanges } from '@/components/clauseWrap';
+import { clauseWrap, keepRanges, splitClauses } from '@/components/clauseWrap';
 import { gsap } from '@/lib/gsap';
 import { EASE } from '@/lib/motion';
 
@@ -24,11 +24,6 @@ const clauseRise: Variants = {
   hidden: { y: '108%' },
   show: { y: '0%', transition: { duration: 1.05, ease: EASE } },
 };
-
-/** 與 clauseWrap 相同的切法：切在「，；：。」之後，任何字元都不會被吃掉 */
-function splitClauses(text: string): string[] {
-  return text.split(/(?<=[，；：。])/).filter(Boolean);
-}
 
 interface SectionHeaderProps {
   /** 主標題 — 宋體 editorial。可含 <span> 做藍青漸層強調 */

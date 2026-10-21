@@ -7,13 +7,18 @@ import type { ReactNode } from 'react';
 // lastClassName：只套在最後一個子句上（例如首頁願景的藍青漸層收尾）。
 export function clauseWrap(text: ReactNode, lastClassName = ''): ReactNode {
   if (typeof text !== 'string') return text;
-  const parts = text.split(/(?<=[，；：。])/).filter(Boolean);
+  const parts = splitClauses(text);
   if (parts.length < 2 && !lastClassName) return text;
   return parts.map((part, i) => (
     <span key={i} className={i === parts.length - 1 && lastClassName ? `inline-block ${lastClassName}` : 'inline-block'}>
       {keepRanges(part)}
     </span>
   ));
+}
+
+// clauseWrap 的切法，給需要自己包每個子句的地方（逐子句進場的標題）
+export function splitClauses(text: string): string[] {
+  return text.split(/(?<=[，；：。])/).filter(Boolean);
 }
 
 // 不可拆開的詞包成 nowrap：
