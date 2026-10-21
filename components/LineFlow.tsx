@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { AppScreen } from '@/components/AppScreen';
+import { Magnetic } from '@/components/Magnetic';
 import { MoreLink } from '@/components/MoreLink';
 import { SectionHeader } from '@/components/SectionHeader';
 import { clauseWrap } from '@/components/clauseWrap';
@@ -82,15 +83,17 @@ export function LineFlow({ copy }: LineFlowProps) {
           <div className="flex-1">
             <h3 className="text-lg md:text-xl font-semibold text-[#101828]">{copy.tryIt.title}</h3>
             <p className="mt-2 mb-0 text-balance text-sm md:text-base leading-relaxed text-[#475467]">{copy.tryIt.desc}</p>
-            <a
-              href={siteCopy.contact.lineOa.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary mt-5 gap-2 text-base"
-            >
-              {copy.tryIt.cta}
-              <ArrowUpRight className="h-4 w-4" aria-hidden />
-            </a>
+            <Magnetic className="mt-5 inline-block">
+              <a
+                href={siteCopy.contact.lineOa.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary gap-2 text-base"
+              >
+                {copy.tryIt.cta}
+                <ArrowUpRight className="h-4 w-4" aria-hidden />
+              </a>
+            </Magnetic>
           </div>
         </motion.div>
 

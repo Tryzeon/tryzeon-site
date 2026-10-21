@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SearchX } from 'lucide-react';
+import { Magnetic } from '@/components/Magnetic';
 import { Notice } from '@/components/Notice';
 
 export const metadata: Metadata = {
@@ -24,17 +25,18 @@ export default function NotFound() {
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
         {LINKS.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={`px-7 py-3.5 ${
-              link.primary
-                ? 'btn-primary'
-                : 'focus-ring inline-flex items-center justify-center rounded-full border border-[#101828]/15 bg-white/70 font-semibold text-[#101828] transition-colors duration-300 hover:bg-white'
-            }`}
-          >
-            {link.label}
-          </Link>
+          <Magnetic key={link.href} className="flex flex-col">
+            <Link
+              href={link.href}
+              className={`px-7 py-3.5 ${
+                link.primary
+                  ? 'btn-primary'
+                  : 'focus-ring inline-flex items-center justify-center rounded-full border border-[#101828]/15 bg-white/70 font-semibold text-[#101828] transition-colors duration-300 hover:bg-white'
+              }`}
+            >
+              {link.label}
+            </Link>
+          </Magnetic>
         ))}
       </div>
     </Notice>

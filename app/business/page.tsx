@@ -5,6 +5,7 @@ import { AmbientGlow } from '@/components/AmbientGlow';
 import { AppScreen } from '@/components/AppScreen';
 import { FAQ } from '@/components/FAQ';
 import { Footer } from '@/components/Footer';
+import { Magnetic } from '@/components/Magnetic';
 import { MoreLink } from '@/components/MoreLink';
 import { Navigation } from '@/components/Navigation';
 import { SectionHeader } from '@/components/SectionHeader';
@@ -55,14 +56,19 @@ function ContactButtons() {
   const { business, contact } = copy;
   return (
     <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
-      <a href={business.applyUrl} target="_blank" rel="noopener noreferrer" className="btn-primary gap-2">
-        {business.hero.ctaPrimary}
-        <ArrowUpRight className="h-5 w-5" aria-hidden />
-      </a>
-      <a href={`mailto:${contact.email}?subject=${encodeURIComponent(business.emailSubject)}`} className={SECONDARY}>
-        <Mail className="h-5 w-5" aria-hidden />
-        {business.hero.ctaSecondary}
-      </a>
+      {/* 與首頁 CTA 同一個磁吸互動；flex-col 讓按鈕在手機直排時撐滿寬度 */}
+      <Magnetic className="flex flex-col">
+        <a href={business.applyUrl} target="_blank" rel="noopener noreferrer" className="btn-primary gap-2">
+          {business.hero.ctaPrimary}
+          <ArrowUpRight className="h-5 w-5" aria-hidden />
+        </a>
+      </Magnetic>
+      <Magnetic className="flex flex-col">
+        <a href={`mailto:${contact.email}?subject=${encodeURIComponent(business.emailSubject)}`} className={SECONDARY}>
+          <Mail className="h-5 w-5" aria-hidden />
+          {business.hero.ctaSecondary}
+        </a>
+      </Magnetic>
     </div>
   );
 }

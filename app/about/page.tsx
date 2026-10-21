@@ -4,6 +4,7 @@ import { ChevronRight } from 'lucide-react';
 import { AmbientGlow } from '@/components/AmbientGlow';
 import { EngineFlywheel } from '@/components/EngineFlywheel';
 import { Footer } from '@/components/Footer';
+import { Magnetic } from '@/components/Magnetic';
 import { Navigation } from '@/components/Navigation';
 import { SectionHeader } from '@/components/SectionHeader';
 import { clauseWrap, keepRanges } from '@/components/clauseWrap';
@@ -77,9 +78,11 @@ export default function AboutPage() {
 
       <section className="bg-[#FAFAFA] py-20 md:py-28 text-center">
         <div className="max-w-4xl mx-auto px-6">
-          <Link href="/business" className="btn-primary gap-2">
-            {about.cta}
-          </Link>
+          <Magnetic className="inline-block">
+            <Link href="/business" className="btn-primary gap-2">
+              {about.cta}
+            </Link>
+          </Magnetic>
         </div>
       </section>
 
