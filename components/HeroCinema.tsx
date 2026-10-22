@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, type Variants } from 'framer-motion';
 import { AppScreen } from '@/components/AppScreen';
+import { ClothRipple } from '@/components/ClothRipple';
 import { GradientWave } from '@/components/GradientWave';
 import { Magnetic } from '@/components/Magnetic';
 import { TiltStage } from '@/components/TiltStage';
@@ -17,18 +18,22 @@ import { EASE } from '@/lib/motion';
 const AURORA = ['#FAFAFA', '#E0E7FF', '#E0F2FE', '#CFFAFE', '#FAFAFA'];
 
 // 「輸入」小卡：白框、圓角、柔和陰影（模特全身照與商品平拍共用），寬度跟著父層
+// 商品平拍那張，游標劃過會像布一樣起波紋；全身照是人像，不套
 function InputCard({ name, sizes }: { name: 'modelA' | 'productHero'; sizes: string }) {
   const image = APP_IMAGES[name];
+  const photo = (
+    <Image
+      src={image.src}
+      alt={siteCopy.images[name]}
+      width={image.width}
+      height={image.height}
+      sizes={sizes}
+      className="h-auto w-full"
+    />
+  );
   return (
     <div className="w-full overflow-hidden rounded-2xl border-[3px] border-white bg-white shadow-[0_12px_32px_rgba(16,24,40,0.14)]">
-      <Image
-        src={image.src}
-        alt={siteCopy.images[name]}
-        width={image.width}
-        height={image.height}
-        sizes={sizes}
-        className="h-auto w-full"
-      />
+      {name === 'productHero' ? <ClothRipple src={image.src}>{photo}</ClothRipple> : photo}
     </div>
   );
 }

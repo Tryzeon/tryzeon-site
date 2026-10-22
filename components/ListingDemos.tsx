@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Check, FileSpreadsheet, Loader2, Mic } from 'lucide-react';
+import { ClothRipple } from '@/components/ClothRipple';
 import { Magnetic } from '@/components/Magnetic';
 import { APP_IMAGES } from '@/lib/app-images';
 import { copy } from '@/lib/copy';
@@ -111,15 +112,17 @@ export function PhotoDemo({ phase, copy: demo }: DemoProps & { copy: Demo['photo
         transition={{ type: 'spring', stiffness: 200, damping: 18 }}
         className="relative mx-auto w-[72%] max-w-[200px] cursor-grab touch-none select-none overflow-hidden rounded-2xl border-[3px] border-white bg-white shadow-[0_20px_48px_rgba(16,24,40,0.16)]"
       >
-        <Image
-          src={image.src}
-          alt={copy.images.productTweed}
-          width={image.width}
-          height={image.height}
-          sizes="200px"
-          draggable={false}
-          className="pointer-events-none h-auto w-full"
-        />
+        <ClothRipple src={image.src}>
+          <Image
+            src={image.src}
+            alt={copy.images.productTweed}
+            width={image.width}
+            height={image.height}
+            sizes="200px"
+            draggable={false}
+            className="pointer-events-none h-auto w-full"
+          />
+        </ClothRipple>
         {/* 掃描：一道藍青光帶由上往下掃過，光帶上方留下一層淡淡的網格 */}
         {phase === 1 && (
           <>

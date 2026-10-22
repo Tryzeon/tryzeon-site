@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { AppScreen } from '@/components/AppScreen';
+import { ClothRipple } from '@/components/ClothRipple';
 import { MoreLink } from '@/components/MoreLink';
 import { SectionHeader } from '@/components/SectionHeader';
 import { clauseWrap } from '@/components/clauseWrap';
@@ -70,14 +71,16 @@ export function ChannelSync({ copy }: ChannelSyncProps) {
             ))}
             <div className="absolute inset-[8%] rounded-full bg-[radial-gradient(closest-side,rgba(96,165,250,0.22),transparent)] blur-xl" aria-hidden />
             <div className="relative w-[50%] overflow-hidden rounded-[1.4rem] border-[3px] border-white bg-white shadow-[0_24px_48px_-16px_rgba(16,24,40,0.25),0_0_48px_-8px_rgba(37,99,235,0.3)]">
-              <Image
-                src={APP_IMAGES.productHero.src}
-                alt={siteCopy.images.productHero}
-                width={APP_IMAGES.productHero.width}
-                height={APP_IMAGES.productHero.height}
-                sizes="112px"
-                className="h-auto w-full"
-              />
+              <ClothRipple src={APP_IMAGES.productHero.src}>
+                <Image
+                  src={APP_IMAGES.productHero.src}
+                  alt={siteCopy.images.productHero}
+                  width={APP_IMAGES.productHero.width}
+                  height={APP_IMAGES.productHero.height}
+                  sizes="112px"
+                  className="h-auto w-full"
+                />
+              </ClothRipple>
             </div>
           </div>
 

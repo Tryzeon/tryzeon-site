@@ -122,6 +122,11 @@ Rules:
   is scanned and the real AI tags pop out, the mic listens while the transcript types. Its mic
   rings and waveform loop only while "listening" (about 3s). Each demo still ends on a real
   App screenshot.
+- Cloth ripple (`ClothRipple`, raw WebGL, owner's request 2026-10-22): moving the cursor across
+  a garment flat-lay sends soft fabric-like waves through it (a tap does the same on touch).
+  Flat-lays only: the hero product card, the four-channels product and the `/business` tweed
+  photo. Never on App screenshots (they stay unedited) or on photos of people. The `<img>` stays
+  underneath; the canvas only shows while waves are alive.
 - The site does not honor `prefers-reduced-motion` (owner's decision, 2026-10-22): everyone
   gets the same motion. Don't add reduced-motion fallbacks.
 
