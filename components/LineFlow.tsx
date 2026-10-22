@@ -20,6 +20,8 @@ interface LineFlowProps {
 
 // 聊天室主流程的四步各配一張 LINE 實機截圖，順序對應 copy.home.line.steps
 const STEP_SCREENS = ['line1Ask', 'line2Recommend', 'line4Result', 'line5Product'] as const satisfies readonly AppImageName[];
+// 和 ChannelSync 的通路畫面同一個互動：游標移到那一欄，手機往上浮一點
+const HOVER_LIFT = 'transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1.5';
 
 /**
  * LINE 試穿流程：聊天室裡的四步（說出需求 → 推薦整套 → 一鍵試穿 → 購買），
@@ -42,9 +44,9 @@ export function LineFlow({ copy }: LineFlowProps) {
             <motion.li
               key={item.title}
               variants={fadeUpItem}
-              className="w-[62vw] max-w-[240px] shrink-0 snap-center lg:mx-auto lg:w-full"
+              className="group w-[62vw] max-w-[240px] shrink-0 snap-center lg:mx-auto lg:w-full"
             >
-              <AppScreen name={STEP_SCREENS[i]} sizes="(min-width: 1024px) 240px, 62vw" />
+              <AppScreen name={STEP_SCREENS[i]} sizes="(min-width: 1024px) 240px, 62vw" className={HOVER_LIFT} />
               <div className="mt-6 flex items-baseline gap-3">
                 <span className="font-serif text-3xl font-black leading-none lining-nums text-[#2563EB]" aria-hidden>
                   {i + 1}
@@ -65,9 +67,9 @@ export function LineFlow({ copy }: LineFlowProps) {
         <motion.div
           variants={fadeUpItem}
           {...inView}
-          className="mx-auto mt-20 max-w-4xl border-t border-[#101828]/10 pt-16 md:mt-24 md:grid md:grid-cols-[auto_1fr] md:items-center md:gap-16 md:pt-20"
+          className="group mx-auto mt-20 max-w-4xl border-t border-[#101828]/10 pt-16 md:mt-24 md:grid md:grid-cols-[auto_1fr] md:items-center md:gap-16 md:pt-20"
         >
-          <AppScreen name="line3FittingRoom" sizes="200px" className="mx-auto w-[200px]" />
+          <AppScreen name="line3FittingRoom" sizes="200px" className={`mx-auto w-[200px] ${HOVER_LIFT}`} />
           <div className="mt-10 max-w-md md:mt-0">
             <h3 className="text-xl font-semibold text-[#101828] md:text-2xl">{copy.browse.title}</h3>
             <p className="mb-0 mt-3 text-balance text-sm leading-relaxed text-[#475467] md:text-base">{clauseWrap(copy.browse.desc)}</p>
