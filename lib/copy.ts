@@ -78,7 +78,7 @@ export const copy = {
     },
     business: {
       title: '品牌合作 — 上架一次，四個通路同步',
-      description: 'Tryzeon 為中小型時尚品牌整合 Tryzeon App、LINE 官方帳號、品牌官網與門市 QR Code，提供 AI 虛擬試穿與專業推薦。',
+      description: 'Tryzeon 為時尚品牌整合 Tryzeon App、LINE 官方帳號、品牌官網與門市 QR Code，提供 AI 虛擬試穿與專業推薦。',
       shareTitle: '品牌合作 — Tryzeon',
       shareDescription: '上架一次，四個通路同步。AI 虛擬試穿與專業推薦，接上你的品牌。',
     },
@@ -124,7 +124,7 @@ export const copy = {
   home: {
     hero: {
       titleLines: ['為時尚產業', '而生的 AI。'],
-      sub: 'Tryzeon 為中小服飾品牌提供 AI 虛擬試穿與穿搭推薦。',
+      sub: 'Tryzeon 為時尚品牌提供 AI 虛擬試穿與穿搭推薦。',
       service: '顧客在 Tryzeon App、LINE 官方帳號、品牌官網與門市都能試穿你的商品；每件商品的試穿率，你都看得到。',
       ctaPrimary: '預約導入諮詢',
       ctaSecondary: '下載 App',
@@ -267,7 +267,7 @@ export const copy = {
     fit: {
       title: '適合這樣的品牌。',
       items: [
-        { title: '中小服飾品牌', desc: '有自己的設計與風格，想讓更多顧客在下單前看見上身效果。' },
+        { title: '時尚品牌', desc: '有自己的設計與風格，想讓更多顧客在下單前看見上身效果。' },
         { title: '已經有自己的通路', desc: '經營 LINE 官方帳號、品牌官網或實體門市，想讓這些通路都能試穿。' },
         { title: '想用數據決定進貨', desc: '想知道顧客真正想試穿哪些商品，讓補貨與進貨有依據。' },
       ],
@@ -293,11 +293,11 @@ export const copy = {
     },
     origin: {
       title: '穿搭的決定，常在線上與線下之間來回。',
-      body: '消費者在線上看不到衣服穿上身的樣子，門市的體驗又帶不回家。另一邊，台灣許多中小型服飾品牌的設計很有特色，卻缺少行銷工具與數據能力，進貨與生產只能憑經驗判斷。Tryzeon 從這裡出發：把品牌的 LINE 官方帳號、官網與門市接上同一套系統。',
+      body: '消費者在線上看不到衣服穿上身的樣子，門市的體驗又帶不回家。另一邊，台灣許多時尚品牌的設計很有特色，卻缺少行銷工具與數據能力，進貨與生產只能憑經驗判斷。Tryzeon 從這裡出發：把品牌的 LINE 官方帳號、官網與門市接上同一套系統。',
     },
     vision: {
       title: '試穿只是切入點。',
-      quote: '「從中小型時尚品牌出發，用真實數據與 Vertical Fashion AI 垂直整合時尚產業——讓品牌更懂顧客，也讓消費者更快找到適合自己的穿搭。」',
+      quote: '「從時尚品牌出發，用真實數據與 Vertical Fashion AI 垂直整合時尚產業——讓品牌更懂顧客，也讓消費者更快找到適合自己的穿搭。」',
     },
     cta: '品牌合作',
   },

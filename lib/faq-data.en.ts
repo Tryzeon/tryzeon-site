@@ -4,7 +4,7 @@ import type { BrandFaqGroups, FaqItems } from '@/lib/faq-data';
 export const faqItemsEn: FaqItems = [
   {
     question: 'What is Tryzeon, and who is it for?',
-    answer: 'Tryzeon Ltd. is an AI startup built for the fashion industry, bringing AI virtual try-on and styling recommendations to small and mid-sized fashion brands. Brands list once and their products sync to the Tryzeon App, LINE Official Account, brand website and in-store QR codes; at any of these touchpoints, shoppers upload one full-body photo to see the product on them.',
+    answer: 'Tryzeon Ltd. is an AI startup built for the fashion industry, bringing AI virtual try-on and styling recommendations to fashion brands. Brands list once and their products sync to the Tryzeon App, LINE Official Account, brand website and in-store QR codes; at any of these touchpoints, shoppers upload one full-body photo to see the product on them.',
   },
   {
     question: 'General AI tools can do try-on now. How is Tryzeon different?',

@@ -5,7 +5,7 @@ import type { DeepWiden } from '@/lib/copy-types';
 export const faqItems = [
   {
     question: 'Tryzeon 是什麼？給誰用的？',
-    answer: 'Tryzeon（創然科技有限公司）是為時尚產業打造的 AI 新創，為中小服飾品牌提供 AI 虛擬試穿與穿搭推薦。品牌上架一次，商品就同步到 Tryzeon App、LINE 官方帳號、品牌官網與門市 QR Code；消費者在這些入口上傳一張全身照，就能看見商品穿上身的樣子。',
+    answer: 'Tryzeon（創然科技有限公司）是為時尚產業打造的 AI 新創，為時尚品牌提供 AI 虛擬試穿與穿搭推薦。品牌上架一次，商品就同步到 Tryzeon App、LINE 官方帳號、品牌官網與門市 QR Code；消費者在這些入口上傳一張全身照，就能看見商品穿上身的樣子。',
   },
   {
     question: '通用 AI 工具也能試穿了，Tryzeon 有什麼不同？',

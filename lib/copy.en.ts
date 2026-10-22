@@ -68,7 +68,7 @@ export const copyEn: SiteCopy = {
     },
     business: {
       title: 'For Brands\u00a0— List once, live on four channels',
-      description: 'Tryzeon connects the Tryzeon App, LINE Official Account, brand website and in-store QR codes for small and mid-sized fashion brands, with AI virtual try-on and styling recommendations.',
+      description: 'Tryzeon connects the Tryzeon App, LINE Official Account, brand website and in-store QR codes for fashion brands, with AI virtual try-on and styling recommendations.',
       shareTitle: 'For Brands\u00a0— Tryzeon',
       shareDescription: 'List once, live on four channels. AI virtual try-on and styling recommendations, connected to your brand.',
     },
@@ -105,7 +105,7 @@ export const copyEn: SiteCopy = {
   home: {
     hero: {
       titleLines: ['AI built', 'for fashion.'],
-      sub: 'Tryzeon brings AI virtual try-on and styling recommendations to small and mid-sized fashion brands.',
+      sub: 'Tryzeon brings AI virtual try-on and styling recommendations to fashion brands.',
       service: 'Your customers can try on your products in the Tryzeon App, on your LINE Official Account, on your website and in your stores\u00a0— and you see the try-on rate of every product.',
       ctaPrimary: 'Book a consultation',
       ctaSecondary: 'Download the App',
@@ -237,7 +237,7 @@ export const copyEn: SiteCopy = {
     fit: {
       title: 'Built for brands like these.',
       items: [
-        { title: 'Small and mid-sized fashion brands', desc: 'You have your own designs and style, and want more customers to see the fit before they order.' },
+        { title: 'Fashion brands', desc: 'You have your own designs and style, and want more customers to see the fit before they order.' },
         { title: 'Brands with their own channels', desc: 'You run a LINE Official Account, a brand website or physical stores, and want try-on on all of them.' },
         { title: 'Brands that buy by data', desc: 'You want to know which products customers really want to try on, so restocking and buying have a basis.' },
       ],
@@ -262,11 +262,11 @@ export const copyEn: SiteCopy = {
     },
     origin: {
       title: 'Outfit decisions bounce between online and offline.',
-      body: 'Online, shoppers can’t see how clothes look on them; in store, the experience doesn’t come home with them. Meanwhile, many small and mid-sized fashion brands in Taiwan have distinctive designs but lack marketing tools and data, so buying and production run on experience alone. Tryzeon starts here: connecting a brand’s LINE Official Account, website and stores to one system.',
+      body: 'Online, shoppers can’t see how clothes look on them; in store, the experience doesn’t come home with them. Meanwhile, many fashion brands in Taiwan have distinctive designs but lack marketing tools and data, so buying and production run on experience alone. Tryzeon starts here: connecting a brand’s LINE Official Account, website and stores to one system.',
     },
     vision: {
       title: 'Try-on is just the starting point.',
-      quote: '“Starting from small and mid-sized fashion brands, we use real data and Vertical Fashion AI to vertically integrate the fashion industry\u00a0— helping brands understand their customers, and helping shoppers find what suits them faster.”',
+      quote: '“Starting from fashion brands, we use real data and Vertical Fashion AI to vertically integrate the fashion industry\u00a0— helping brands understand their customers, and helping shoppers find what suits them faster.”',
     },
     cta: 'For Brands',
   },
