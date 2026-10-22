@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { Shield, Lock, Eye, Database, UserCheck } from 'lucide-react';
 import { PageLayout } from '@/components/PageLayout';
+import { copy } from '@/lib/copy';
 import { pageMetadata } from '@/lib/page-metadata';
 
 export const metadata: Metadata = pageMetadata({
   path: '/privacy',
-  title: '隱私權政策',
-  description: 'Tryzeon 如何蒐集、使用與保護你的個人資料與照片。',
+  ...copy.meta.privacy,
 });
 
 export const revalidate = 3600;

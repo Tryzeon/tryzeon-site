@@ -18,11 +18,7 @@ import { pageMetadata } from '@/lib/page-metadata';
 
 export const metadata: Metadata = pageMetadata({
   path: '/download',
-  title: '下載 App — iOS 與 Android',
-  description:
-    '免費下載 Tryzeon App：上傳一張全身照，在試衣間挑選可能合身的合作品牌商品，約 15–20 秒看見試穿結果。',
-  shareTitle: '下載 Tryzeon App',
-  shareDescription: '一張全身照，就能看見自己穿上的樣子。iOS 與 Android 免費下載。',
+  ...copy.meta.download,
 });
 
 export const revalidate = 3600;

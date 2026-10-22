@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { APP_FALLBACK_METADATA, AppDownload } from '@/components/AppDownload';
+import { copy } from '@/lib/copy';
 import { fetchProductPreview } from '@/lib/product-preview';
 
 interface ProductPageProps {
@@ -17,9 +18,12 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   // 沒帶 id、查不到、或後端故障時退回通用文案 —— 這頁必須永遠算得出來
   if (!product) return APP_FALLBACK_METADATA;
 
-  const title = product.storeName ? `${product.name}｜${product.storeName}` : product.name;
+  const { appFallback } = copy.notice;
+  const title = product.storeName
+    ? appFallback.productTitle.replace('{name}', product.name).replace('{store}', product.storeName)
+    : product.name;
   const price = product.price === null ? '' : `NT$${product.price} · `;
-  const description = `${price}用 Tryzeon App 虛擬試穿這件商品。`;
+  const description = appFallback.productDescription.replace('{price}', price);
   const url = `/product/${id}`;
 
   return {

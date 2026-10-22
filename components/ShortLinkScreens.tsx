@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Link2Off, MessageCircle, RefreshCw, Store } from 'lucide-react';
 import { Notice } from '@/components/Notice';
+import { copy } from '@/lib/copy';
 
 // 掃到店家 QR 之後、在 LINE 之外看到的三種畫面，共用 components/Notice 的淺色玻璃外殼。
 // 店家 logo 是遠端圖片：host 需同時在 CSP 的 img-src 與 next.config.js 的
@@ -14,8 +15,8 @@ export function ShortLinkExpired() {
   return (
     <Notice
       emblem={<Link2Off className="h-9 w-9 text-[#2563EB]" strokeWidth={1.4} />}
-      title="連結已失效"
-      lede="這個連結不存在或已停用。如果是從店家的 QR Code 掃來的，請向店家確認。"
+      title={copy.notice.shortLink.expired.title}
+      lede={copy.notice.shortLink.expired.lede}
     />
   );
 }
@@ -28,8 +29,8 @@ export function ShortLinkUnavailable() {
   return (
     <Notice
       emblem={<RefreshCw className="h-9 w-9 text-[#2563EB]" strokeWidth={1.4} />}
-      title="暫時無法開啟"
-      lede="伺服器忙線或連線中斷。請稍後重新掃一次，連結本身沒有問題。"
+      title={copy.notice.shortLink.unavailable.title}
+      lede={copy.notice.shortLink.unavailable.lede}
     />
   );
 }
@@ -47,6 +48,7 @@ interface LiffLandingProps {
  * 觸發機會，而自動跳轉用不掉它。
  */
 export function LiffLanding({ storeName, logoUrl, liffUrl }: LiffLandingProps) {
+  const { landing } = copy.notice.shortLink;
   return (
     <Notice
       emblem={logoUrl
@@ -63,8 +65,8 @@ export function LiffLanding({ storeName, logoUrl, liffUrl }: LiffLandingProps) {
           />
         )
         : <Store className="h-9 w-9 text-[#2563EB]" strokeWidth={1.4} />}
-      title={storeName ?? 'Tryzeon 合作店家'}
-      lede="在 LINE 中開啟，即可試穿這家店的商品。"
+      title={storeName ?? landing.fallbackName}
+      lede={landing.lede}
     >
       {/*
         必須是 <a href>，不能改成自動跳轉。Apple 的 DTS 明講 301/302 導向 universal link
@@ -77,7 +79,7 @@ export function LiffLanding({ storeName, logoUrl, liffUrl }: LiffLandingProps) {
         className="inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#2563EB] to-[#06B6D4] px-8 py-4 font-semibold text-white shadow-[0_8px_32px_rgba(37,99,235,0.25)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
       >
         <MessageCircle className="h-5 w-5" strokeWidth={1.8} />
-        在 LINE 中開啟
+        {landing.cta}
       </a>
     </Notice>
   );

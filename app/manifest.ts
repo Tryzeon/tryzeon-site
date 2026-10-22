@@ -1,10 +1,11 @@
 import type { MetadataRoute } from 'next';
+import { copy } from '@/lib/copy';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Tryzeon — 為時尚產業而生的 AI',
+    name: copy.meta.manifest.name,
     short_name: 'Tryzeon',
-    description: '連結消費者與時尚品牌的時尚 AI 生態系。',
+    description: copy.meta.manifest.description,
     start_url: '/',
     display: 'standalone',
     background_color: '#FAFAFA',

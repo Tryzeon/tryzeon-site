@@ -5,6 +5,7 @@ import { WebVitals } from "@/components/WebVitals";
 import { SkipToContent } from "@/components/Accessibility";
 import { CustomCursor } from "@/components/CustomCursor";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
+import { copy } from "@/lib/copy";
 import { OG_ALT, OG_SIZE } from "@/lib/page-metadata";
 import "./globals.css";
 
@@ -48,17 +49,11 @@ const notoSerifTC = Noto_Serif_TC({
 export const metadata: Metadata = {
   metadataBase: new URL('https://tryzeon.com'),
   title: {
-    default: "Tryzeon - 為時尚產業而生的 AI",
+    default: copy.meta.site.title,
     template: "%s | Tryzeon"
   },
-  description: "Tryzeon 是為時尚產業打造的垂直型 AI（Vertical Fashion AI）。品牌上架一次，商品同步到 Tryzeon App、LINE 官方帳號、品牌官網與門市 QR Code；消費者以 AI 虛擬試穿、動態試穿影片與 AI Fashion Agent 做穿搭決策。",
-  keywords: [
-    "AI 虛擬試穿", "虛擬換裝", "時尚科技", "Tryzeon",
-    "AI 試穿技術", "電商解決方案", "服飾科技",
-    "OOTD 推薦", "穿搭 AI", "動態試穿影片",
-    "virtual try-on", "fashion tech", "AI fashion",
-    "Vertical Fashion AI", "時尚 AI 生態系", "AI 穿搭推薦"
-  ],
+  description: copy.meta.site.description,
+  keywords: [...copy.meta.site.keywords],
   authors: [{ name: "Tryzeon Team", url: "https://tryzeon.com" }],
   creator: "Tryzeon",
   publisher: "Tryzeon",
@@ -81,8 +76,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "zh_TW",
     url: "https://tryzeon.com",
-    title: "Tryzeon - 為時尚產業而生的 AI",
-    description: "連結消費者與時尚品牌的時尚 AI 生態系——上架一次，四個通路同步。",
+    title: copy.meta.site.title,
+    description: copy.meta.site.shareDescription,
     siteName: "Tryzeon",
     images: [
       {
@@ -124,7 +119,7 @@ export default function RootLayout({
         legalName: '創然科技有限公司',
         url: 'https://tryzeon.com',
         logo: 'https://tryzeon.com/icon.png',
-        description: '為時尚產業打造的垂直型 AI（Vertical Fashion AI），連結消費者與時尚品牌的時尚 AI 生態系。',
+        description: copy.meta.site.orgDescription,
         contactPoint: { '@type': 'ContactPoint', email: 'contact@tryzeon.com', contactType: 'Customer Service' },
         sameAs: ['https://www.instagram.com/tryzeon', 'https://www.linkedin.com/company/tryzeon'],
         taxID: '82970406',

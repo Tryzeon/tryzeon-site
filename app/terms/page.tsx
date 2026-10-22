@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { FileText, AlertCircle, CheckCircle } from 'lucide-react';
 import { PageLayout } from '@/components/PageLayout';
+import { copy } from '@/lib/copy';
 import { pageMetadata } from '@/lib/page-metadata';
 
 export const metadata: Metadata = pageMetadata({
   path: '/terms',
-  title: '服務條款',
-  description: '使用 Tryzeon 網站與 App 的服務條款。',
+  ...copy.meta.terms,
 });
 
 export const revalidate = 3600;

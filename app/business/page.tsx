@@ -19,11 +19,7 @@ import { pageMetadata } from '@/lib/page-metadata';
 
 export const metadata: Metadata = pageMetadata({
   path: '/business',
-  title: '品牌合作 — 上架一次，四個通路同步',
-  description:
-    'Tryzeon 為中小型時尚品牌整合 Tryzeon App、LINE 官方帳號、品牌官網與門市 QR Code，提供 AI 虛擬試穿與專業推薦。',
-  shareTitle: '品牌合作 — Tryzeon',
-  shareDescription: '上架一次，四個通路同步。AI 虛擬試穿與專業推薦，接上你的品牌。',
+  ...copy.meta.business,
 });
 
 export const revalidate = 3600;

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { Home } from 'lucide-react';
+import { copy } from '@/lib/copy';
 
 interface NoticeProps {
   /** 玻璃方框裡的東西：Lucide 圖示或店家 logo */
@@ -50,7 +51,7 @@ export function Notice({ emblem, title, lede, children, homeLink = true }: Notic
               className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-[#475467] transition-colors duration-300 hover:text-[#101828] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
             >
               <Home className="h-4 w-4" strokeWidth={1.8} aria-hidden />
-              回到官方網站
+              {copy.notice.home}
             </Link>
           </div>
         )}

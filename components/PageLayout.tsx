@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
+import { copy } from '@/lib/copy';
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -22,7 +23,7 @@ export function PageLayout({ children }: PageLayoutProps) {
             className="inline-flex items-center gap-2 text-sm font-medium text-[#667085] hover:text-[#101828] transition-colors mb-12 group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            回到首頁
+            {copy.legalPage.back}
           </Link>
 
           {children}

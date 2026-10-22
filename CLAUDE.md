@@ -201,7 +201,11 @@ URL Configuration → Redirect URLs.
 - User-visible copy belongs in `lib/copy.ts` (`copy`, `as const`) and `lib/faq-data.ts`
   (`faqItems`). Never hardcode user-facing strings in components. Homepage sections take
   their slice (`HomeCopy['brands']` …) as a `copy` prop; `/business` and `/download` read
-  `copy.business` / `copy.download`. Server SEO copy (`metadata`) stays in each `page.tsx`.
+  `copy.business` / `copy.download`. SEO copy lives there too: `copy.meta` holds each page's
+  title / description / share text plus the share card (`ogCard`), manifest and Organization
+  JSON-LD description; `page.tsx` spreads its slice into `pageMetadata`. Single-message screens
+  read `copy.notice`, the skip link `copy.a11y`. Only the `/privacy` and `/terms` bodies (legal
+  documents) and `/admin` stay inline.
 - Every string in `copy.ts`, `faq-data.ts` and page/layout `metadata` must respect the
   redlines below; check them by hand when editing copy. Components index into some copy
   lists by position, so keep list lengths stable.

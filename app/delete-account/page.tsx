@@ -7,8 +7,7 @@ import { pageMetadata } from '@/lib/page-metadata';
 
 export const metadata: Metadata = pageMetadata({
   path: '/delete-account',
-  title: '刪除帳號',
-  description: '了解如何在 Tryzeon App 中刪除您的帳號與個人資料。',
+  ...copy.meta.deleteAccount,
 });
 
 export const revalidate = 3600;

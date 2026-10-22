@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 
 import HomePageClient from "@/components/HomePageClient";
+import { copy } from "@/lib/copy";
 import { faqItems } from "@/lib/faq-data";
 
 export const revalidate = 3600;
 
 // 首頁的 canonical 從 root layout 移來這裡 —— 放在 layout 會被每一頁繼承。
 export const metadata: Metadata = {
-  title: { absolute: 'Tryzeon - AI 虛擬試穿與穿搭推薦｜為時尚產業而生的 AI' },
+  title: { absolute: copy.meta.home.title },
   alternates: { canonical: '/' },
 };
 

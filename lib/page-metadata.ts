@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
+import { copy } from '@/lib/copy';
 
 // 分享卡（app/_og/card.tsx）的 alt 與尺寸；layout 與各子頁的 openGraph 共用
-export const OG_ALT = 'Tryzeon — 為時尚產業而生的 AI';
+export const OG_ALT = copy.meta.ogCard.alt;
 export const OG_SIZE = { width: 1200, height: 630 };
 
 interface PageMetadataInput {

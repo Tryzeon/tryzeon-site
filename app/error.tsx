@@ -3,6 +3,7 @@
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { Magnetic } from '@/components/Magnetic';
 import { Notice } from '@/components/Notice';
+import { copy } from '@/lib/copy';
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
@@ -13,8 +14,8 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (
     <Notice
       emblem={<AlertTriangle className="h-9 w-9 text-[#2563EB]" strokeWidth={1.4} />}
-      title="頁面發生錯誤"
-      lede="請重新載入一次；如果問題持續，請回到首頁或來信 contact@tryzeon.com。"
+      title={copy.notice.error.title}
+      lede={copy.notice.error.lede}
     >
       <Magnetic className="inline-block">
         <button
@@ -23,7 +24,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           className="btn-primary gap-2 px-8 py-3.5"
         >
           <RefreshCw className="h-5 w-5" aria-hidden />
-          重新載入
+          {copy.notice.error.retry}
         </button>
       </Magnetic>
 

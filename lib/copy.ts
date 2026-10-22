@@ -1,5 +1,6 @@
 // 全站對外文案的單一來源（zh-TW），依 docs/superpowers/specs/2026-10-13-site-content-spec.md。
-// 網站不做多語系；元件從這裡取字串，不在 JSX 裡硬寫。規格書沒寫的對外文字不放進來。
+// 元件與頁面從這裡取字串（含 metadata），不在 JSX 裡硬寫。規格書以外只收系統畫面
+// （notice：404、錯誤、短連結、App fallback）與無障礙文字；法律頁內文與 /admin 不在這裡。
 const CONTACT_EMAIL = 'contact@tryzeon.com';
 // Tryzeon 自己的 LINE 官方帳號：消費者加入就能試穿各合作品牌的商品；沒有真人回覆合作詢問
 const LINE_OA_ID = '@tryzeon';
@@ -40,6 +41,71 @@ export const copy = {
   videos: {
     street: 'Tryzeon App 動態試穿影片：穿著鈷藍洋裝在街頭走動、轉身（AI 生成的示意人像）',
     office: 'Tryzeon App 動態試穿影片：穿著西裝外套與寬褲在辦公室走動（AI 生成的示意人像）',
+  },
+  // <title>、description 與分享卡；對應規格書各頁的「搜尋與分享文字」。
+  // 子頁的 shareTitle / shareDescription 省略時，pageMetadata 會自動補
+  meta: {
+    site: {
+      title: 'Tryzeon - 為時尚產業而生的 AI',
+      description: 'Tryzeon 是為時尚產業打造的垂直型 AI（Vertical Fashion AI）。品牌上架一次，商品同步到 Tryzeon App、LINE 官方帳號、品牌官網與門市 QR Code；消費者以 AI 虛擬試穿、動態試穿影片與 AI Fashion Agent 做穿搭決策。',
+      keywords: [
+        'AI 虛擬試穿', '虛擬換裝', '時尚科技', 'Tryzeon',
+        'AI 試穿技術', '電商解決方案', '服飾科技',
+        'OOTD 推薦', '穿搭 AI', '動態試穿影片',
+        'virtual try-on', 'fashion tech', 'AI fashion',
+        'Vertical Fashion AI', '時尚 AI 生態系', 'AI 穿搭推薦',
+      ],
+      shareDescription: '連結消費者與時尚品牌的時尚 AI 生態系——上架一次，四個通路同步。',
+      // Organization JSON-LD 的 description
+      orgDescription: '為時尚產業打造的垂直型 AI（Vertical Fashion AI），連結消費者與時尚品牌的時尚 AI 生態系。',
+    },
+    // 分享圖（app/_og/card.tsx）上的字與它的 alt
+    ogCard: {
+      alt: 'Tryzeon — 為時尚產業而生的 AI',
+      kicker: 'VERTICAL FASHION AI',
+      title: '為時尚產業而生的 AI',
+      sub: '連結消費者與時尚品牌的時尚 AI 生態系',
+    },
+    manifest: {
+      name: 'Tryzeon — 為時尚產業而生的 AI',
+      description: '連結消費者與時尚品牌的時尚 AI 生態系。',
+    },
+    home: {
+      title: 'Tryzeon - AI 虛擬試穿與穿搭推薦｜為時尚產業而生的 AI',
+    },
+    business: {
+      title: '品牌合作 — 上架一次，四個通路同步',
+      description: 'Tryzeon 為中小型時尚品牌整合 Tryzeon App、LINE 官方帳號、品牌官網與門市 QR Code，提供 AI 虛擬試穿與專業推薦。',
+      shareTitle: '品牌合作 — Tryzeon',
+      shareDescription: '上架一次，四個通路同步。AI 虛擬試穿與專業推薦，接上你的品牌。',
+    },
+    about: {
+      title: '關於我們 — 創然科技 Tryzeon',
+      description: 'Tryzeon（創然科技有限公司）是專注時尚產業的 AI 新創，打造連結消費者與時尚品牌的時尚 AI 生態系。',
+      shareTitle: '關於 Tryzeon',
+      shareDescription: '為時尚產業而生的 AI——連結消費者與時尚品牌。',
+    },
+    download: {
+      title: '下載 App — iOS 與 Android',
+      description: '免費下載 Tryzeon App：上傳一張全身照，在試衣間挑選可能合身的合作品牌商品，約 15–20 秒看見試穿結果。',
+      shareTitle: '下載 Tryzeon App',
+      shareDescription: '一張全身照，就能看見自己穿上的樣子。iOS 與 Android 免費下載。',
+    },
+    privacy: {
+      title: '隱私權政策',
+      description: 'Tryzeon 如何蒐集、使用與保護你的個人資料與照片。',
+    },
+    terms: {
+      title: '服務條款',
+      description: '使用 Tryzeon 網站與 App 的服務條款。',
+    },
+    deleteAccount: {
+      title: '刪除帳號',
+      description: '了解如何在 Tryzeon App 中刪除您的帳號與個人資料。',
+    },
+  },
+  a11y: {
+    skipToContent: '跳到主要內容',
   },
   nav: {
     product: '產品',
@@ -225,7 +291,7 @@ export const copy = {
     },
     vision: {
       title: '試穿只是切入點。',
-      quote: '從中小型時尚品牌出發，用真實數據與 Vertical Fashion AI 垂直整合時尚產業——讓品牌更懂顧客，也讓消費者更快找到適合自己的穿搭。',
+      quote: '「從中小型時尚品牌出發，用真實數據與 Vertical Fashion AI 垂直整合時尚產業——讓品牌更懂顧客，也讓消費者更快找到適合自己的穿搭。」',
     },
     cta: '品牌合作',
   },
@@ -276,6 +342,57 @@ export const copy = {
     warningTitle: '刪除後無法復原',
     warning:
       '帳號刪除後，你在 Tryzeon 上的所有資訊（包含虛擬試穿紀錄、個人設定與店家互動紀錄）都會被永久刪除。日後若要再使用，需要重新註冊帳號。',
+  },
+  // 法務／帳號子頁（components/PageLayout）的返回連結
+  legalPage: {
+    back: '回到首頁',
+  },
+  // 單一訊息的全頁畫面（components/Notice）。{name} {store} {price} 由呼叫端代入
+  notice: {
+    home: '回到官方網站',
+    notFound: {
+      metaTitle: '找不到頁面',
+      title: '找不到這個頁面',
+      lede: '網址可能打錯了，或這個頁面已經移除。',
+      // 第一個是主要按鈕
+      links: [
+        { label: '回到首頁', href: '/' },
+        { label: '品牌合作', href: '/business' },
+        { label: '下載 App', href: '/download' },
+      ],
+    },
+    error: {
+      title: '頁面發生錯誤',
+      lede: `請重新載入一次；如果問題持續，請回到首頁或來信 ${CONTACT_EMAIL}。`,
+      retry: '重新載入',
+    },
+    // 掃店家 QR 後在 LINE 之外看到的畫面。失效與故障措辭刻意不同：故障時重掃就會好
+    shortLink: {
+      expired: {
+        title: '連結已失效',
+        lede: '這個連結不存在或已停用。如果是從店家的 QR Code 掃來的，請向店家確認。',
+      },
+      unavailable: {
+        title: '暫時無法開啟',
+        lede: '伺服器忙線或連線中斷。請稍後重新掃一次，連結本身沒有問題。',
+      },
+      landing: {
+        fallbackName: 'Tryzeon 合作店家',
+        lede: '在 LINE 中開啟，即可試穿這家店的商品。',
+        cta: '在 LINE 中開啟',
+        description: '在 LINE 上虛擬試穿 {name} 的商品。',
+      },
+    },
+    // Universal Link / App Link 沒被 App 接走時（/store、/product）
+    appFallback: {
+      title: '透過 App 開啟完整體驗',
+      lede: '此頁面為 Tryzeon 應用程式專屬內容。請下載 App 以享受完整的 AI 虛擬試穿體驗。',
+      metaTitle: '下載 Tryzeon App',
+      metaDescription: '透過 Tryzeon App 開啟完整的 AI 虛擬試穿體驗。',
+      // 商品連結貼進聊天軟體時的預覽卡；{price} 是含分隔符的「NT$1880 · 」或空字串
+      productTitle: '{name}｜{store}',
+      productDescription: '{price}用 Tryzeon App 虛擬試穿這件商品。',
+    },
   },
   contact: {
     email: CONTACT_EMAIL,

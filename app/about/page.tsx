@@ -13,12 +13,8 @@ import { pageMetadata } from '@/lib/page-metadata';
 
 export const metadata: Metadata = pageMetadata({
   path: '/about',
-  title: '關於我們 — 創然科技 Tryzeon',
   absoluteTitle: true,
-  description:
-    'Tryzeon（創然科技有限公司）是專注時尚產業的 AI 新創，打造連結消費者與時尚品牌的時尚 AI 生態系。',
-  shareTitle: '關於 Tryzeon',
-  shareDescription: '為時尚產業而生的 AI——連結消費者與時尚品牌。',
+  ...copy.meta.about,
 });
 
 export const revalidate = 3600;
@@ -71,7 +67,7 @@ export default function AboutPage() {
             className="mb-0 mx-auto max-w-3xl text-balance font-serif font-semibold leading-[1.7] text-[#475467]"
             style={{ fontSize: 'clamp(1.125rem, 1.6vw, 1.45rem)' }}
           >
-            「{about.vision.quote}」
+            {about.vision.quote}
           </p>
         </div>
       </section>

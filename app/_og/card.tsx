@@ -1,10 +1,12 @@
 import { ImageResponse } from 'next/og';
+import { copy } from '@/lib/copy';
 import { OG_SIZE } from '@/lib/page-metadata';
 
 // opengraph-image 的分享卡（twitter:image 由 Next 從 openGraph 自動帶入）。淺色 Liquid Glass：#FAFAFA 底、
 // blue→cyan 光暈與細線；沒有載入宋體，標題交給預設字型。
 
 export function renderOgCard() {
+  const { ogCard } = copy.meta;
   return new ImageResponse(
     (
       <div
@@ -43,7 +45,7 @@ export function renderOgCard() {
         />
 
         <div style={{ display: 'flex', fontSize: 20, letterSpacing: '0.4em', color: '#475467', marginBottom: 28 }}>
-          VERTICAL FASHION AI
+          {ogCard.kicker}
         </div>
         <div style={{ display: 'flex', fontSize: 96, fontWeight: 900, letterSpacing: '-0.03em', color: '#101828' }}>
           Tryzeon
@@ -57,9 +59,9 @@ export function renderOgCard() {
             background: 'linear-gradient(to right, #2563EB, #60A5FA, #06B6D4)',
           }}
         />
-        <div style={{ display: 'flex', fontSize: 44, fontWeight: 700, color: '#101828' }}>為時尚產業而生的 AI</div>
+        <div style={{ display: 'flex', fontSize: 44, fontWeight: 700, color: '#101828' }}>{ogCard.title}</div>
         <div style={{ display: 'flex', fontSize: 26, color: '#475467', marginTop: 20 }}>
-          連結消費者與時尚品牌的時尚 AI 生態系
+          {ogCard.sub}
         </div>
       </div>
     ),
