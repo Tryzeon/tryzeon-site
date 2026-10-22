@@ -5,11 +5,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
-import { copy } from '@/lib/copy';
+import { LanguageSwitch } from '@/components/LanguageSwitch';
 import { scrollWithinPage } from '@/components/SiteLink';
+import { useCopy, useLocale } from '@/components/useCopy';
+import { localePath } from '@/lib/i18n';
 
 export function Navigation() {
   const pathname = usePathname();
+  const copy = useCopy();
+  const locale = useLocale();
+  const homeHref = localePath(locale, '/');
+  const businessHref = localePath(locale, '/business');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -61,12 +67,12 @@ export function Navigation() {
   };
 
   const navigationItems = [
-    { href: '/', label: copy.nav.product },
-    { href: '/business', label: copy.nav.business },
-    { href: '/about', label: copy.nav.about },
+    { href: homeHref, label: copy.nav.product },
+    { href: businessHref, label: copy.nav.business },
+    { href: localePath(locale, '/about'), label: copy.nav.about },
   ];
 
-  const isCurrent = (href: string) => (href === '/' ? pathname === '/' : href === pathname);
+  const isCurrent = (href: string) => href === pathname;
 
   // 目前頁與其他項的樣式互斥傳入：同一個屬性的兩個 utility 同時存在時，勝負取決於 CSS 輸出順序，不是 class 順序
   const renderItem = (
@@ -106,8 +112,8 @@ export function Navigation() {
       >
         <div className="flex justify-between items-center h-12 md:h-14">
           <Link
-            href="/"
-            onClick={(e) => handleItemClick(e, '/')}
+            href={homeHref}
+            onClick={(e) => handleItemClick(e, homeHref)}
             className="focus-ring inline-flex items-center gap-2 text-2xl md:text-3xl font-bold tracking-tight transition-colors duration-300 text-[#101828] hover:text-[#2563EB] rounded-md"
           >
             {/* 標誌是裝飾，連結名稱由旁邊的「Tryzeon」提供 */}
@@ -135,9 +141,10 @@ export function Navigation() {
           </div>
 
           <div className="hidden lg:flex items-center space-x-6">
+            <LanguageSwitch className="inline-flex text-[13px] font-medium tracking-wide text-[#101828]/75 hover:text-[#101828]" />
             <Link
-              href="/business"
-              onClick={(e) => handleItemClick(e, '/business')}
+              href={businessHref}
+              onClick={(e) => handleItemClick(e, businessHref)}
               className={`focus-ring px-5 py-2 text-[12px] font-semibold rounded-full transition-colors duration-300 ${
                 shouldShowWhiteBackground
                   ? 'bg-[#101828] text-white hover:bg-[#1D2939]'
@@ -185,10 +192,14 @@ export function Navigation() {
 
                 <div className="h-px bg-black/5 my-4 mx-4"></div>
 
-                <div className="pt-4 px-2">
+                <div className="pt-4 px-2 space-y-3">
+                  <LanguageSwitch
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex w-full justify-center py-3 text-sm font-semibold text-[#101828] hover:text-[#2563EB]"
+                  />
                   <Link
-                    href="/business"
-                    onClick={(e) => handleItemClick(e, '/business')}
+                    href={businessHref}
+                    onClick={(e) => handleItemClick(e, businessHref)}
                     className="focus-ring block w-full py-3.5 text-center text-sm font-bold bg-[#101828] text-white rounded-full shadow-lg active:scale-95 transition-transform"
                   >
                     {copy.nav.cta}

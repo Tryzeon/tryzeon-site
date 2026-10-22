@@ -10,9 +10,11 @@ import { GradientWave } from '@/components/GradientWave';
 import { Magnetic } from '@/components/Magnetic';
 import { TiltStage } from '@/components/TiltStage';
 import { clauseWrap, keepRanges } from '@/components/clauseWrap';
+import { useCopy, useLocale } from '@/components/useCopy';
 import { trackCTA } from '@/lib/analytics';
 import { APP_IMAGES } from '@/lib/app-images';
-import { copy as siteCopy, type HomeCopy } from '@/lib/copy';
+import type { HomeCopy } from '@/lib/copy';
+import { localePath } from '@/lib/i18n';
 import { EASE } from '@/lib/motion';
 
 const AURORA = ['#FAFAFA', '#E0E7FF', '#E0F2FE', '#CFFAFE', '#FAFAFA'];
@@ -20,6 +22,7 @@ const AURORA = ['#FAFAFA', '#E0E7FF', '#E0F2FE', '#CFFAFE', '#FAFAFA'];
 // 「輸入」小卡：白框、圓角、柔和陰影（模特全身照與商品平拍共用），寬度跟著父層
 // 商品平拍那張，游標劃過會像布一樣起波紋；全身照是人像，不套
 function InputCard({ name, sizes }: { name: 'modelA' | 'productHero'; sizes: string }) {
+  const siteCopy = useCopy();
   const image = APP_IMAGES[name];
   const photo = (
     <Image
@@ -69,6 +72,7 @@ interface HeroCinemaProps {
  * 依景深轉向游標，螢幕上的反光點跟著走。
  */
 export function HeroCinema({ copy }: HeroCinemaProps) {
+  const locale = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const enter = { variants: fadeUp, initial: 'hidden' as const, animate: 'show' as const };
   // 文字欄用 CSS 的 hero-enter（globals.css）：SSR HTML 就帶著動畫，不等 hydration，主張在第一眼就讀得到。
@@ -117,7 +121,7 @@ export function HeroCinema({ copy }: HeroCinemaProps) {
           <div className="hero-enter [animation-delay:0.7s] mt-10 md:mt-12 flex w-full flex-col sm:w-auto sm:flex-row gap-3 md:gap-4">
             <Magnetic>
               <Link
-                href="/business"
+                href={localePath(locale, '/business')}
                 onClick={() => trackCTA('hero_business')}
                 className="btn-primary w-full text-base"
               >
@@ -126,7 +130,7 @@ export function HeroCinema({ copy }: HeroCinemaProps) {
             </Magnetic>
             <Magnetic>
               <Link
-                href="/download"
+                href={localePath(locale, '/download')}
                 onClick={() => trackCTA('hero_download')}
                 className="focus-ring inline-flex w-full items-center justify-center px-9 py-4 bg-white/70 backdrop-blur-md text-[#101828] rounded-full font-semibold text-base hover:bg-white transition-colors duration-300 border border-[#101828]/10"
               >

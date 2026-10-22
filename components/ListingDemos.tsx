@@ -6,11 +6,12 @@ import { motion } from 'framer-motion';
 import { Check, FileSpreadsheet, Loader2, Mic } from 'lucide-react';
 import { ClothRipple } from '@/components/ClothRipple';
 import { Magnetic } from '@/components/Magnetic';
+import { useCopy } from '@/components/useCopy';
 import { APP_IMAGES } from '@/lib/app-images';
-import { copy } from '@/lib/copy';
+import type { SiteCopy } from '@/lib/copy';
 import { EASE } from '@/lib/motion';
 
-type Demo = (typeof copy.business.listing)['demo'];
+type Demo = SiteCopy['business']['listing']['demo'];
 
 /**
  * 每段示範共用的四個階段（由 ListingStudio 依時間推進）：
@@ -96,6 +97,7 @@ export function ExcelDemo({ phase, copy: demo }: { phase: Phase; copy: Demo['exc
 
 /** 拍照上傳：照片被掃描，AI 標註一顆顆彈出來；照片和標籤都能拖，放手會彈回去 */
 export function PhotoDemo({ phase, copy: demo }: DemoProps & { copy: Demo['photo'] }) {
+  const copy = useCopy();
   const image = APP_IMAGES.productTweed;
 
   return (

@@ -1,8 +1,10 @@
+'use client';
+
 import Image from 'next/image';
 
 import { PhoneFrame } from '@/components/PhoneFrame';
+import { useCopy } from '@/components/useCopy';
 import { APP_IMAGES, type AppImageName } from '@/lib/app-images';
-import { copy } from '@/lib/copy';
 
 interface AppScreenProps {
   name: AppImageName;
@@ -14,8 +16,9 @@ interface AppScreenProps {
   className?: string;
 }
 
-/** 一張實機截圖放進手機外框；alt 取自 copy.images（與 APP_IMAGES 同一組 key） */
+/** 一張實機截圖放進手機外框；alt 取自目前語言的 copy.images（與 APP_IMAGES 同一組 key）。server 頁面也會用，所以是 client 元件、自己從網址判斷語言 */
 export function AppScreen({ name, sizes, priority = false, framed = true, className = '' }: AppScreenProps) {
+  const copy = useCopy();
   const image = APP_IMAGES[name];
   const screen = (
     <Image

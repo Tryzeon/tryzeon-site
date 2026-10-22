@@ -1,6 +1,9 @@
 // 全站對外文案的單一來源（zh-TW），依 docs/superpowers/specs/2026-10-13-site-content-spec.md。
 // 元件與頁面從這裡取字串（含 metadata），不在 JSX 裡硬寫。規格書以外只收系統畫面
 // （notice：404、錯誤、短連結、App fallback）與無障礙文字；法律頁內文與 /admin 不在這裡。
+// 英文版在 lib/copy.en.ts：改這裡的結構或陣列長度，英文版要跟著改（型別會擋）。
+import type { DeepWiden } from '@/lib/copy-types';
+
 const CONTACT_EMAIL = 'contact@tryzeon.com';
 // Tryzeon 自己的 LINE 官方帳號：消費者加入就能試穿各合作品牌的商品；沒有真人回覆合作詢問
 const LINE_OA_ID = '@tryzeon';
@@ -114,6 +117,9 @@ export const copy = {
     cta: '預約導入諮詢',
     menuOpen: '開啟選單',
     menuClose: '關閉選單',
+    // 語言切換鈕：顯示目標語言，用目標語言念（LanguageSwitch 會在連結上標 lang）
+    switchLabel: 'EN',
+    switchAria: 'Switch to English',
   },
   home: {
     hero: {
@@ -446,7 +452,9 @@ export const copy = {
   },
 } as const;
 
+/** 各語言文案共用的形狀；lib/copy.en.ts 照這個型別寫，結構與陣列長度必須與中文版一致 */
+export type SiteCopy = DeepWiden<typeof copy>;
 /** 首頁各 section 的文案切片型別 */
-export type HomeCopy = typeof copy.home;
+export type HomeCopy = SiteCopy['home'];
 /** /about 各 section 的文案切片型別 */
-export type AboutCopy = typeof copy.about;
+export type AboutCopy = SiteCopy['about'];

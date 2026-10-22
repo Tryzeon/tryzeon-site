@@ -1,13 +1,18 @@
 import { FooterWordmark } from '@/components/FooterWordmark';
 import { SiteLink } from '@/components/SiteLink';
-import { copy } from '@/lib/copy';
+import { getCopy } from '@/lib/get-copy';
+import type { Locale } from '@/lib/i18n';
 
 const LINK =
   'rounded-sm text-sm font-medium text-white/70 transition-colors hover:text-[#60A5FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#60A5FA] focus-visible:ring-offset-2 focus-visible:ring-offset-[#1D1D1F]';
 
+interface FooterProps {
+  locale: Locale;
+}
+
 // 全站唯一的深色區塊（MASTER.md）
-export function Footer() {
-  const { footer } = copy;
+export function Footer({ locale }: FooterProps) {
+  const { footer } = getCopy(locale);
   const year = new Date().getFullYear();
 
   return (

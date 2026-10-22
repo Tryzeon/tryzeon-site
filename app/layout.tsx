@@ -138,7 +138,7 @@ export default function RootLayout({
         name: 'Tryzeon',
         url: 'https://tryzeon.com',
         publisher: { '@id': 'https://tryzeon.com/#organization' },
-        inLanguage: 'zh-TW',
+        inLanguage: ['zh-TW', 'en'],
       },
     ],
   };

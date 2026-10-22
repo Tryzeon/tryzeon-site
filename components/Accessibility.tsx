@@ -1,6 +1,10 @@
-import { copy } from '@/lib/copy';
+'use client';
 
+import { useCopy } from '@/components/useCopy';
+
+// 掛在 root layout、/en 子樹之外，所以自己從網址判斷語言
 export function SkipToContent() {
+  const copy = useCopy();
   return (
     <a
       href="#main-content"

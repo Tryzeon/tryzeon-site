@@ -15,11 +15,15 @@ import { Navigation } from '@/components/Navigation';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { Section } from '@/components/Section';
 import { SectionHeader } from '@/components/SectionHeader';
+import { useCopy, useLocale } from '@/components/useCopy';
 import { trackCTA } from '@/lib/analytics';
-import { copy } from '@/lib/copy';
-import { faqItems } from '@/lib/faq-data';
+import { getFaq } from '@/lib/get-copy';
+import { localePath } from '@/lib/i18n';
 
 export default function HomePageClient() {
+  const copy = useCopy();
+  const locale = useLocale();
+  const { faqItems } = getFaq(locale);
   const { engine, faq, cta } = copy.home;
 
   return (
@@ -39,7 +43,7 @@ export default function HomePageClient() {
         <div className="max-w-5xl mx-auto px-6 text-center">
           <SectionHeader title={engine.title} spacing="mb-8 md:mb-10" sheen />
           <ScrollReveal delay={0.1}>
-            <MoreLink href="/about#engine">{engine.link}</MoreLink>
+            <MoreLink href={localePath(locale, '/about#engine')}>{engine.link}</MoreLink>
           </ScrollReveal>
         </div>
       </Section>
@@ -66,7 +70,7 @@ export default function HomePageClient() {
             <div className="flex justify-center">
               <Magnetic className="w-full md:w-auto">
                 <Link
-                  href="/business"
+                  href={localePath(locale, '/business')}
                   onClick={() => trackCTA('cta_business')}
                   className="btn-primary group w-full md:w-auto text-base"
                 >
@@ -79,7 +83,7 @@ export default function HomePageClient() {
         </div>
       </Section>
 
-      <Footer />
+      <Footer locale={locale} />
     </div>
   );
 }

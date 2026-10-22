@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { PhoneFrame } from '@/components/PhoneFrame';
 import { TRYON_VIDEOS, type TryOnVideoName } from '@/lib/app-images';
-import { copy } from '@/lib/copy';
+import { useCopy } from '@/components/useCopy';
 
 interface TryOnVideoProps {
   /** 哪一支影片：TRYON_VIDEOS 的 key */
@@ -18,6 +18,7 @@ interface TryOnVideoProps {
  * preload="none"＋不用 autoPlay：隱藏的那份（桌機上的手機版 DOM）永遠不會相交，就不會抓影片。
  */
 export function TryOnVideo({ video: name = 'street', framed = true, className = '' }: TryOnVideoProps) {
+  const copy = useCopy();
   const source = TRYON_VIDEOS[name];
   const ref = useRef<HTMLVideoElement>(null);
   // display:none 擋不住 poster 下載：隱藏的那份永遠不會相交，也就不會抓圖

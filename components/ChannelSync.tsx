@@ -7,9 +7,11 @@ import { ClothRipple } from '@/components/ClothRipple';
 import { MoreLink } from '@/components/MoreLink';
 import { SectionHeader } from '@/components/SectionHeader';
 import { clauseWrap } from '@/components/clauseWrap';
+import { useCopy, useLocale } from '@/components/useCopy';
 import { APP_IMAGES, type AppImageName } from '@/lib/app-images';
-import { copy as siteCopy, type HomeCopy } from '@/lib/copy';
+import type { HomeCopy } from '@/lib/copy';
 import { MEDIA, gsap } from '@/lib/gsap';
+import { localePath } from '@/lib/i18n';
 
 // 每個通路的畫面，順序對應 copy.home.brands.channels：前三個是螢幕畫面（放手機框），門市是店內照片（白邊相框，不假裝是螢幕）
 const CHANNEL_VISUALS = ['storePage', 'lineChatEntry', 'embedMobile', 'storeQr'] as const satisfies readonly AppImageName[];
@@ -29,6 +31,8 @@ interface ChannelSyncProps {
  * 品牌端怎麼上架（三種方式＋後台畫面）只在 /business 說明。
  */
 export function ChannelSync({ copy }: ChannelSyncProps) {
+  const siteCopy = useCopy();
+  const locale = useLocale();
   const stageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -171,7 +175,7 @@ export function ChannelSync({ copy }: ChannelSyncProps) {
         </div>
 
         <div className="mt-14 lg:mt-16">
-          <MoreLink href="/business">{copy.link}</MoreLink>
+          <MoreLink href={localePath(locale, '/business')}>{copy.link}</MoreLink>
         </div>
       </div>
     </section>

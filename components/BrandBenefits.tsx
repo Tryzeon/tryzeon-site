@@ -2,7 +2,8 @@ import { BarChart3, Clapperboard, ScanLine, Sparkles } from 'lucide-react';
 import { AppScreen } from '@/components/AppScreen';
 import { TryOnVideo } from '@/components/TryOnVideo';
 import { keepRanges } from '@/components/clauseWrap';
-import { copy } from '@/lib/copy';
+import { getCopy } from '@/lib/get-copy';
+import type { Locale } from '@/lib/i18n';
 
 // 順序對應 copy.business.features.items
 const FEATURE_ICONS = [Sparkles, ScanLine, BarChart3, Clapperboard] as const;
@@ -16,13 +17,14 @@ const WIDE_PHONE = 'w-[38vw] max-w-[200px] md:w-[200px] lg:w-[240px] xl:w-[260px
 const WIDE_PHONE_SIZES = '(min-width: 1280px) 260px, (min-width: 1024px) 240px, (min-width: 768px) 200px, 38vw';
 
 interface TileTextProps {
+  locale: Locale;
   /** copy.business.features.items 的索引 */
   index: number;
 }
 
 /** 每格的圖示＋標題＋說明；說明較長，不用 text-balance（會把行寬縮窄、斷在詞中間） */
-function TileText({ index }: TileTextProps) {
-  const entry = copy.business.features.items[index];
+function TileText({ locale, index }: TileTextProps) {
+  const entry = getCopy(locale).business.features.items[index];
   const Icon = FEATURE_ICONS[index];
   return (
     <div>
@@ -40,14 +42,18 @@ function TileText({ index }: TileTextProps) {
  * 第一列：試穿（兩種身形，佔兩格）＋穿搭推薦；第二列：試穿影片＋試穿率後台（佔兩格，文字在左、畫面在右）。
  * 平板兩欄、手機單欄直排。
  */
-export function BrandBenefits() {
-  const { features } = copy.business;
+interface BrandBenefitsProps {
+  locale: Locale;
+}
+
+export function BrandBenefits({ locale }: BrandBenefitsProps) {
+  const { features } = getCopy(locale).business;
 
   return (
     <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {/* 顧客先看見上身：同一件洋裝的兩種身形 */}
       <li className={`${TILE} md:col-span-2`}>
-        <TileText index={0} />
+        <TileText locale={locale} index={0} />
         <div className="mt-8 flex flex-1 items-end justify-center gap-4 md:gap-8">
           {(['tryonHero', 'tryonCurvy'] as const).map((name, j) => (
             <figure key={name} className="m-0">
@@ -60,7 +66,7 @@ export function BrandBenefits() {
 
       {/* 單品搭成整套 */}
       <li className={TILE}>
-        <TileText index={1} />
+        <TileText locale={locale} index={1} />
         <div className="mt-8 flex flex-1 items-end justify-center">
           <AppScreen name="agentWardrobe" sizes={PHONE_SIZES} className={PHONE} />
         </div>
@@ -68,7 +74,7 @@ export function BrandBenefits() {
 
       {/* 試穿影片就是素材 */}
       <li className={TILE}>
-        <TileText index={3} />
+        <TileText locale={locale} index={3} />
         <div className="mt-8 flex flex-1 items-end justify-center">
           <TryOnVideo video="office" className={PHONE} />
         </div>
@@ -77,7 +83,7 @@ export function BrandBenefits() {
       {/* 知道該補什麼貨：文字在左上、後台畫面在右，手機與其他格一樣貼齊底部 */}
       <li className={`${TILE} md:col-span-2 sm:flex-row sm:items-end sm:gap-10`}>
         <div className="sm:flex-1 sm:self-start">
-          <TileText index={2} />
+          <TileText locale={locale} index={2} />
         </div>
         <div className="mt-8 flex justify-center sm:mt-0">
           <AppScreen name="dashboardRanking" sizes={WIDE_PHONE_SIZES} className={WIDE_PHONE} />

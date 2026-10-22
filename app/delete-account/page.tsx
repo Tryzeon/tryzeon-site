@@ -6,6 +6,7 @@ import { copy } from '@/lib/copy';
 import { pageMetadata } from '@/lib/page-metadata';
 
 export const metadata: Metadata = pageMetadata({
+  locale: 'zh-TW',
   path: '/delete-account',
   ...copy.meta.deleteAccount,
 });

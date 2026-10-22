@@ -3,16 +3,20 @@
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { Magnetic } from '@/components/Magnetic';
 import { Notice } from '@/components/Notice';
-import { copy } from '@/lib/copy';
+import { useCopy, useLocale } from '@/components/useCopy';
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
   reset: () => void;
 }
 
+// 全站只有這一個錯誤邊界，語言從網址判斷
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
+  const copy = useCopy();
+  const locale = useLocale();
   return (
     <Notice
+      locale={locale}
       emblem={<AlertTriangle className="h-9 w-9 text-[#2563EB]" strokeWidth={1.4} />}
       title={copy.notice.error.title}
       lede={copy.notice.error.lede}

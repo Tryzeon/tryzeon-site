@@ -30,7 +30,7 @@ export function PageLayout({ children }: PageLayoutProps) {
         </div>
       </div>
 
-      <Footer />
+      <Footer locale="zh-TW" />
     </div>
   );
 }

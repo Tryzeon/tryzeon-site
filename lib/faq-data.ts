@@ -1,3 +1,5 @@
+import type { DeepWiden } from '@/lib/copy-types';
+
 // 首頁常見問題：給第一次來的人分流 —— Tryzeon 是什麼、和通用 AI 工具差在哪、試穿品質，
 // 再把品牌與消費者各自帶到 /business、/download。品牌的細節題在 /business，這裡不重複。
 export const faqItems = [
@@ -23,7 +25,7 @@ export const faqItems = [
     answer: '下載 Tryzeon App，或加入 Tryzeon 的 LINE 官方帳號，就能試穿各合作品牌的商品；在合作品牌的 LINE 官方帳號、官網與門市，也能直接試穿該品牌的商品。',
     link: { label: '下載 App', href: '/download' },
   },
-];
+] as const;
 
 // /business 的品牌常見問題，依品牌做決定的順序分組：適不適合我 → 費用與導入 → 導入後拿到什麼。
 // 上架方式與導入步驟在本頁內文，這裡不重複。
@@ -79,4 +81,8 @@ export const brandFaqGroups = [
       },
     ],
   },
-];
+] as const;
+
+/** 各語言共用的形狀；lib/faq-data.en.ts 照這兩個型別寫 */
+export type FaqItems = DeepWiden<typeof faqItems>;
+export type BrandFaqGroups = DeepWiden<typeof brandFaqGroups>;

@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { Home } from 'lucide-react';
-import { copy } from '@/lib/copy';
+import { getCopy } from '@/lib/get-copy';
+import { localePath, type Locale } from '@/lib/i18n';
 
 interface NoticeProps {
   /** 玻璃方框裡的東西：Lucide 圖示或店家 logo */
@@ -11,13 +12,15 @@ interface NoticeProps {
   children?: ReactNode;
   /** 底部「回到官方網站」連結；頁面本身已有更好的出口時可關掉 */
   homeLink?: boolean;
+  /** 返回連結的語言與目標；只有中文的畫面（短連結、App fallback）省略 */
+  locale?: Locale;
 }
 
 /**
  * 單一訊息的全頁畫面（短連結落地／失效、404、錯誤、App fallback）共用的淺色玻璃外殼。
  * 走 MASTER.md：#FAFAFA 底、blue→cyan 光暈、glass-card、宋體標題。
  */
-export function Notice({ emblem, title, lede, children, homeLink = true }: NoticeProps) {
+export function Notice({ emblem, title, lede, children, homeLink = true, locale = 'zh-TW' }: NoticeProps) {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#FAFAFA]">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -47,11 +50,11 @@ export function Notice({ emblem, title, lede, children, homeLink = true }: Notic
         {homeLink && (
           <div className="mt-8 text-center">
             <Link
-              href="/"
+              href={localePath(locale, '/')}
               className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-[#475467] transition-colors duration-300 hover:text-[#101828] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
             >
               <Home className="h-4 w-4" strokeWidth={1.8} aria-hidden />
-              {copy.notice.home}
+              {getCopy(locale).notice.home}
             </Link>
           </div>
         )}

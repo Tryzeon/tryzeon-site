@@ -26,13 +26,22 @@ is a build error, not a warning.
 
 Marketing site for Tryzeon (創然科技有限公司), an AI virtual-try-on fashion-tech
 startup. Next.js 16 App Router, React 18, TypeScript strict, TailwindCSS 3. Primary
-content language is Traditional Chinese.
+content language is Traditional Chinese; the four public content pages also have an English
+version under `/en`.
 
 ### Page composition pattern
 
-The site is **zh-TW only** — there is no i18n, language switch or `/en` route.
+Chinese is the default language and has no URL prefix; English lives under `/en` and covers
+only `/`, `/business`, `/about` and `/download` (`LOCALIZED_PATHS` in `lib/i18n.ts`). Everything
+else — legal pages, short-link and App-fallback screens, `/admin` — is Chinese only. There is no
+i18n library and no Accept-Language redirect; the nav's `LanguageSwitch` links to the same page
+in the other language and hides itself on Chinese-only pages. `<html lang>` stays `zh-TW` (one
+root layout); `app/en/layout.tsx` wraps the subtree in `<div lang="en">` and sets the English
+default metadata. Both languages emit hreflang (`zh-TW`, `en`, `x-default` → Chinese) and the
+sitemap lists both.
 
-Public content pages (keep this list in sync with `app/sitemap.ts`):
+Public content pages (keep this list in sync with `app/sitemap.ts`; the first four also exist at
+`/en`, `/en/business`, `/en/about`, `/en/download`):
 
 | Route | Content |
 |---|---|
@@ -42,11 +51,14 @@ Public content pages (keep this list in sync with `app/sitemap.ts`):
 | `/download` | Shopper entry — store badges, three-step how-to, privacy points |
 | `/privacy`, `/terms`, `/delete-account` | Legal / app-store requirement |
 
-Each page is a server component that owns `metadata`, `revalidate = 3600` and renders
-`<Navigation />` + content + `<Footer />` directly (both read `lib/copy.ts` themselves).
-The homepage is the one exception: `components/HomePageClient.tsx` is a `'use client'`
-default export because its CTA carries an `onClick` analytics handler (it no longer
-loads anything with `dynamic`).
+Each localized page body lives once in `components/pages/` (`HomePage`, `BusinessPage`,
+`AboutPage`, `DownloadPage`, plus `NotFoundPage`) and takes a `locale` prop. The route files
+(`app/business/page.tsx`, `app/en/business/page.tsx` …) are thin shells that own `metadata`
+(`pageMetadata({ locale, path, ...getCopy(locale).meta.<page> })`) and `revalidate = 3600`.
+Page bodies render `<Navigation />` + content + `<Footer locale={locale} />`.
+The homepage body is `components/HomePageClient.tsx`, a `'use client'` default export because
+its CTA carries an `onClick` analytics handler; `HomePage` adds the FAQPage JSON-LD around it.
+Unknown `/en/*` URLs hit `app/en/[...rest]` → `notFound()` → the English `app/en/not-found.tsx`.
 `components/PageLayout.tsx` is the same shell plus a back-link, used by `/privacy` and
 `/terms`. Split by the reader's question: the homepage says what Tryzeon does (channels, the
 shopper side, the engine); `/business` says what a brand does and gets (listing,
@@ -199,19 +211,29 @@ URL Configuration → Redirect URLs.
 ### Content and SEO wiring
 
 - User-visible copy belongs in `lib/copy.ts` (`copy`, `as const`) and `lib/faq-data.ts`
-  (`faqItems`). Never hardcode user-facing strings in components. Homepage sections take
+  (`faqItems`); the English versions are `lib/copy.en.ts` (`copyEn`) and `lib/faq-data.en.ts`.
+  The English files are typed `SiteCopy` / `FaqItems` / `BrandFaqGroups` (`DeepWiden` of the
+  Chinese objects), so a missing key or a list of the wrong length is a type error — change both
+  files together. Chinese-only sections in `copyEn` point at the Chinese objects instead of
+  duplicating them, and English in-site links are written with the `/en` prefix. Read copy
+  through `getCopy(locale)` / `getFaq(locale)` (`lib/get-copy.ts`) in server code and
+  `useCopy()` / `useLocale()` (`components/useCopy.ts`, locale from the URL) in client
+  components; hardcoded in-site hrefs in components go through `localePath(locale, href)`.
+  Never hardcode user-facing strings in components. Homepage sections take
   their slice (`HomeCopy['brands']` …) as a `copy` prop; `/business` and `/download` read
   `copy.business` / `copy.download`. SEO copy lives there too: `copy.meta` holds each page's
   title / description / share text plus the share card (`ogCard`), manifest and Organization
   JSON-LD description; `page.tsx` spreads its slice into `pageMetadata`. Single-message screens
   read `copy.notice`, the skip link `copy.a11y`. Only the `/privacy` and `/terms` bodies (legal
   documents) and `/admin` stay inline.
-- Every string in `copy.ts`, `faq-data.ts` and page/layout `metadata` must respect the
-  redlines below; check them by hand when editing copy. Components index into some copy
+- Every string in `copy.ts`, `faq-data.ts`, their `.en.ts` versions and page/layout `metadata`
+  must respect the redlines below — they apply to English word for word (e.g. 「團隊自研的 AI 試穿架構」
+  is "an AI try-on architecture developed by our team", never "proprietary"/"our own model"); check them by hand when editing copy. Components index into some copy
   lists by position, so keep list lengths stable.
 - String headings and ledes go through `components/clauseWrap.tsx` (also used inside
-  `SectionHeader`) so CJK lines only break after 「，；：。」.
-  Long ledes use its `sentenceWrap`, which splits at 「。」 only.
+  `SectionHeader`) so CJK lines only break after 「，；：。」 (and English after ". ").
+  Long ledes use its `sentenceWrap`, which splits at 「。」 / ". " only. English copy writes
+  `\u00a0—` (no-break space before the em dash) so a narrow line never starts with "—".
 - Real App screenshots: paths and dimensions live in `lib/app-images.ts` (`APP_IMAGES`,
   `TRYON_VIDEOS`, `GET_QR_SRC`), alt text in `copy.images`. Every referenced file must exist and nothing in
   `public/` may be 500KB or larger. Screenshots go
@@ -229,14 +251,15 @@ URL Configuration → Redirect URLs.
   → 數據與素材). There is no FAQ item in the top nav; the footer links `/business#faq`. Don't add
   a question whose answer the team hasn't settled (data ownership, contract terms, shopper pricing,
   whether photos train the model…) — leave it out instead of hedging.
-- `app/page.tsx` generates FAQPage JSON-LD from `faqItems`, and `app/business/page.tsx` from the
-  flattened `brandFaqGroups`, so FAQ edits change structured data as well as the rendered
+- `components/pages/HomePage.tsx` generates FAQPage JSON-LD from `faqItems`, and
+  `components/pages/BusinessPage.tsx` from the flattened `brandFaqGroups` (per locale), so FAQ edits change structured data as well as the rendered
   accordion.
 - Company registration (統一編號 82970406, registered address) is shown from
-  `copy.footer.company` and repeated in the Organization JSON-LD in `app/layout.tsx` — change
-  both together.
+  `copy.footer.company` (English: `copyEn.footer.company`, company name "Tryzeon Ltd.") and repeated
+  in the Organization JSON-LD in `app/layout.tsx` — change all three together.
 - Adding or removing a public page means updating `app/sitemap.ts`, the route table above, and the
-  Footer columns in `copy.footer`.
+  Footer columns in `copy.footer` (and `copyEn.footer`). If it should have an English version, also
+  add it to `LOCALIZED_PATHS`, put the body in `components/pages/` and add an `app/en/` shell.
 - Tryzeon's own LINE OA is `@tryzeon` (`copy.contact.lineOa`; QR at `LINE_OA_QR_SRC`). It is
   a consumer try-on channel with no human replies, so it appears only where shoppers try
   things (the homepage LINE section's 「親自試試」, `/download`, the footer's 產品 column) —

@@ -7,11 +7,9 @@ import { Camera, FileSpreadsheet, Mic } from 'lucide-react';
 import { ExcelDemo, PhotoDemo, VoiceDemo, type Phase } from '@/components/ListingDemos';
 import { PhoneFrame } from '@/components/PhoneFrame';
 import { TiltStage } from '@/components/TiltStage';
+import { useCopy } from '@/components/useCopy';
 import { APP_IMAGES, type AppImageName } from '@/lib/app-images';
-import { copy } from '@/lib/copy';
 import { EASE, fadeUpItem, inView } from '@/lib/motion';
-
-const listing = copy.business.listing;
 
 // 順序對應 copy.business.listing.items
 const ICONS = [FileSpreadsheet, Camera, Mic] as const;
@@ -33,6 +31,7 @@ const FADE = { duration: 0.5, ease: EASE } as const;
  * 照片、標籤可以拖，放手會彈回原位；按麥克風會重播語音那一段。
  */
 export function ListingStudio() {
+  const listing = useCopy().business.listing;
   const [active, setActive] = useState(0);
   const [run, setRun] = useState(0);
   const [progress, setProgress] = useState<{ key: string; phase: Phase }>({ key: '', phase: 0 });
@@ -210,6 +209,7 @@ export function ListingStudio() {
 }
 
 function Screen({ name, className = '' }: { name: AppImageName; className?: string }) {
+  const copy = useCopy();
   const image = APP_IMAGES[name];
   return (
     <Image

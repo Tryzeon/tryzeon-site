@@ -21,7 +21,7 @@
 | D3 | `<html lang="zh-TW">` 不動；`/en` 子樹包一層 `<div lang="en">` | 改 html lang 需要拆成兩個 root layout，會碰到 Lenis／template／not-found 這些脆弱的地方。Google 讀的是 hreflang 不是 html lang，螢幕閱讀器認元素層級的 lang |
 | D4 | 英文版涵蓋 `/`、`/business`、`/about`、`/download` | 這四頁是對外說明公司的頁面 |
 | D5 | 法律頁（privacy / terms / delete-account）、短連結、`/store` `/product` fallback、`/admin` 維持只有中文 | 法律文字要有法務看過的英文版才能上；其餘是台灣消費者或內部用 |
-| D6 | 英文頁尾的法律連結指向中文頁，標「(Chinese)」 | 不讓英文讀者點進去才發現是中文 |
+| D6 | 英文頁尾的法律連結直接指向中文頁，不另外標註（使用者決定，2026-10-22） | — |
 | D7 | 切換鈕放導覽列（桌機在 CTA 左邊、手機在選單內），顯示「EN」／「中文」 | 最常見、最好找的位置 |
 | D8 | 英文文案由實作者依紅線起草，**上線前要團隊審過** | 文案就是對海外品牌的門面 |
 

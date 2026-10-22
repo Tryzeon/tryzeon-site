@@ -8,8 +8,10 @@ import { Magnetic } from '@/components/Magnetic';
 import { MoreLink } from '@/components/MoreLink';
 import { SectionHeader } from '@/components/SectionHeader';
 import { clauseWrap } from '@/components/clauseWrap';
+import { useCopy, useLocale } from '@/components/useCopy';
 import { LINE_OA_QR_SRC, type AppImageName } from '@/lib/app-images';
-import { copy as siteCopy, type HomeCopy } from '@/lib/copy';
+import type { HomeCopy } from '@/lib/copy';
+import { localePath } from '@/lib/i18n';
 import { fadeUpItem, inView, staggerList } from '@/lib/motion';
 
 interface LineFlowProps {
@@ -24,6 +26,8 @@ const STEP_SCREENS = ['line1Ask', 'line2Recommend', 'line4Result', 'line5Product
  * 下面再一列平行的另一條路：LINE 裡的試衣間（LIFF）。全部是 Tryzeon LINE 官方帳號的實機截圖。
  */
 export function LineFlow({ copy }: LineFlowProps) {
+  const siteCopy = useCopy();
+  const locale = useLocale();
   return (
     <section id="line" className="relative bg-[#FAFAFA] py-24 md:py-36">
       <div className="mx-auto max-w-7xl px-6 md:px-12">
@@ -99,7 +103,7 @@ export function LineFlow({ copy }: LineFlowProps) {
 
         {/* 從 /business 的導入步驟點過來的人，看完流程一鍵回到方案 */}
         <div className="mt-10 md:mt-12 text-center">
-          <MoreLink href="/business">{copy.link}</MoreLink>
+          <MoreLink href={localePath(locale, '/business')}>{copy.link}</MoreLink>
         </div>
       </div>
     </section>

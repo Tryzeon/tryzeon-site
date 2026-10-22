@@ -7,8 +7,10 @@ import { MoreLink } from '@/components/MoreLink';
 import { PhoneFrame } from '@/components/PhoneFrame';
 import { SectionHeader } from '@/components/SectionHeader';
 import { TryOnVideo } from '@/components/TryOnVideo';
+import { useLocale } from '@/components/useCopy';
 import type { AppImageName } from '@/lib/app-images';
 import type { HomeCopy } from '@/lib/copy';
+import { localePath } from '@/lib/i18n';
 import { EASE, fadeUpItem, inView } from '@/lib/motion';
 
 const FOCUS_RING = 'focus-ring focus-visible:ring-offset-[#FAFAFA]';
@@ -48,6 +50,7 @@ interface ExperienceShowcaseProps {
  * 兩份 DOM 以 display:none 互斥，螢幕閱讀器只會讀到看得見的那一份。
  */
 export function ExperienceShowcase({ copy }: ExperienceShowcaseProps) {
+  const locale = useLocale();
   return (
     <section id="experience" className="relative overflow-hidden bg-[#FAFAFA] py-24 md:py-36">
       <div className="mx-auto max-w-7xl px-6 md:px-12">
@@ -79,7 +82,7 @@ export function ExperienceShowcase({ copy }: ExperienceShowcaseProps) {
         </div>
 
         <div className="mt-14 text-center md:mt-16">
-          <MoreLink href="/download">{copy.link}</MoreLink>
+          <MoreLink href={localePath(locale, '/download')}>{copy.link}</MoreLink>
         </div>
       </div>
     </section>

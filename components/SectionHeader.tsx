@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef, type ReactNode, type RefObject } from 'react';
+import { Fragment, useEffect, useRef, type ReactNode, type RefObject } from 'react';
 import { motion, type Variants } from 'framer-motion';
-import { clauseWrap, keepRanges, splitClauses } from '@/components/clauseWrap';
+import { clauseWrap, gapBefore, keepRanges, splitClauses } from '@/components/clauseWrap';
 import { gsap } from '@/lib/gsap';
 import { EASE } from '@/lib/motion';
 
@@ -74,11 +74,14 @@ export function SectionHeader({
       >
         {clauses
           ? clauses.map((clause, i) => (
-              <span key={i} className="clause-mask">
-                <motion.span variants={clauseRise} className="sheen-text inline-block">
-                  {keepRanges(clause)}
-                </motion.span>
-              </span>
+              <Fragment key={i}>
+                {gapBefore(clauses, i)}
+                <span className="clause-mask">
+                  <motion.span variants={clauseRise} className="sheen-text inline-block">
+                    {keepRanges(clause)}
+                  </motion.span>
+                </span>
+              </Fragment>
             ))
           : clauseWrap(title)}
       </motion.h2>
