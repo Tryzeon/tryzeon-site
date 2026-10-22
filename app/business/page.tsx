@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { ArrowUpRight, Camera, FileSpreadsheet, Mail, Mic, Shirt, Store, TrendingUp } from 'lucide-react';
+import { ArrowUpRight, Mail, Shirt, Store, TrendingUp } from 'lucide-react';
 import { AmbientGlow } from '@/components/AmbientGlow';
 import { BrandBenefits } from '@/components/BrandBenefits';
 import { FAQ } from '@/components/FAQ';
 import { IconCardGrid } from '@/components/IconCardGrid';
 import { Footer } from '@/components/Footer';
+import { ListingStudio } from '@/components/ListingStudio';
 import { Magnetic } from '@/components/Magnetic';
 import { Navigation } from '@/components/Navigation';
 import { SectionHeader } from '@/components/SectionHeader';
@@ -27,14 +28,11 @@ export const metadata: Metadata = pageMetadata({
 
 export const revalidate = 3600;
 
-// 順序對應 copy.business.listing.items
-const LISTING_ICONS = [FileSpreadsheet, Camera, Mic] as const;
 // 順序對應 copy.business.fit.items
 const FIT_ICONS = [Shirt, Store, TrendingUp] as const;
 
 const SECONDARY =
   'focus-ring inline-flex items-center justify-center gap-2 px-9 py-4 rounded-full border border-[#101828]/15 bg-white/70 backdrop-blur-md text-[#101828] font-semibold hover:bg-white hover:border-[#101828]/30 transition-colors duration-300';
-const PHONES = ['aiTagBefore', 'aiTagAfterTags', 'voiceSizeShirt'] as const;
 
 function ContactButtons() {
   const { business, contact } = copy;
@@ -129,54 +127,9 @@ export default function BusinessPage() {
           <SectionHeader title={business.steps.title} />
           <StepsPanel items={business.steps.items} />
 
-          {/* 上架方式（左）＋ 品牌後台實機畫面（右）；手機版畫面排在清單下方 */}
-          <div className="mt-20 md:mt-28 grid items-center gap-12 lg:grid-cols-[1fr_auto] lg:gap-16">
-            <div>
-              <h3 className="text-sm font-semibold text-[#475467]">{business.listing.label}</h3>
-              <ul className="mt-4 divide-y divide-[#101828]/10 border-y border-[#101828]/10">
-                {business.listing.items.map((entry, i) => {
-                  const Icon = LISTING_ICONS[i];
-                  return (
-                    <li key={entry.title} className="flex gap-5 py-6 md:py-7">
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#2563EB]/15 bg-gradient-to-br from-[#2563EB]/10 to-[#06B6D4]/10">
-                        <Icon className="h-5 w-5 text-[#2563EB]" strokeWidth={1.5} aria-hidden />
-                      </span>
-                      <div className="md:grid md:flex-1 md:grid-cols-[9rem_1fr] md:items-baseline md:gap-6 md:pt-2.5">
-                        <h4 className="text-base md:text-lg font-semibold text-[#101828]">{entry.title}</h4>
-                        <p className="mb-0 mt-1 text-balance text-sm md:mt-0 md:text-base leading-relaxed text-[#475467]">
-                          {entry.desc}
-                        </p>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-
-            {/* 桌機的畫面偏小：滑過哪一支就放大到可以看清楚上面的字，其他兩支退後變淡。
-                最右邊那支往左放大，不推出版心造成橫向捲動 */}
-            <div className="group/phones flex justify-center gap-3 md:gap-4">
-              {PHONES.map((name, i) => (
-                <div
-                  key={name}
-                  className={`relative transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hover:z-10 lg:hover:scale-[1.75] lg:group-hover/phones:opacity-40 lg:hover:!opacity-100 ${
-                    i === PHONES.length - 1 ? 'origin-right' : 'origin-center'
-                  }`}
-                >
-                  {/* 細框：PhoneFrame 的 7px 白邊與大圓角放大後會壓到截圖的邊角，這裡收成 3px、小圓角 */}
-                  <div className="w-[28vw] max-w-[200px] rounded-[1.4rem] border border-[#101828]/10 bg-white p-[3px] shadow-[0_24px_60px_rgba(16,24,40,0.14),0_6px_18px_rgba(16,24,40,0.08)] lg:w-[168px]">
-                    <Image
-                      src={APP_IMAGES[name].src}
-                      alt={copy.images[name]}
-                      width={APP_IMAGES[name].width}
-                      height={APP_IMAGES[name].height}
-                      sizes="(min-width: 1024px) 300px, (min-width: 768px) 200px, 28vw"
-                      className="aspect-[900/1957] w-full rounded-[1.2rem] object-cover"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+          {/* 三種上架方式：素材 → 品牌後台實機畫面的互動示範 */}
+          <div className="mt-20 md:mt-28">
+            <ListingStudio />
           </div>
         </div>
       </section>

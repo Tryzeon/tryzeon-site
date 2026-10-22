@@ -115,6 +115,13 @@ Rules:
 - Continuous animation only for ambient/atmosphere (shaders, aurora), never on
   content icons. One requested exception: the engine flywheel's comet (slow 8s lap,
   only while on screen).
+- Interactive product demos (owner's request, 2026-10-22) may go past "motion is a whisper":
+  they play a short scripted sequence when a tab is hovered or the demo enters the viewport,
+  and their objects can be dragged and spring back (Framer `drag` + `dragSnapToOrigin`). First
+  one: `/business` three listing methods (`ListingStudio`): sheet rows tick in, the tweed photo
+  is scanned and the real AI tags pop out, the mic listens while the transcript types. Its mic
+  rings and waveform loop only while "listening" (about 3s). Each demo still ends on a real
+  App screenshot.
 - The site does not honor `prefers-reduced-motion` (owner's decision, 2026-10-22): everyone
   gets the same motion. Don't add reduced-motion fallbacks.
 

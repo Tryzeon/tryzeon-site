@@ -34,6 +34,7 @@ export const copy = {
     storeQr: '門市 QR Code 的示意畫面：店內的壓克力立牌，掃碼就能試穿（AI 生成的示意場景）',
     modelA: '試穿用的全身照（AI 生成的示意人像）',
     productHero: '示範商品：鈷藍緞面綁帶襯衫洋裝平拍圖',
+    productTweed: '示範商品：藍色粗花呢短外套平拍圖',
   },
   // 動態試穿影片的 aria-label；key 對應 lib/app-images.ts 的 TRYON_VIDEOS
   videos: {
@@ -147,6 +148,36 @@ export const copy = {
         { title: '拍照上傳', desc: 'AI 自動標註季節、風格、版型與適合族群。' },
         { title: '語音建檔', desc: '說出商品資訊，就能完成建檔。' },
       ],
+      // 上架示範（ListingStudio）的字串，順序與 items 相同。
+      // excel.rows 是示範店真的上架的商品（store-page 截圖的前四件）；photo.tags 是 AI 對 14 號外套的實際標註結果，
+      // 與 ai-tag-after-tags 截圖一致；voice.transcript 摘自 voice-size-result 那次錄音的唸稿
+      demo: {
+        excel: {
+          file: '商品表.xlsx',
+          columns: ['商品名稱', '分類', '售價'],
+          rows: [
+            ['藍色粗花呢短外套', '外套', '2,280'],
+            ['鈷藍緞面綁帶襯衫洋裝', '連身', '1,880'],
+            ['海軍藍雙排扣西裝外套', '外套', '2,680'],
+            ['霧藍緞面細肩帶洋裝', '連身', '1,580'],
+          ],
+          busy: '匯入中…',
+          done: '匯入完成，商品已上架',
+        },
+        photo: {
+          busy: 'AI 分析中…',
+          done: 'AI 標註完成',
+          tags: ['外套', '女裝', '優雅風', '復古風', '商務風', '春・秋・冬', '混紡', '無彈性', '常規版型', '中厚'],
+          tagsLabel: 'AI 標註結果',
+        },
+        voice: {
+          busy: '聆聽中',
+          done: '已填入尺寸表',
+          transcript: '「S 號肩寬 38、胸圍 100、袖長 54、衣長 68；M 號肩寬 39.5、胸圍 104……」',
+          replay: '再聽一次語音建檔',
+          hint: '點麥克風，再聽一次',
+        },
+      },
     },
     // 品牌拿到的效益；網站不寫費用與優惠。順序對應 FEATURE_ICONS
     features: {

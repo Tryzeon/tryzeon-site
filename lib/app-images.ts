@@ -27,6 +27,7 @@ export const APP_IMAGES = {
   storeQr: { src: '/images/app/store-qr.webp', width: 720, height: 1290 },
   modelA: { src: '/images/app/model-a.webp', width: 640, height: 954 },
   productHero: { src: '/images/app/product-cobalt-dress.webp', width: 480, height: 480 },
+  productTweed: { src: '/images/app/product-tweed-jacket.webp', width: 640, height: 640 },
 } as const;
 
 export type AppImageName = keyof typeof APP_IMAGES;
