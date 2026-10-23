@@ -448,7 +448,7 @@ export const copy = {
     ],
     copyright: '© {year} 創然科技有限公司 Tryzeon. All rights reserved.',
     // 經濟部商工登記資料（南科管理局核准設立）
-    company: '統一編號 82970406｜南部科學園區臺南市新市區南科三路17號2樓之1A163室',
+    company: '統一編號 82970406｜南部科學園區臺南市新市區南科三路17號2樓之1',
   },
 } as const;
 

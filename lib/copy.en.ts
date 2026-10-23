@@ -372,6 +372,6 @@ export const copyEn: SiteCopy = {
       { label: 'Delete Account', href: '/delete-account' },
     ],
     copyright: '© {year} Tryzeon Ltd. All rights reserved.',
-    company: 'Tax ID 82970406 | Rm. 1A163, 2F., No. 17, Nanke 3rd Rd., Xinshi Dist., Tainan City, Taiwan (ROC)',
+    company: 'Tax ID 82970406 | 2F.-1, No. 17, Nanke 3rd Rd., Xinshi Dist., Tainan City, Taiwan (ROC)',
   },
 };

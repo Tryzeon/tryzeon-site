@@ -129,7 +129,7 @@ export default function RootLayout({
           addressCountry: 'TW',
           addressRegion: '臺南市',
           addressLocality: '新市區',
-          streetAddress: '南科三路17號2樓之1A163室',
+          streetAddress: '南科三路17號2樓之1',
         },
       },
       {
